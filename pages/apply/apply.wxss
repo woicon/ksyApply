@@ -17,6 +17,15 @@ page{
     flex-wrap:wrap;
     z-index:20;
 }
+.apply-step .bar{
+    position:absolute;
+    left:0;
+    height:2px;
+    transition-duration:.5s;
+    transition-timing-function:ease-in;
+    top:56rpx;
+    background:#27CFB1;
+}
 .step-item{
     width:33.333333%;
     text-align:center;
@@ -34,10 +43,12 @@ page{
     height:2px;
     background:#eee;
     position:absolute;
-    top:14px;
-    z-index:0;
-    
+    top:28rpx;
+    z-index:0; 
 }
+
+
+
 .step-item .num{
     display:block;
     width:26px;
