@@ -1,6 +1,7 @@
 // pages/apply/apply.js
 //获取应用实例
-var app = getApp()
+var app = getApp();
+var commondata = require('../../utils/data.js');
 Page({
   /**
    * 页面的初始数据
@@ -35,8 +36,11 @@ Page({
                   "type": "1",
                   "data":{
                       mode:'multiSelector',
-                      rang:[{},{},{}],
-                      selected:'请选择'
+                      range: commondata.industry,
+                      rangekey: 'name',
+                      selected:'请选择',
+                      bindchange: "bindMultiPickerChange",
+                      bindcolumnchange:'bindMultiPickerColumnChange'
                   },
                   "stat": "false",
                   "bindtap": "",
@@ -79,7 +83,8 @@ Page({
                   "placeholder": "11位手机号",
                   "type": "0",
                   "data":{
-                      maxlength: "11"
+                      maxlength: "11",
+                      type:"number"
                   },
                   "stat": "false",
                   "bindtap": "",
@@ -93,8 +98,9 @@ Page({
                   "type": "1",
                   "data":{
                       mode:'selector',
-                      rang:['个人账户','企业账户'],
+                      range:['个人账户','企业账户'],
                       selected:'请选择',
+                      bindchange: "changePicker"
                   },
                   "stat": "false",
                   "bindtap": "",
@@ -107,6 +113,9 @@ Page({
                   "data": {
                       mode: 'selector',
                       selected: '请选择',
+                      range:commondata.bank,
+                      rangekey:"name",
+                      bindchange: "changePicker"
                   },
                   "stat": "false",
                   "bindtap": "",
@@ -125,11 +134,11 @@ Page({
                   "label": "证件类型",
                   "placeholder": "请选择",
                   "type": "1",
-                  "data": "",
                   "data": {
                       mode: 'selector',
-                      rang: ['身份证', '企业账户'],
+                      range: ['身份证', '企业账户'],
                       selected: '请选择',
+                      bindchange: "changePicker"
                   },
                   "stat": "false",
                   "bindtap": "",
@@ -139,9 +148,25 @@ Page({
                   "label": "证件号码",
                   "placeholder": "请输入证件号",
                   "type": "0",
-                  "data": "",
+                  "data":{
+                      type:'idcard'
+                  },
                   "stat": "false",
                   "bindtap": "",
+                  "value": ""
+              },
+              {
+                  "label": "证件有效期",
+                  "placeholder": "选择有效期",
+                  "type": "1",
+                  "data": {
+                      mode: 'date',
+                      fields: "month",
+                      selected: "12-22",
+                      bindchange: "changePicker"
+                  },
+                  "stat": "false",
+                  "bindtap": "changeDate",
                   "value": ""
               },
               {
@@ -158,26 +183,14 @@ Page({
                   "placeholder": "11位手机号",
                   "type": "0",
                   "data": {
-                      maxlength:"11"
+                      maxlength:"11",
+                      type:"number"
                   },
                   "stat": "false",
                   "bindtap": "",
                   "value": ""
-              },
-              {
-                  "label": "证件有效期",
-                  "placeholder": "选择有效期",
-                  "type": "1",
-                  "data":{
-                      mode:'date',
-                      fields:"month",
-                      selected:"12-22",
-                      bindchange: "changePicker"
-                  },
-                  "stat": "false",
-                  "bindtap":"changeDate",
-                  "value": ""
               }
+              
       ],
         [
               {
@@ -202,7 +215,9 @@ Page({
                   "label": "营业执照",
                   "placeholder": "请选择",
                   "type": "2",
-                  "data": "",
+                  "data":{
+                      type:'number',
+                  },
                   "stat": "false",
                   "bindtap": "",
                   "value": ""
@@ -211,7 +226,9 @@ Page({
                   "label": "开户许可证",
                   "placeholder": "请选择",
                   "type": "2",
-                  "data": "",
+                  "data":{
+                      type:'number'
+                  },
                   "stat": "false",
                   "bindtap": "",
                   "value": ""
@@ -232,6 +249,8 @@ Page({
             currentStep: steped + jump,
         });   
     },
+    
+    //picker控件选值存储
     changePicker:function(e){
         console.log(e);
         var _id =  e.target.id;
@@ -243,12 +262,34 @@ Page({
         var that = this;
         var _formData = that.data.formData;
         var _currentStep = that.data.currentStep;
+
         var currNode = _formData[_currentStep];
-        currNode[node].data.selected = value;
+        var nodeData = currNode[node].data;
+        
+
+        if (nodeData.mode == 'selector'){
+            var nodeValue = nodeData.range[value];
+            var nodekey = nodeData.rangekey;
+            currNode[node].data.selected = nodekey ? nodeValue[nodekey] : nodeValue;
+        }else{
+            console.log(value);
+            currNode[node].data.selected = value;
+        }
+
+
         that.setData({
             formData:_formData
         });
     },
+
+    bindMultiPickerChange:function(){
+
+    },
+
+    bindMultiPickerColumnChange:function(){
+
+    },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -257,21 +298,19 @@ Page({
         wx.setNavigationBarTitle({
             title: '注册快收银',
         });
+
         wx.setNavigationBarColor({
             frontColor: '#ffffff',
             backgroundColor: '#27CFB1',
         });
+
         var _setpStat = [];
         for (var i = 0; i < that.data.stepBar.length;i++){
             var stat = false;
             _setpStat.push(stat);
         }
-        var _formData = that.data.formData;
-        _formData[1][1].data.rangekey = app.globalData.bankData;
-        that.setData({
-            setpStat: _setpStat,
-            formData: _formData            
-        });
+
+        
         console.log(that.data.formData);
     },
 

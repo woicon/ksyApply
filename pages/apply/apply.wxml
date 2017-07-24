@@ -3,6 +3,7 @@
     <view class="apply-step">
         <view class="step-item {{index == currentStep?'active':''}}" wx:for="{{stepBar}}" wx:key="stepbar"><view class="num">{{index+1}}</view>{{item}}</view>
         <view class="bar" style="width:{{100/(3-currentStep)}}%"></view>
+        <view class="barview"></view>
     </view>
     <view class="apply-form">
         <import src="../../pages/apply/formTemplate.wxml" />

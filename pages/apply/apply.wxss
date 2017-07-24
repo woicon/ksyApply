@@ -23,8 +23,16 @@ page{
     height:2px;
     transition-duration:.5s;
     transition-timing-function:ease-in;
-    top:56rpx;
+    top:50rpx;
     background:#27CFB1;
+    z-index:1;
+}
+.barview{
+    position:absolute;
+    height:2px;
+    background:#eee;
+    left:0;right:0;top:50rpx;
+    z-index: 0;
 }
 .step-item{
     width:33.333333%;
@@ -36,7 +44,7 @@ page{
 .step-item.active{
     color:#27CFB1;
 }
-.step-item:before{
+/* .step-item:before{
     content:'';
     display:block;
     left:0;right:0;
@@ -45,7 +53,7 @@ page{
     position:absolute;
     top:28rpx;
     z-index:0; 
-}
+} */
 
 
 
@@ -75,6 +83,7 @@ page{
     position:relative;
     align-items:center;
     padding:0 30rpx;
+    box-sizing:border-box;
 }
 .fgroup:after{
      content:'';
@@ -88,26 +97,27 @@ page{
      transform-origin:0 100%;
      width:200%;
 }
+
 .fgroup label{
-    font-size:28rpx;
+    font-size:30rpx;
     color:#666;
 }
 .fgroup input,
 .fgroup .picker{
     padding:16px 6px;
     text-align:right;
-    font-size:28rpx;
+    font-size:32rpx;
     color:#444;
-    width:100%;
     position:relative;
 }
 .fgroup .picker{
     padding-right:24rpx;
 }
 .fgroup .type{
-    width:60%;
+    width:70%;
     position:relative;
     z-index:20;
+    overflow:hidden;
 }
 .fgroup .picker:after{
     content:'';
@@ -120,7 +130,7 @@ page{
     display:block;
     margin-left:10rpx;
     position:absolute;
-    right:0;
+    right:1px;
     top:50%;
     margin-top:-4px;
 }
