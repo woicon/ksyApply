@@ -2,7 +2,8 @@
   "pages":[
     "pages/index/index",
     "pages/logs/logs",
-    "pages/apply/apply"
+    "pages/apply/apply",
+    "pages/applycomplete/applycomplete"
   ],
   "window":{
     "backgroundTextStyle":"light",
