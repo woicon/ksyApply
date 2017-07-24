@@ -9,7 +9,7 @@ Page({
   data: {
       stepBar: ['商户信息', '结算信息','进件信息'],
       formType: ['input', 'picker', 'upfile', 'textarea','time', 'area'],
-      currentStep:1,
+      currentStep:0,
       formData:[
           [
               {
@@ -245,11 +245,21 @@ Page({
     stepJump:function(jump){
         var that = this;
         var steped = that.data.currentStep;
+        var _stepStats = that.data.stepStat;
+        var stats = steped + jump;
+        console.log(_stepStats);
+
+        for (var i = 0; i < _stepStats.length;i++){
+            _stepStats[i] = false;
+        }
+        for (var i = 0; i <= stats; i++){
+            _stepStats[i] = true;
+        }
         that.setData({
-            currentStep: steped + jump,
-        });   
+            currentStep: stats,
+            stepStat: _stepStats
+        }); 
     },
-    
     //picker控件选值存储
     changePicker:function(e){
         console.log(e);
@@ -272,11 +282,8 @@ Page({
             var nodekey = nodeData.rangekey;
             currNode[node].data.selected = nodekey ? nodeValue[nodekey] : nodeValue;
         }else{
-            console.log(value);
             currNode[node].data.selected = value;
         }
-
-
         that.setData({
             formData:_formData
         });
@@ -304,14 +311,15 @@ Page({
             backgroundColor: '#27CFB1',
         });
 
-        var _setpStat = [];
+        var _stepStat = [];
         for (var i = 0; i < that.data.stepBar.length;i++){
-            var stat = false;
-            _setpStat.push(stat);
+            _stepStat.push(false);
         }
+       
 
-        
-        console.log(that.data.formData);
+        that.setData({
+            stepStat: _stepStat
+        })
     },
 
   /**

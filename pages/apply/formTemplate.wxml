@@ -1,7 +1,6 @@
 <template name="formtemp">
     <view wx:for="{{formlist}}" class="fgroup" wx:key="s" data-id="{{index}}">
         <label class="label">{{item.label}}</label>
-
         <!-- input 输入框 -->
         <view class="type" wx:if="{{item.type == '0'}}">
             <input placeholder="{{item.placeholder}}" 
@@ -10,11 +9,8 @@
             maxlength="{{item.data.maxlength || '-1'}}"
             disabled="{{item.data.disabled}}" />
         </view>
-
         <!-- picker 选择 -->
-
         <view class="type" wx:elif="{{item.type == '1'}}">
-        
             <picker wx:if="{{item.data.mode == 'selector'}}"
             mode="{{item.data.mode}}"
             range="{{item.data.range}}"
@@ -62,7 +58,6 @@
                 <view class="picker">{{item.data.selected}}</view>
             </picker>
         </view>
-
         <!-- upfile 图片上传 -->
         <view class="type" wx:elif="{{item.type == '2'}}">
             <view class="upfile">
@@ -71,11 +66,9 @@
             {{item.label}}
             </view>
         </view>
-
         <!-- textarea 多行文本 -->
         <view class="type" wx:elif="{{item.type == '3'}}">
             <textarea placeholder="{{item.placeholder}}"  />
         </view>
-
     </view>
 </template>

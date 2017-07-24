@@ -11,7 +11,7 @@ page{
     left:0;
     top:0;
     right:0;
-    height:70px;
+    height:140rpx;
     display:flex;
     align-items:center;
     flex-wrap:wrap;
@@ -31,7 +31,9 @@ page{
     position:absolute;
     height:2px;
     background:#eee;
-    left:0;right:0;top:50rpx;
+    left:0;
+    right:0;
+    top:50rpx;
     z-index: 0;
 }
 .step-item{
@@ -54,9 +56,6 @@ page{
     top:28rpx;
     z-index:0; 
 } */
-
-
-
 .step-item .num{
     display:block;
     width:26px;
@@ -102,6 +101,7 @@ page{
     font-size:30rpx;
     color:#666;
 }
+
 .fgroup input,
 .fgroup .picker{
     padding:16px 6px;
@@ -138,6 +138,7 @@ page{
     text-align:center;
     padding:20px 0;
 }
+
 .btnbar .btn{
     display:inline-block;
     width:40%;
@@ -145,6 +146,17 @@ page{
     font-size:36rpx;
     background:#27CFB1;color:#fff;
     margin:0 5px;
+    border-radius:4rpx;
+}
+
+.btnbar .btns-hover{
+    background:#ccc;
+    color:#888;
+}
+
+.btnbar .btn-hover{
+    background:#12be9f;
+    color:#fff;
 }
 .btnbar .btn.prev{
     background:#eee;color:#888;
