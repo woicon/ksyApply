@@ -4,7 +4,7 @@ page{
     background:#fafafa;
 }
 .apply-form{
-    background:#fff;
+    
 }
 .apply-step{
     position:fixed;
@@ -15,7 +15,8 @@ page{
     display:flex;
     align-items:center;
     flex-wrap:wrap;
-    z-index:20;
+    z-index:120;
+    background-color:#fafafa;
 }
 .apply-step .bar{
     position:absolute;
@@ -77,12 +78,11 @@ page{
     color:#fff;
 }
 .fgroup{
-    display:flex;
-    justify-content:space-between;
     position:relative;
     align-items:center;
     padding:0 30rpx;
     box-sizing:border-box;
+    background:#fff;
 }
 .fgroup:after{
      content:'';
@@ -100,24 +100,40 @@ page{
 .fgroup label{
     font-size:30rpx;
     color:#666;
+    position:absolute;
+    padding:28rpx 0;
+    left:30rpx;
+    top:0;
+     height:1.4rem;
+      line-height:1.4rem;
+    min-height:1.4rem;
 }
 
 .fgroup input,
-.fgroup .picker{
-    padding:16px 6px;
+.fgroup picker{
+    padding:28rpx 0;
     text-align:right;
     font-size:32rpx;
     color:#444;
     position:relative;
+    width:100%;
+    padding-right:10px;
+    height:1.4rem;
+    min-height:1.4rem;
+    line-height:1.4rem;
 }
 .fgroup .picker{
     padding-right:24rpx;
+    position:relative;
+     height:1.4rem;
+    min-height:1.4rem;
 }
 .fgroup .type{
-    width:70%;
+    
     position:relative;
     z-index:20;
     overflow:hidden;
+    padding-left:180rpx;
 }
 .fgroup .picker:after{
     content:'';
@@ -134,9 +150,113 @@ page{
     top:50%;
     margin-top:-4px;
 }
+.fgroup .textarealine{
+    width:100%;
+    padding-left:0;
+    font-size:32rpx;
+    line-height:1.5;
+    padding-top:100rpx;
+    color:#444;
+
+}
+.fgroup .textarealine textarea{
+    width:100%;
+    height:140rpx;
+}
+.photo{
+    margin:30rpx 0;
+    background:#fff;
+}
+.photo .label{
+    position:inherit;
+    line-height:1.4;
+    text-align:left;
+    display: block;
+    padding:0;
+    left:inherit;
+    padding-left:30rpx;
+    margin: 0 -30rpx;
+    background:#fafafa;
+    
+}
+.photo .icon{
+    color:#999;
+}
+.photo .type{
+    display:flex;
+    align-items: center;
+    justify-content:space-between;
+    padding:0;
+}
+.photo .type .upfile{
+    text-align:center;
+    height:100%;
+    display:flex;
+    align-items: center;
+    flex-direction:column;
+    justify-content:center;
+}
+.photo .type .upfile .title{
+    font-size:24rpx;
+    color:#999;
+    line-height:2;
+}
+.photo .type>view{
+    width:50%;
+}
+.reference{
+    text-align:center;
+    position:relative;
+}
+.reference image{
+    width:100%;
+    height:260rpx;
+    opacity:.7;filter: gray;
+
+}
+.reference .title{
+    font-size:28rpx;
+    line-height:32rpx;
+    position:absolute;
+    right:16rpx;
+    top:16rpx;
+    width:100rpx;
+    height:100rpx;
+}
+.reference .title:after,
+.reference .title:before{
+    content:'';
+    border-radius:90px;
+    position:absolute;
+    border:2px solid #fff;
+
+}
+.reference .title:after{
+    left:0;
+    right:0;top:0;bottom:0;
+}
+.reference .title:before{
+    left:8rpx;
+    right:8rpx;
+    bottom:8rpx;
+    top:8rpx;
+    border:2px dotted #fff;
+}
+.reference .title text{
+    position:absolute;
+    left:-10rpx;
+    right:-10rpx;
+    top:50%;
+    margin-top:-11rpx;
+    padding:7rpx 0;
+    background:#fff;
+    color:#999;
+    font-size:23rpx;
+    border-radius:3px;
+}
 .btnbar {
     text-align:center;
-    padding:20px 0;
+    padding:20px 0 60px;
 }
 
 .btnbar .btn{

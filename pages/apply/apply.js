@@ -13,7 +13,7 @@ Page({
       formType: ['input', 'picker', 'upfile', 'textarea','time', 'area'],
       currentStep:0,
       formData:formList,
-},
+    },
     nextStep:function(){
         this.stepJump(+1);
     },
@@ -25,8 +25,6 @@ Page({
         var steped = that.data.currentStep;
         var _stepStats = that.data.stepStat;
         var stats = steped + jump;
-        console.log(_stepStats);
-
         for (var i = 0; i < _stepStats.length;i++){
             _stepStats[i] = false;
         }
@@ -38,12 +36,50 @@ Page({
             stepStat: _stepStats
         }); 
     },
+
+    bindKeyInput:function(e){
+        //console.log(e.detail);
+    },
+
     //picker控件选值存储
     changePicker:function(e){
-        console.log(e);
+        //console.log(e);
+        var that = this;
         var _id =  e.target.id;
+        var currentId = e.currentTarget.dataset.id;
         var _value = e.detail.value;
-        this.setFormData(_id,_value);
+        
+        var _formData = that.data.formData;
+        var _currentStep = that.data.currentStep;
+
+        var currNode = _formData[_currentStep];
+        var nodeData = currNode[_id].data;
+        //选择个人组织
+        if (currentId == "accountType" && _value == 0) {
+            _formData[_currentStep] = formList[1];
+        } else{
+            _formData[_currentStep] = formList.group;
+        }
+
+        if (nodeData.mode == 'selector') {
+            var nodeValue = nodeData.range[_value];
+            var nodekey = nodeData.rangekey;
+            currNode[_id].data.selected = nodekey ? nodeValue[nodekey] : nodeValue;
+        } else {
+            currNode[_id].data.selected = _value;
+        }
+
+
+        wx.setStorage({
+            key: 'REGDATA',
+            data: _formData,
+        });
+
+        //存储data
+        that.setData({
+            formData: _formData
+        });
+        
     },
 
     setFormData:function(node,value){
@@ -61,6 +97,7 @@ Page({
             currNode[node].data.selected = nodekey ? nodeValue[nodekey] : nodeValue;
         }else{
             currNode[node].data.selected = value;
+            
         }
         that.setData({
             formData:_formData
@@ -74,14 +111,32 @@ Page({
     bindMultiPickerColumnChange:function(){
 
     },
-
+    formSubmit:function (e){
+        console.log(e)
+    },
     //提交
     submintForm:function () {
         wx.navigateTo({
             url: '/pages/applycomplete/applycomplete',
         })
     },
-
+    uploadPhoto:function(){
+        wx.chooseImage({
+            success: function(res) {
+                 wx.uploadFile({
+                    url: '',
+                    filePath: '',
+                    name: '',
+                    header: {},
+                    formData: {},
+                    success: function(res) {},
+                    fail: function(res) {},
+                    complete: function(res) {},
+                })
+            },
+        })
+       
+    },
   /**
    * 生命周期函数--监听页面加载
    */

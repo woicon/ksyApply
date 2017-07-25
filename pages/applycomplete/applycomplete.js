@@ -12,9 +12,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    wx.setNavigationBarTitle({
+        title: '注册成功',
+    });
+    wx.setNavigationBarColor({
+        frontColor: '#ffffff',
+        backgroundColor: '#27CFB1',
+    });
   },
-
+  finshReg:function (){
+    wx.navigateTo({
+        url: '/pages/applydetail/applydetail',
+    });
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

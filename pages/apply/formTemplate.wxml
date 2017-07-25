@@ -1,11 +1,15 @@
 <template name="formtemp">
-    <view wx:for="{{formlist}}" class="fgroup" wx:key="s" data-id="{{index}}">
+    
+    <block wx:for="{{formlist}}" wx:key="form{{index}}" >
+    <view class="fgroup {{item.type == '2' ? 'photo':''}}" data-id="{{index}}">
         <label class="label">{{item.label}}</label>
         <!-- input 输入框 -->
         <view class="type" wx:if="{{item.type == '0'}}">
-            <input placeholder="{{item.placeholder}}" 
+            <input placeholder="{{item.placeholder}}"
+             bindinput="bindKeyInput"
             type="{{item.data.type || 'text'}}" 
             bindtap="{{item.bindtap}}"
+            name="{{item.name}}"
             maxlength="{{item.data.maxlength || '-1'}}"
             disabled="{{item.data.disabled}}" />
         </view>
@@ -13,17 +17,20 @@
         <view class="type" wx:elif="{{item.type == '1'}}">
             <picker wx:if="{{item.data.mode == 'selector'}}"
             mode="{{item.data.mode}}"
+            name="{{item.name}}"
             range="{{item.data.range}}"
             range-key="{{item.data.rangekey}}"
             value="{{item.data.selected}}"
             disabled="{{item.data.disabled}}"
             bindchange="{{item.data.bindchange}}"
+            data-id="{{item.data.id}}"
             id="{{index}}">
                 <view class="picker">{{item.data.selected}} </view>
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'multiSelector'}}" 
-            mode="{{item.data.mode}}" 
+            mode="{{item.data.mode}}"
+            name="{{item.name}}" 
             range="{{item.data.range}}" 
             range-key="{{item.data.rangekey}}"
             value="{{item.data.selected}}" 
@@ -35,7 +42,8 @@
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'date'}}" 
-            mode="{{item.data.mode}}" 
+            mode="{{item.data.mode}}"
+            name="{{item.name}}"
             value="{{item.data.selected}}"
             fields="{{item.data.fields}}" 
             start="{{item.data.start}}" 
@@ -47,7 +55,8 @@
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'region'}}" 
-            mode="{{item.data.mode}}" 
+            mode="{{item.data.mode}}"
+            name="{{item.name}}"
             value="{{item.data.selected}}"
             files="{{item.data.files}}" 
             start="{{item.data.start}}" 
@@ -60,15 +69,19 @@
         </view>
         <!-- upfile 图片上传 -->
         <view class="type" wx:elif="{{item.type == '2'}}">
-            <view class="upfile">
+            <view class="upfile" bindtap="uploadPhoto">
+                <view class="icon ico-camera"></view>
+                <view class="title">上传图片</view>
             </view>
-            <view class="title">
-            {{item.label}}
+            <view class="reference">
+                <image src="{{item.data.reference}}" mode="aspectFit"></image>
+                <view class="title"><text>参考样例</text></view>
             </view>
         </view>
         <!-- textarea 多行文本 -->
-        <view class="type" wx:elif="{{item.type == '3'}}">
-            <textarea placeholder="{{item.placeholder}}"  />
+        <view class="type textarealine" wx:elif="{{item.type == '3'}}">
+            <textarea placeholder="{{item.placeholder}}" name="{{item.name}}" bindinput="bindKeyInput"/>
         </view>
     </view>
+    </block>
 </template>

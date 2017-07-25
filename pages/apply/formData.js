@@ -3,6 +3,7 @@ module.exports =[
     [
         {
             "label": "商户名称",
+            "name":"shopName",
             "placeholder": "请输入门店全称",
             "type": "0",
             "data": "",
@@ -12,6 +13,7 @@ module.exports =[
         },
         {
             "label": "商户简称",
+            "name": "shopNames",
             "placeholder": "如肯德基",
             "type": "0",
             "data": "",
@@ -21,6 +23,7 @@ module.exports =[
         },
         {
             "label": "行业类别",
+            "name": "shopCategory",
             "placeholder": "请选择",
             "type": "1",
             "data": {
@@ -37,6 +40,7 @@ module.exports =[
         },
         {
             "label": "商户所属地",
+            "name": "shopArea",
             "placeholder": "请选择",
             "type": "1",
             "data": "",
@@ -53,7 +57,9 @@ module.exports =[
             "label": "商户详细地址",
             "placeholder": "80个字以内",
             "type": "3",
-            "data": "",
+            "data":{
+                maxlength:"80"
+            },
             "stat": "false",
             "bindtap": "",
             "value": ""
@@ -96,9 +102,10 @@ module.exports =[
             "type": "1",
             "data": {
                 mode: 'selector',
-                range: ['个人账户', '企业账户'],
-                selected: '请选择',
-                bindchange: "changePicker"
+                range: ['个人', '企业'],
+                selected: '个人',
+                bindchange: "changePicker",
+                id: "accountType"
             },
             "stat": "false",
             "bindtap": "",
@@ -132,20 +139,6 @@ module.exports =[
             "bindtap": "",
             "value": ""
         },
-        // {
-        //     "label": "证件类型",
-        //     "placeholder": "请选择",
-        //     "type": "1",
-        //     "data": {
-        //         mode: 'selector',
-        //         range: ['身份证', '企业账户'],
-        //         selected: '请选择',
-        //         bindchange: "changePicker"
-        //     },
-        //     "stat": "false",
-        //     "bindtap": "",
-        //     "value": ""
-        // },
         {
             "label": "身份证号",
             "placeholder": "请输身份证号",
@@ -199,7 +192,10 @@ module.exports =[
             "label": "身份证正面",
             "placeholder": "请选择",
             "type": "2",
-            "data": "",
+            "data": {
+                reference: '../../pages/images/idcardf.jpg',
+
+            },
             "stat": "false",
             "bindtap": "",
             "value": ""
@@ -208,7 +204,10 @@ module.exports =[
             "label": "身份证背面",
             "placeholder": "请选择",
             "type": "2",
-            "data": "",
+            "data": {
+                reference:'../../pages/images/idcardz.jpg',
+
+            },
             "stat": "false",
             "bindtap": "",
             "value": ""
@@ -218,7 +217,8 @@ module.exports =[
             "placeholder": "请选择",
             "type": "2",
             "data": {
-                type: 'number',
+                reference: '../../pages/images/yyzz.jpg',
+
             },
             "stat": "false",
             "bindtap": "",
@@ -229,11 +229,93 @@ module.exports =[
             "placeholder": "请选择",
             "type": "2",
             "data": {
-                type: 'number'
+                reference: '../../pages/images/khxk.jpg',
+
             },
             "stat": "false",
             "bindtap": "",
             "value": ""
         }
     ]
+];
+
+module.exports.group = [
+    {
+        "label": "账户类型",
+        "placeholder": "请选择",
+        "type": "1",
+        "data": {
+            mode: 'selector',
+            range: ['个人', '企业'],
+            selected: "企业",
+            bindchange: "changePicker",
+            id:"accountType"
+        },
+        "stat": "false",
+        "bindtap": "",
+        "value": ""
+    },
+    {
+        "label": "开户银行",
+        "placeholder": "请选择",
+        "type": "1",
+        "data": {
+            mode: 'selector',
+            selected: '请选择',
+            range: commondata.bank,
+            rangekey: "name",
+            bindchange: "changePicker"
+        },
+        "stat": "false",
+        "bindtap": "",
+        "value": ""
+    },
+
+    {
+        "label": "对公账户",
+        "placeholder": "20个字符以内",
+        "type": "0",
+        "data": {
+            type: 'number',
+            maxlength: '20'
+        },
+        "stat": "false",
+        "bindtap": "",
+        "value": ""
+    },
+    {
+        "label": "企业名称",
+        "placeholder": "请输入企业名称",
+        "type": "0",
+        "data": {
+        },
+        "stat": "false",
+        "bindtap": "",
+        "value": ""
+    },
+    {
+        "label": "商户所属地",
+        "placeholder": "请选择",
+        "type": "1",
+        "data": "",
+        "stat": "false",
+        "bindtap": "",
+        "data": {
+            mode: 'region',
+            selected: '请选择',
+            bindchange: "changePicker"
+        },
+        "value": ""
+    },
+    {
+        "label": "法人身份证号",
+        "placeholder": "请输身份证号",
+        "type": "0",
+        "data": {
+            type: 'idcard'
+        },
+        "stat": "false",
+        "bindtap": "",
+        "value": ""
+    }
 ]

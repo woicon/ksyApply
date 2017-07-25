@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/apply/apply",
-    "pages/applycomplete/applycomplete"
+    "pages/applycomplete/applycomplete",
+    "pages/applydetail/applydetail"
   ],
   "window":{
     "backgroundTextStyle":"light",
