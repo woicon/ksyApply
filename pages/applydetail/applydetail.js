@@ -2,7 +2,6 @@
 var commondata = require('../../utils/data.js');
 var commondata = require('../../pages/apply/formData.js');
 Page({
-
   /**
    * 页面的初始数据
    */

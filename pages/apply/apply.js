@@ -1,5 +1,6 @@
 // pages/apply/apply.js
 var app = getApp();
+var datas = require('../../utils/data.js');
 var formList = require('../../pages/apply/formData.js');
 Page({
   /**
@@ -82,25 +83,26 @@ Page({
 
     //行业联动
     columnChange:function(e){
-        console.log(e);
+        datas.category(e.detail.column,e.detail.value);
+        console.log(datas.column);
+
     },
     setFormData:function(node,value){
         var that = this;
         var _formData = that.data.formData;
         var _currentStep = that.data.currentStep;
-
         var currNode = _formData[_currentStep];
         var nodeData = currNode[node].data;
         
-
+        //选择赋值
         if (nodeData.mode == 'selector'){
             var nodeValue = nodeData.range[value];
             var nodekey = nodeData.rangekey;
             currNode[node].data.selected = nodekey ? nodeValue[nodekey] : nodeValue;
         }else{
             currNode[node].data.selected = value;
-            
         }
+
         that.setData({
             formData:_formData
         });
