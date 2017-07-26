@@ -1,9 +1,6 @@
 // pages/apply/apply.js
-//获取应用实例
 var app = getApp();
-
 var formList = require('../../pages/apply/formData.js');
-
 Page({
   /**
    * 页面的初始数据
@@ -54,10 +51,11 @@ Page({
 
         var currNode = _formData[_currentStep];
         var nodeData = currNode[_id].data;
-        //选择个人组织
+
+        //选择账户类型个人或者企业
         if (currentId == "accountType" && _value == 0) {
             _formData[_currentStep] = formList[1];
-        } else{
+        } else if (currentId == "accountType" && _value == 1){
             _formData[_currentStep] = formList.group;
         }
 
@@ -82,6 +80,10 @@ Page({
         
     },
 
+    //行业联动
+    columnChange:function(e){
+        console.log(e);
+    },
     setFormData:function(node,value){
         var that = this;
         var _formData = that.data.formData;

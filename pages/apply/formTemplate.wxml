@@ -34,7 +34,7 @@
             range="{{item.data.range}}" 
             range-key="{{item.data.rangekey}}"
             value="{{item.data.selected}}" 
-            bindcolumnchange="item.data.bindcolumnchange"
+            bindcolumnchange="{{item.data.bindcolumnchange}}"
             bindchange="{{item.data.bindchange}}"  
             id="{{index}}"
             disabled="{{item.data.disabled}}">

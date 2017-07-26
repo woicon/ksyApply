@@ -28,11 +28,11 @@ module.exports =[
             "type": "1",
             "data": {
                 mode: 'multiSelector',
-                range: commondata.industry,
+                range: commondata.normalCategory,
                 rangekey: 'name',
                 selected: '请选择',
                 bindchange: "bindMultiPickerChange",
-                bindcolumnchange: 'bindMultiPickerColumnChange'
+                bindcolumnchange: 'columnChange'
             },
             "stat": "false",
             "bindtap": "",

@@ -1893,3 +1893,30 @@ module.exports = {
         }
     ]
 }
+var normalCategory = [];
+var industry = module.exports.industry;
+normalCategory.push(industry[0]);
+
+var normalSecondary = [],three = [];
+
+var second = industry[1];
+var i;
+for (i in second){
+    if (second[i].id == '1'){
+        normalSecondary.push(second[i]);
+    }
+}
+var threes = industry[2];
+for (i in threes) {
+    if (threes[i].p_id == '1') {
+        three.push(threes[i]);
+    }
+}
+normalCategory.push(normalSecondary);
+normalCategory.push(three);
+module.exports.normalCategory = normalCategory;
+
+
+function category(column,value,elm){
+    
+}

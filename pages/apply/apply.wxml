@@ -21,6 +21,7 @@
             <button class="btn" hover="true" formType="submit" hover-class="btn-hover" bindtap="nextStep">下一步</button>
         </block>
         <block wx:elif="{{currentStep == 2}}">
+            <view class="info">点击提交即表示同意用户注册协议</view>
             <view class="btn prev" hover="true" hover-class="btns-hover" bindtap="backStep">上一步</view>
             <button class="btn" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">提交</button>
         </block>
