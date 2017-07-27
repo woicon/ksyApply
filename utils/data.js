@@ -1896,10 +1896,9 @@ module.exports = {
 var normalCategory = [];
 var industry = module.exports.industry;
 normalCategory.push(industry[0]);
-
 var normalSecondary = [],three = [];
-
 var second = industry[1];
+
 var i;
 for (i in second){
     if (second[i].id == '1'){
@@ -1912,13 +1911,11 @@ for (i in threes) {
         three.push(threes[i]);
     }
 }
-
 normalCategory.push(normalSecondary);
 normalCategory.push(three);
-
 module.exports.normalCategory = normalCategory;
 function category(column,value,elm){
-    let nColumn = [];
+    let nColumn = [],nsColumn = [];
     let currColumn = industry[column];
     let currItem = currColumn[value];
     let nextColumn = industry[column + 1];
@@ -1933,6 +1930,20 @@ function category(column,value,elm){
             nColumn.push(item);
         }
     }
+    var strs = nColumn[0].pid;
+    console.log(typeof  column);
+    if (column == 0){
+        for (i in threes) {
+            let item = threes[i];
+            let cruuid = threes[i].pid;
+            console.log(cruuid);
+            if (cruuid == strs) {
+                nsColumn.push(item);
+            }
+        }
+        module.exports.ncolumn = nsColumn;
+    }
+
     // switch (column) {
     //     case 0:
     //         for (i in nextColumn) {
@@ -1958,6 +1969,8 @@ function category(column,value,elm){
 
     //     break;
     // }
+    console.log(nColumn);
+    console.log(nsColumn);
     module.exports.column = nColumn;
 }
 module.exports.category = category;

@@ -1,6 +1,6 @@
 // pages/apply/apply.js
 var app = getApp();
-var datas = require('../../utils/data.js');
+var categoryData = require('../../utils/data.js');
 var formList = require('../../pages/apply/formData.js');
 Page({
   /**
@@ -41,15 +41,12 @@ Page({
 
     //picker控件选值存储
     changePicker:function(e){
-        //console.log(e);
         var that = this;
         var _id =  e.target.id;
         var currentId = e.currentTarget.dataset.id;
         var _value = e.detail.value;
-        
         var _formData = that.data.formData;
         var _currentStep = that.data.currentStep;
-
         var currNode = _formData[_currentStep];
         var nodeData = currNode[_id].data;
 
@@ -83,10 +80,22 @@ Page({
 
     //行业联动
     columnChange:function(e){
-        datas.category(e.detail.column,e.detail.value);
-        console.log(datas.column);
+        categoryData.category(e.detail.column,e.detail.value);
+        var that = this;
+        var _formData = that.data.formData;
+        var currNode = _formData[that.data.currentStep];
 
+        if (e.detail.column == 0){
+            currNode[e.currentTarget.id].data.range[e.detail.column + 1] = categoryData.column;
+        }else{
+            currNode[e.currentTarget.id].data.range[e.detail.column + 1] = categoryData.column;
+        }
+        
+        that.setData({
+            formData: _formData
+        });
     },
+
     setFormData:function(node,value){
         var that = this;
         var _formData = that.data.formData;
@@ -103,9 +112,11 @@ Page({
             currNode[node].data.selected = value;
         }
 
+        //行业联动
         that.setData({
             formData:_formData
         });
+
     },
 
     bindMultiPickerChange:function(){

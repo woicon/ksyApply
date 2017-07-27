@@ -21,22 +21,12 @@ Page({
   onLoad: function () {
     var that = this;
 
-    wx.login({
-        success: function (res) {
-            if (res.code) {
-                //发起网络请求
-                wx.request({
-                    url: 'https://test.com/onLogin',
-                    data: {
-                        code: res.code
-                    }
-                });
-                console.log(res);
-            } else {
-                console.log('获取用户登录态失败！' + res.errMsg)
-            }
+    wx.getWeRunData({
+        success(res) {
+            const encryptedData = res.encryptedData;
+            console.log(res.encryptedData);
         }
-    });
+    })
 
 
     //调用应用实例的方法获取全局数据

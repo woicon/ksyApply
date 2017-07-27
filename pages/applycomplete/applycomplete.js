@@ -19,6 +19,9 @@ Page({
         frontColor: '#ffffff',
         backgroundColor: '#27CFB1',
     });
+    wx.onUserCaptureScreen(function (res) {
+        console.log('用户截屏了')
+    });
   },
   finshReg:function (){
     wx.navigateTo({
