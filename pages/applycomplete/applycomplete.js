@@ -22,11 +22,17 @@ Page({
     wx.onUserCaptureScreen(function (res) {
         console.log('用户截屏了')
     });
+    wx.showModal({
+        title: '提示',
+        content: '请妥善保管商户及门店登录账户及密码',
+    })
   },
   finshReg:function (){
     wx.navigateTo({
         url: '/pages/applydetail/applydetail',
     });
+
+    
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

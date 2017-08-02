@@ -164,15 +164,15 @@ module.exports =[
             "bindtap": "changeDate",
             "value": ""
         },
-        {
-            "label": "持卡人地址",
-            "placeholder": "请输入持卡人地址",
-            "type": "0",
-            "data": "",
-            "stat": "false",
-            "bindtap": "",
-            "value": ""
-        },
+        // {
+        //     "label": "持卡人地址",
+        //     "placeholder": "请输入持卡人地址",
+        //     "type": "0",
+        //     "data": "",
+        //     "stat": "false",
+        //     "bindtap": "",
+        //     "value": ""
+        // },
         {
             "label": "银行预留手机号",
             "placeholder": "11位手机号",
@@ -293,20 +293,20 @@ module.exports.group = [
         "bindtap": "",
         "value": ""
     },
-    {
-        "label": "商户所属地",
-        "placeholder": "请选择",
-        "type": "1",
-        "data": "",
-        "stat": "false",
-        "bindtap": "",
-        "data": {
-            mode: 'region',
-            selected: '请选择',
-            bindchange: "changePicker"
-        },
-        "value": ""
-    },
+    // {
+    //     "label": "商户所属地",
+    //     "placeholder": "请选择",
+    //     "type": "1",
+    //     "data": "",
+    //     "stat": "false",
+    //     "bindtap": "",
+    //     "data": {
+    //         mode: 'region',
+    //         selected: '请选择',
+    //         bindchange: "changePicker"
+    //     },
+    //     "value": ""
+    // },
     {
         "label": "法人身份证号",
         "placeholder": "请输身份证号",
