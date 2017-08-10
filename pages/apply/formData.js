@@ -2,7 +2,7 @@ var commondata = require('../../utils/data.js');
 module.exports =[
     [
         {
-            "label": "商户名称",
+            "label": "商户名称ss",
             "name":"shopName",
             "placeholder": "请输入门店全称",
             "type": "0",
