@@ -5,18 +5,21 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs);
-
     wx.login({
-        success: function (res) {
-            console.log(res);
+        success: function (res) {    
             if (res.code) {
-                //发起网络请求
                 wx.request({
-                    url: 'https://test.com/onLogin',
+                    url: 'https://api.weixin.qq.com/sns/jscode2session',
                     data: {
-                        code: res.code
-                    }
-                })
+                        js_code: res.code,
+                        appid:'wxea7c589ca4c29bd4',
+                        secret:'61b6dd0b328b48fac3517bfc62d75fc4',
+                        grant_type: res.code
+                    },
+                    success:function(res){
+                        console.log(res)
+                    },
+                }) 
             } else {
                 console.log('获取用户登录态失败！' + res.errMsg)
             }
