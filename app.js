@@ -21,7 +21,6 @@ App({
                         success: function (res) {
                             //console.log(res.data.openid)
                             that.user.openId = res.data.openid
-
                             console.log('openId：' + res.data.openid);
                         },
                     })
@@ -31,19 +30,10 @@ App({
             }
         });
 
-        var params = {
-            PARTNER_ID: "10000002048131212",
-            KEY: "C4AE13C5232E601412F24BF6258546A0",
-            AGREEMENT_NO: "10000002048131212",
-            VAI:'EQWEQWEQWEQ',
-            piw:'1000012323',
-            BASDF:'qwe'
-        }
-        var key = 'AIPOSTIAD1#';
-        //参数对象去空
-
-        console.log(sortObj(params));
-        //参数对象排序
+        
+    },
+    //生成签名参数
+    toParmas: function (params,key){
         function sortObj(obj) {
             var arr = [];
             for (var i in obj) {
@@ -57,58 +47,31 @@ App({
             }
             return obj;
         }
-        var _parmas = sortObj(params);
-        //参数对象转URL参数
-        function parseParam(param, key, encode){
-            if(param==null) return '';  
-            var paramStr = '';  
-            var t = typeof (param);  
-            if (t == 'string' || t == 'number' || t == 'boolean') {  
-                paramStr += key + '=' + ((encode==null||encode) ? encodeURIComponent(param) : param);  
-            } else {  
-                for (var i in param) {  
-                var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);  
-                paramStr += parseParam(param[i], k, encode);  
-                }  
-            }  
+        function parseParam(param, key, encode) {
+            if (param == null) return '';
+            var paramStr = '';
+            var t = typeof (param);
+            if (t == 'string' || t == 'number' || t == 'boolean') {
+                paramStr += '&' + key + '=' + ((encode == null || encode) ? encodeURIComponent(param) : param);
+                // paramStr += "&" + key + "=" + encodeURIComponent(param);
+            } else {
+                for (var i in param) {
+                    var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);
+                    paramStr += parseParam(param[i], k, encode);
+                }
+            }
             return paramStr;
         };
-        __parma = parseParam(_parma);
-        var sign = md5(__params);
-
-        sign = {
-            sign: md5(_params),
-            sign_type:'MD5'
+        var _parmas = sortObj(params);
+        __parma = parseParam(_parmas).substr(1);
+        var sign = {
+            sign: md5(__parma + key).toLowerCase(),
+            sign_type: 'MD5'
         }
-        _parmas.push(sign);
-
-        console.log(_parmas)
-        
-       // toUrl(params,)
-        //得到sign值
-         // "2063c1608d6e0baf80249c42e2be5804"
-
-
-        console.log(parseParam(params));
-        // var _params = JSON.stringify(sortObj(params));
-        // _params = _params.replace(/"/g, "");
-        // _params = _params.replace(/,/g, "&");
-        // _params = _params.replace(/:/g, "=");
-        // _params = _params.replace(/{/g, "");
-        // _params = _params.replace(/}/g, "");
-        // console.log(_params);
-        // var key = C4AE13C5232E601412F24BF6258546A0;
-        // 
-        // console.log(_params);
-        // wx.request({
-        //     url: 'http://testfront.51ebill.com:8000/front/base/gateway.in?'+_params,
-        //     method:'GET',
-        //     success:function(res){
-        //         console.log(res);
-        //     }
-        // });
+        _parmas.sign = md5(__parma + key).toLowerCase();
+        _parmas.sign_type = 'MD5';
+        return parseParam(_parmas).substr(1);
     },
-
     getUserInfo: function (cb) {
         var that = this
         if (this.globalData.userInfo) {

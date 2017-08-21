@@ -28,7 +28,21 @@ Page({
         }
     })
 
-
+    var params = {
+        version: "1.0",
+        partner_id: "10000002048131212",
+        input_charset: "UTF-8",
+        out_trade_on: 'EB0220170721417900',
+    }
+    var key = 'C4AE13C5232E601412F24BF6258546A0';
+    var newParma = app.toParmas(params, key);
+    wx.request({
+        url: 'http://testfront.51ebill.com:8000/front/base/gateway.in?' + newParma,
+        method: 'POST',
+        success: function (res) {
+            console.log(res);
+        }
+    });
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function(userInfo){
       //更新数据
