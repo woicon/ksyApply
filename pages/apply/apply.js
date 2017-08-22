@@ -1,15 +1,11 @@
-// pages/apply/apply.js
 var app = getApp();
 var categoryData = require('../../utils/data.js');
 var formList = require('../../pages/apply/formData.js');
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
       stepBar: ['商户信息', '结算信息','进件信息'],
       formType: ['input', 'picker', 'upfile', 'textarea','time', 'area'],
-      currentStep:0,
+      currentStep:2,
       formData:formList,
     },
     nextStep:function(){
@@ -34,7 +30,124 @@ Page({
             stepStat: _stepStats
         }); 
     },
+    toQueryParams:function (par){
+        var search = par.replace(/^\s+/, '').replace(/\s+$/, '').match(/([^?#]*)(#.*)?$/);
 
+       
+        if(!search){
+            return {};
+        }
+        var searchStr = search[1];
+        var searchHash = searchStr.split('&');
+        var ret = {};
+        searchHash.forEach(function (pair) {
+            var temp = '';
+            if (temp = (pair.split('=', 1))[0]) {
+                var key = decodeURIComponent(temp);
+                var value = pair.substring(key.length + 1);
+                if (value != undefined) {
+                    value = decodeURIComponent(value);
+                }
+                if (key in ret) {
+                    if (ret[key].constructor != Array) {
+                        ret[key] = [ret[key]];
+                    }
+                    ret[key].push(value);
+                } else {
+                    ret[key] = value;
+                }
+            }
+        });
+        return ret;
+    },
+    upFile:function(){
+        
+        return ;
+    },
+    uploadPhoto: function () {
+        var that = this;
+        
+       // var chooseImg = new Promise(function(res,rej){
+
+        var up = new Promise(function(res,rej){
+            wx.chooseImage({
+                success: function (data) {
+                    
+                    res(data);
+                },
+            })
+        })
+        .then(function(res){
+            let tempFilePaths = res.tempFilePaths;
+
+            wx.getImageInfo({
+                src: res.tempFilePaths[0],
+                success: function (res) {
+                    console.log(res)
+                    console.log(res.height)
+                }
+            })
+            that.setData({
+                img: tempFilePaths[0],
+            })
+            var upParmas = {
+                partner_id: app.api.pid,
+                version: app.api.version,
+                input_charset: app.api.input_charset,
+                core_merchant_no: app.api.core_merchant_no,
+                file: tempFilePaths[0]
+            }
+            let parmas = app.toParmas(upParmas, app.api.key);
+        
+            var ps = that.toQueryParams(parmas);
+            
+            delete ps.file;
+            console.log(ps);
+            try{
+                wx.uploadFile({
+                    url:app.api.host,
+                    filePath:tempFilePaths[0],
+                    name: 'file',
+                    //header: { "Content-Type": "multipart/form-data" },
+                    //method: 'POST',
+                    formData:ps,
+                    header:{
+                        'content-type': 'multipart/form-data'
+                    },
+                    complete:function(res){
+                        console.log(res);
+                    },
+                    success: function (res) {
+                        console.log(data);
+                    },
+                    fail: function (res) {
+                        console.log(res);
+                    }
+                });
+            } catch (e) {
+                console.log(e);
+            }
+
+            // try{
+            //     // const uploadTask =
+            //     console.log(that.toQueryParams(parmas))
+            //     wx.request({
+            //         url: app.api.service.upfile + '?' + parmas,
+            //         method: 'POST',
+            //         header: {
+            //             'content-type': 'multipart/form-data' 
+            //         },
+            //         //data:that.toQueryParams(parmas),
+            //         success: function (res) {
+            //             console.log(res);
+            //         }
+            //     })
+            // } catch (e) {
+            //     console.log(e);
+            // }
+        });
+
+    },
     bindKeyInput:function(e){
         //console.log(e.detail);
     },
@@ -135,23 +248,7 @@ Page({
             url: '/pages/applycomplete/applycomplete',
         })
     },
-    uploadPhoto:function(){
-        wx.chooseImage({
-            success: function(res) {
-                 wx.uploadFile({
-                    url: '',
-                    filePath: '',
-                    name: '',
-                    header: {},
-                    formData: {},
-                    success: function(res) {},
-                    fail: function(res) {},
-                    complete: function(res) {},
-                })
-            },
-        })
-       
-    },
+    
   /**
    * 生命周期函数--监听页面加载
    */
@@ -170,8 +267,10 @@ Page({
         for (var i = 0; i < that.data.stepBar.length;i++){
             _stepStat.push(false);
         }
-       
-
+        // console.info(that.upFile());
+        // console.log(
+        //     that.toQueryParams(that.upFile())
+        // ) 
         that.setData({
             stepStat: _stepStat
         })

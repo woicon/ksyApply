@@ -6,28 +6,19 @@ Page({
     motto: '欢迎注册快收银',
     userInfo: {}
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
   goReg:function(){
     wx.navigateTo({
         url: '/pages/apply/apply',
     });
-    
   },
   onLoad: function () {
     var that = this;
-
     wx.getWeRunData({
         success(res) {
             const encryptedData = res.encryptedData;
-            console.log(res.encryptedData);
+          //  console.log(res.encryptedData);
         }
     })
-
     var params = {
         version: "1.0",
         partner_id: "10000002048131212",
@@ -41,12 +32,14 @@ Page({
         method: 'POST',
         success: function (res) {
             console.log(res);
+            var s = toString(res.data);
+            //app.toJson(s);
         }
     });
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function(userInfo){
       //更新数据
-        console.log(userInfo);
+      console.log(userInfo);
       that.setData({
         userInfo:userInfo
       })

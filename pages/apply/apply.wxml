@@ -26,4 +26,5 @@
             <button class="btn" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">提交</button>
         </block>
     </view>
+    <image src="{{img}}"></image>
 </view>

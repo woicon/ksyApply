@@ -1,5 +1,6 @@
 //app.js
 var md5 = require('utils/md5.min.js');
+var xmltojson = require('utils/xmlToJson.js');
 App({
     onLaunch: function () {
         //调用API从本地缓存中获取数据
@@ -19,18 +20,30 @@ App({
                             grant_type: res.code
                         },
                         success: function (res) {
-                            //console.log(res.data.openid)
-                            that.user.openId = res.data.openid
-                            console.log('openId：' + res.data.openid);
+                            that.api.openId = res.data.openid
                         },
+
                     })
                 } else {
                     console.log('获取用户登录态失败！' + res.errMsg)
                 }
             }
         });
-
-        
+    },
+    toJson:function(data){
+        xmltojson.toJson(xmltojson.createXml(data));
+        console.log(xmltojson.toJson(xmltojson.createXml(data)));
+    },
+    api:{
+        host:'http://testfront.51ebill.com:65527/front/base/gateway.in ',
+        key:'39ccfc8f32c6a5e026ca7bfe2f1bf9a8',
+        pid:'16112109533877254',
+        input_charset:'UTF-8',
+        version:'1.0',
+        core_merchant_no:'EW_N8636137588',
+        service:{
+            upfile: 'http://testfront.51ebill.com:65527/front/base/gateway.in'
+        }
     },
     //生成签名参数
     toParmas: function (params,key){
@@ -52,8 +65,8 @@ App({
             var paramStr = '';
             var t = typeof (param);
             if (t == 'string' || t == 'number' || t == 'boolean') {
-                paramStr += '&' + key + '=' + ((encode == null || encode) ? encodeURIComponent(param) : param);
-                // paramStr += "&" + key + "=" + encodeURIComponent(param);
+                //paramStr += '&' + key + '=' + param;
+                paramStr += "&" + key + "=" + encodeURIComponent(param);
             } else {
                 for (var i in param) {
                     var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);
@@ -64,6 +77,7 @@ App({
         };
         var _parmas = sortObj(params);
         __parma = parseParam(_parmas).substr(1);
+        console.log(__parma);
         var sign = {
             sign: md5(__parma + key).toLowerCase(),
             sign_type: 'MD5'
@@ -86,9 +100,6 @@ App({
                 }
             })
         }
-    },
-    user: {
-        openId: null,
     },
     globalData: {
         userInfo: null,
