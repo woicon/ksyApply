@@ -30,128 +30,68 @@ Page({
             stepStat: _stepStats
         }); 
     },
-    toQueryParams:function (par){
-        var search = par.replace(/^\s+/, '').replace(/\s+$/, '').match(/([^?#]*)(#.*)?$/);
-
-       
-        if(!search){
-            return {};
-        }
-        var searchStr = search[1];
-        var searchHash = searchStr.split('&');
-        var ret = {};
-        searchHash.forEach(function (pair) {
-            var temp = '';
-            if (temp = (pair.split('=', 1))[0]) {
-                var key = decodeURIComponent(temp);
-                var value = pair.substring(key.length + 1);
-                if (value != undefined) {
-                    value = decodeURIComponent(value);
-                }
-                if (key in ret) {
-                    if (ret[key].constructor != Array) {
-                        ret[key] = [ret[key]];
-                    }
-                    ret[key].push(value);
-                } else {
-                    ret[key] = value;
-                }
-            }
-        });
-        return ret;
-    },
-    upFile:function(){
-        
-        return ;
-    },
     uploadPhoto: function () {
         var that = this;
-        
-       // var chooseImg = new Promise(function(res,rej){
-
+        //需要签名的参数
+        var upParmas = {
+            service: 'agent_app_upload_file',
+            partner_id: app.api.pid,
+            version: app.api.version,
+            input_charset: app.api.input_charset,
+            core_merchant_no: app.api.core_merchant_no,
+        }
+        let parmas = app.toParmas(upParmas, app.api.key);
+        var _parmas = app.toQueryParams(parmas);
         var up = new Promise(function(res,rej){
             wx.chooseImage({
                 success: function (data) {
-                    
                     res(data);
                 },
             })
         })
         .then(function(res){
             let tempFilePaths = res.tempFilePaths;
-
-            wx.getImageInfo({
-                src: res.tempFilePaths[0],
-                success: function (res) {
-                    console.log(res)
-                    console.log(res.height)
-                }
-            })
             that.setData({
                 img: tempFilePaths[0],
             })
-            var upParmas = {
-                partner_id: app.api.pid,
-                version: app.api.version,
-                input_charset: app.api.input_charset,
-                core_merchant_no: app.api.core_merchant_no,
-                file: tempFilePaths[0]
-            }
-            let parmas = app.toParmas(upParmas, app.api.key);
-        
-            var ps = that.toQueryParams(parmas);
-            
-            delete ps.file;
-            console.log(ps);
+            _parmas.url = encodeURIComponent(tempFilePaths[0]);
+            var new_parmas = app.parseParam(_parmas);
+            console.log(new_parmas);
             try{
-                wx.uploadFile({
-                    url:app.api.host,
+                const uploadTask = wx.uploadFile({
+                    url: app.api.service.upfile + '?' + new_parmas,
                     filePath:tempFilePaths[0],
-                    name: 'file',
-                    //header: { "Content-Type": "multipart/form-data" },
-                    //method: 'POST',
-                    formData:ps,
+                    name: 'files',
+                    method: 'POST',
                     header:{
                         'content-type': 'multipart/form-data'
                     },
                     complete:function(res){
-                        console.log(res);
+                        console.log(res.data);
+                       // var datas = app.toJson(res.data);
+                        console.log(app.toJSON(res.data));
+                        wx.setStorageSync('IMGCACH', toString(res.data) )
                     },
                     success: function (res) {
-                        console.log(data);
+                        console.log(res.data.data);
+                        console.log(app.toJSON(res.data.data));
+
+                        wx.setStorageSync('IMGCACH', res.data.data)
                     },
                     fail: function (res) {
                         console.log(res);
                     }
                 });
+                uploadTask.onProgressUpdate((res) => {
+                    console.log('上传进度', res.progress)
+                    console.log('已经上传的数据长度', res.totalBytesSent)
+                    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+                })
             } catch (e) {
                 console.log(e);
             }
-
-            // try{
-            //     // const uploadTask =
-            //     console.log(that.toQueryParams(parmas))
-            //     wx.request({
-            //         url: app.api.service.upfile + '?' + parmas,
-            //         method: 'POST',
-            //         header: {
-            //             'content-type': 'multipart/form-data' 
-            //         },
-            //         //data:that.toQueryParams(parmas),
-            //         success: function (res) {
-            //             console.log(res);
-            //         }
-            //     })
-            // } catch (e) {
-            //     console.log(e);
-            // }
-        });
-
+         });
     },
-    bindKeyInput:function(e){
-        //console.log(e.detail);
-    },
-
     //picker控件选值存储
     changePicker:function(e){
         var that = this;
@@ -215,7 +155,6 @@ Page({
         var _currentStep = that.data.currentStep;
         var currNode = _formData[_currentStep];
         var nodeData = currNode[node].data;
-        
         //选择赋值
         if (nodeData.mode == 'selector'){
             var nodeValue = nodeData.range[value];
@@ -224,7 +163,6 @@ Page({
         }else{
             currNode[node].data.selected = value;
         }
-
         //行业联动
         that.setData({
             formData:_formData
@@ -267,60 +205,28 @@ Page({
         for (var i = 0; i < that.data.stepBar.length;i++){
             _stepStat.push(false);
         }
-        // console.info(that.upFile());
-        // console.log(
-        //     that.toQueryParams(that.upFile())
-        // ) 
         that.setData({
             stepStat: _stepStat
         })
     },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
   
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
   
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
   onHide: function () {
   
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
   onUnload: function () {
   
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
   
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
   
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
+  },    
   onShareAppMessage: function () {
   
   }

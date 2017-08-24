@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container">
+<!--<view class="container">
   <view  bindtap="bindViewTap" class="userinfo">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
@@ -8,4 +8,42 @@
     <text class="user-motto">{{motto}}</text>
   </view>
   <button bindtap="goReg">注册快收银</button>
+</view>-->
+<view class="wrap">
+    <view class="logo">
+        <image src="../images/logo.png"></image>
+    </view>
+    <view class="title">开店就有快收银</view>
+    <view class="smtitle">4大亮点成就餐饮SaaS精品之作！</view>
+    <view class="product_about">
+        <view class="list clearfix">
+            <view class="img_box"><image src="../images/n1.png"></image></view>
+            <view class="content">
+              <view class="point">智能点单</view>
+              <view class="describe">人人都是收银员，是收银员、服务员，快速点单，一键下单，直达后厨。</view>
+            </view>
+        </view>
+        <view class="list clearfix">
+            <view class="img_box"><image src="../images/n2.png"></image></view>
+            <view class="content">
+              <view class="point">便捷收银</view>
+              <view class="describe">全面支持主流支付方式，微信支付、支付宝、现金组合支付便捷收银。</view>
+            </view>
+        </view>
+        <view class="list clearfix">
+             <view class="img_box"><image src="../images/n3.png"></image></view>
+              <view class="content">
+                <view class="point">支持多场景</view>
+                <view class="describe">快收银收银台系统适用中餐、快餐、称重、生鲜多种场景。</view>
+              </view>
+        </view>
+        <view class="list clearfix">
+              <view class="img_box"><image src="../images/n4.png"></image></view>
+              <view class="content">
+                <view class="point">精准对账</view>
+                <view class="describe">实时统计全渠道支付、收银数据。</view>
+              </view>
+        </view>
+    </view>
+    <view class="reg" bindtap="regInfo" bindtap="goReg">我要注册</view>
 </view>

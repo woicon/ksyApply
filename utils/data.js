@@ -1,4 +1,11 @@
 module.exports = {
+    member:{
+        test:{
+            "pid": "16112109533877254",
+            "Key": "39ccfc8f32c6a5e026ca7bfe2f1bf9a8",
+            "core_merchant_no": "EW_N8636137588",
+        }
+    },
     industry:[
         [
             {

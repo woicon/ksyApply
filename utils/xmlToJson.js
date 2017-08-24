@@ -1,12 +1,12 @@
 // Changes XML to JSON
 function createXml(str) {
-    　　if (document.all) {
-        var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
-        xmlDom.loadXML(str);
-        return xmlDom;
-    　　}
-    　　else
-        　　return new DOMParser().parseFromString(str, "text/xml");
+    // 　　if (document.all) {
+    //     var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+    //     xmlDom.loadXML(str);
+    //     return xmlDom;
+    // 　　}
+    // 　　else
+       return new DOMParser().parseFromString(str, "text/xml");
 }
 
 function xmlToJson(xml) {
@@ -25,7 +25,7 @@ function xmlToJson(xml) {
         obj = xml.nodeValue;
     }
     // do children
-    if (xml.hasChildNodes()) {
+
         for (var i = 0; i < xml.childNodes.length; i++) {
             var item = xml.childNodes.item(i);
             var nodeName = item.nodeName;
@@ -40,7 +40,7 @@ function xmlToJson(xml) {
                 obj[nodeName].push(xmlToJson(item));
             }
         }
-    }
+  
     return obj;
 };
 
