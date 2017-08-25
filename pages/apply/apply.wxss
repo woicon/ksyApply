@@ -188,6 +188,7 @@ page{
     align-items: center;
     justify-content:space-between;
     padding:0;
+    height:200rpx;
 }
 .photo:after{
     border:none;
@@ -204,6 +205,9 @@ page{
     font-size:24rpx;
     color:#999;
     line-height:2;
+}
+.photo .upfile.hide{
+    display:none;
 }
 .photo .type>view{
     width:50%;
@@ -302,4 +306,16 @@ page{
 }
 .btnbar .btn.prev{
     background:#eee;color:#888;
+}
+
+.wimg{
+    display:none;
+    height:100%;
+}
+.wimg.show{
+    display:block;
+}
+.wimg image{
+    width:100%;
+    height:100%;
 }

@@ -9,7 +9,7 @@
     <view class="apply-form">
         <form bindsubmit="formSubmit" bindreset="formReset">
         <import src="../../pages/apply/formTemplate.wxml" />
-        <template is="formtemp" data="{{formlist:formData[currentStep],key:'step'+currentStep}}" />
+        <template is="formtemp" data="{{formlist:formData[currentStep],key:'step'+currentStep,imgCache:imgCache,value:postData}}" />
         </form>
     </view>
     <view class="btnbar">
@@ -26,5 +26,4 @@
             <button class="btn" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">提交</button>
         </block>
     </view>
-    <image src="{{img}}"></image>
 </view>

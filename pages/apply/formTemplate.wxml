@@ -1,18 +1,22 @@
 <template name="formtemp">
     
     <block wx:for="{{formlist}}" wx:key="form{{index}}" >
-    <view class="fgroup {{item.type == '2' ? 'photo':''}}" data-id="{{index}}">
+    <view class="fgroup {{item.type == '2' ? 'photo':''}} {{item.block ? 'block':''}}" data-id="{{index}}" name='{{item.name}}'>
+
         <label class="label">{{item.label}}</label>
         <!-- input 输入框 -->
         <view class="type" wx:if="{{item.type == '0'}}">
             <input placeholder="{{item.placeholder}}"
-             bindinput="bindKeyInput"
+            bindinput="bindKeyInput"
             type="{{item.data.type || 'text'}}" 
             bindtap="{{item.bindtap}}"
-            name="{{item.name}}"
+            data-name="{{item.name}}"
+            id="{{item.name}}"
+            value="{{value[item.name]||''}}"
             maxlength="{{item.data.maxlength || '-1'}}"
             disabled="{{item.data.disabled}}" />
         </view>
+
         <!-- picker 选择 -->
         <view class="type" wx:elif="{{item.type == '1'}}">
             <picker wx:if="{{item.data.mode == 'selector'}}"
@@ -24,6 +28,7 @@
             disabled="{{item.data.disabled}}"
             bindchange="{{item.data.bindchange}}"
             data-id="{{item.data.id}}"
+            value="{{value[item.name]||''}}"
             id="{{index}}">
                 <view class="picker">{{item.data.selected}} </view>
             </picker>
@@ -35,7 +40,8 @@
             range-key="{{item.data.rangekey}}"
             value="{{item.data.selected}}" 
             bindcolumnchange="{{item.data.bindcolumnchange}}"
-            bindchange="{{item.data.bindchange}}"  
+            bindchange="{{item.data.bindchange}}"
+            value="{{value[item.name]||''}}"  
             id="{{index}}"
             disabled="{{item.data.disabled}}">
                 <view class="picker">{{item.data.selected}}</view>
@@ -49,6 +55,7 @@
             start="{{item.data.start}}" 
             end="{{item.data.end}}"  
             bindchange="{{item.data.bindchange}}"
+            value="{{value[item.name]||''}}"
             id="{{index}}"
             disabled="{{item.data.disabled}}">
                 <view class="picker">{{item.data.selected}}</view>
@@ -62,16 +69,21 @@
             start="{{item.data.start}}" 
             end="{{item.data.end}}" 
             bindchange="{{item.data.bindchange}}"
+            value="{{value[item.name]||''}}"
             id="{{index}}"
             disabled="{{item.data.disabled}}">
                 <view class="picker">{{item.data.selected}}</view>
             </picker>
         </view>
+
         <!-- upfile 图片上传 -->
-        <view class="type" wx:elif="{{item.type == '2'}}">
-            <view class="upfile" bindtap="uploadPhoto">
+        <view class="type" wx:elif="{{item.type == '2'}}"  bindtap="uploadPhoto" data-name="{{item.name}}">
+            <view class="upfile {{value[item.name] ? 'hide' : ''}}" >
                 <view class="icon ico-camera"></view>
                 <view class="title">上传图片</view>
+            </view>
+            <view class="wimg {{value[item.name] ? 'show':''}}">
+                <image src="{{value[item.name]}}" mode="aspectFill"></image>
             </view>
             <view class="reference">
                 <image src="{{item.data.reference}}" mode="aspectFit"></image>
@@ -80,8 +92,9 @@
         </view>
         <!-- textarea 多行文本 -->
         <view class="type textarealine" wx:elif="{{item.type == '3'}}">
-            <textarea placeholder="{{item.placeholder}}" name="{{item.name}}" bindinput="bindKeyInput"/>
+            <textarea placeholder="{{item.placeholder}}" data-name="{{item.name}}" id="{{item.name}}" bindinput="bindKeyInput"/>
         </view>
+
     </view>
     </block>
 </template>

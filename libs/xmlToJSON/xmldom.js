@@ -76,6 +76,7 @@ function position(locator,node){
  * @link http://www.saxproject.org/apidoc/org/xml/sax/ContentHandler.html
  */ 
 DOMHandler.prototype = {
+    
 	startDocument : function() {
     	this.doc = new DOMImplementation().createDocument(null, null, null);
     	if (this.locator) {
@@ -173,12 +174,15 @@ DOMHandler.prototype = {
 	 * @link http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html
 	 */
 	warning:function(error) {
+        console.log(this);
 		console.warn('[xmldom warning]\t'+error,_locator(this.locator));
 	},
 	error:function(error) {
+        console.log(this);
 		console.error('[xmldom error]\t'+error,_locator(this.locator));
 	},
 	fatalError:function(error) {
+        console.log(this);
 		console.error('[xmldom fatalError]\t'+error,_locator(this.locator));
 	    throw error;
 	}

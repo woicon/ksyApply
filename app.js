@@ -1,6 +1,6 @@
 var md5 = require('libs/md5/md5.min.js');
-var xmltojson = require('utils/xmlToJson.js');
-var Parser = require('libs/xmldom/dom-parser.js');
+//var xmltojson = require('utils/xmlToJson.js');
+// var xmlToJSON = require('libs/xmlToJSON/xmlToJSON.js');
 App({
     onLaunch: function () {
         var that = this;
@@ -25,30 +25,53 @@ App({
             }
         });
     },
-    toJSON:function(xml){
-        var XMLParser = new Parser.DOMParser();
-        var newXML = XMLParser.parseFromString(xml);
-        return newXML;
-    },
+    // toJSON:function(xml){
+    //    // var testxml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ebill><service>agent_app_upload_file</service><partner_id>16122916164159599</partner_id><sign_type>MD5</sign_type><input_charset>UTF-8</input_charset><sign>30ee41d68bdebd4de0131f1e144251c3</sign><version>1.0</version><is_success>S</is_success><error>SUCCESS</error><message>SUCCESS</message><file_url>http://static.solaridc.com/public_upload/lft_app/dls20170825101607_tmp_1728226528o6zAJs-dDuoRBcvYpUKkGSJmQGRA4a9e6950b94d8b9ab0a9c61050ce5a8c.png|</file_url></ebill>'
+    //     // var XMLParser = new Parser.DOMParser();
+    //     // var newXML = XMLParser.parseFromString(xml);
+    //     var myOptions = {
+    //        // mergeCDATA: false,
+    //         xmlns: false,
+    //         grokText:false,
+    //         grokAttr:false,
+    //         //attrsAsObject: false
+    //         childrenAsArray:false,
+    //         stripAttrPrefix:false
+    //     }
+        
+    //     return xmlToJSON.xmlToJSON.parseString(xml, myOptions);
+    //    // console.log(newXML);
+    // },
     api:{
         host:'http://testfront.51ebill.com:65527/front/base/gateway.in ',
         key:'33e0d39f5b248d348813b97751ec4f32',
-        pid:'16122916164159599',
+        partner_id:'16122916164159599',
         input_charset:'UTF-8',
         version:'1.0',
         core_merchant_no:'EW_N0644449919',
+        tst:'s',
         service:{
             upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in'//文件上传
         }
     },
     //生成签名参数
-    toParmas: function (pars,key){
+    toParmas: function (parmas,key){
         var that = this;
-        var _parmas = that.sortObj(pars);//排序
-        var __parmas = that.parseParam(_parmas);//转URL转参数
-        _parmas.sign = md5(__parmas + key).toLowerCase();
-        _parmas.sign_type = 'MD5';
-        return that.parseParam(_parmas);
+        //只参与签名的参数
+        var hashAttr = ["partner_id","service","version","input_charset","is_success","error","message","core_merchant_no","fund_pool_no","tradeDetails","thirdData","fop"];
+        let hashList = {};
+        for (let x in parmas){
+            for (let i in hashAttr) {
+                if (hashAttr[i] == x){
+                    hashList[hashAttr[i]] = parmas[x]
+                };
+            }
+        }
+        let _parmas = that.sortObj(hashList);//排序
+        let __parmas = that.parseParam(_parmas);//转URL转参数
+        parmas.sign = md5(__parmas + key).toLowerCase();
+        parmas.sign_type = 'MD5';
+        return that.parseParam(parmas);
     },
     //对象排序
     sortObj:function (obj) {
