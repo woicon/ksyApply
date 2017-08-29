@@ -3,9 +3,6 @@ page{
     padding-top:70px;
     background:#fafafa;
 }
-.apply-form{
-    
-}
 .apply-step{
     position:fixed;
     left:0;
@@ -15,7 +12,7 @@ page{
     display:flex;
     align-items:center;
     flex-wrap:wrap;
-    z-index:120;
+    z-index:420;
     background-color:#fafafa;
 }
 .apply-step .bar{
@@ -84,6 +81,10 @@ page{
     box-sizing:border-box;
     background:#fff;
 }
+.fgroup.block{
+    margin-bottom:30rpx;
+}
+
 .fgroup:after{
      content:'';
      display:block;
@@ -96,7 +97,9 @@ page{
      transform-origin:0 100%;
      width:200%;
 }
-
+.fgroup.block:after{
+    border:none;
+}
 .fgroup label{
     font-size:30rpx;
     color:#666;
@@ -129,9 +132,8 @@ page{
     min-height:1.4rem;
 }
 .fgroup .type{
-    
     position:relative;
-    z-index:20;
+    z-index:2;
     overflow:hidden;
     padding-left:180rpx;
 }
