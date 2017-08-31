@@ -2,24 +2,60 @@
 <view class="head">
     <view class="name">
         <view class="name">{{info.shopName}}</view>
-            <view class="shopname">{{info.shopNames}}</view>
+        <view class="shopname">{{info.shopNames}}</view>
     </view>
     <view class="stat">
         <text>{{info.stat}}</text>
     </view>
 </view>
 
-<view class="shopinfo">
-    <block wx:for="{{shopInfo}}" wx:key="infos">
-        <view class="coltitle" wx:if="{{index == 0}}">商户信息</view>
-        <view class="coltitle" wx:elif="{{index == 1}}">结算信息</view>
-        <view class="coltitle" wx:elif="{{index == 2}}">证件照片</view>
+<!-- <view class="coltitle">商户信息</view>
+<view class="linegroup" wx:if="{{label == _item}}">
+    <view class="lines">
+        {{label}}
+        <view class="value">{{value}}</view>
+    </view>
+</view>
+<view class="coltitle">商户信息</view>
+<view class="coltitle">商户信息</view>
+<view class="coltitle">商户信息</view>
+<view class="coltitle">商户信息</view> -->
 
-        <view class="linegroup">
+<block wx:for="{{mcList}}" wx:key="mcList">
+        <!-- <block wx:if="{{index == 0}}">
+            <view class="coltitle">商户信息</view>
+            <block wx:for="{{item}}" wx:for-item="_item" wx:for-index ="_index" wx:key="itemlist">
+                
+                <block wx:for="{{mcDetails}}" wx:for-item="value" wx:for-index="label" wx:key="mcDetails" >
+                         <view class="">{{_index}} {{_item}}</view>  
+                    <view class="linegroup" wx:if="{{label == _item}}">
+                        <view class="lines">
+                            {{label}}
+                            <view class="value">{{value}}</view>
+                        </view>
+                    </view>
+                </block>
+            </block>
+        </block> -->
+        <!-- <view class="linegroup" wx:elif="{{index == 1}}">
+        <view class="coltitle" wx:elif="{{index == 1}}">结算信息</view>
             <view class="lines" wx:for="{{item}}" wx:key="list" wx:for-item="items" wx:for-index="indexs">
                 {{items.label}}
                 <view class="value">{{items.value}}</view>
             </view>
         </view>
-    </block>
-</view>
+        <view class="linegroup" wx:elif="{{index == 2}}">
+            <view class="coltitle" wx:elif="{{index == 2}}">证件照片</view>
+            <view class="lines" wx:for="{{item}}" wx:key="list" wx:for-item="items" wx:for-index="indexs">
+                {{items.label}}
+                <view class="value">{{items.value}}</view>
+            </view>
+        </view> -->
+</block>
+<!-- <view class="linegroup">
+    <view class="lines" wx:for="{{item}}" wx:key="list" wx:for-item="items" wx:for-index="indexs">
+        {{items.label}}
+        <view class="value">{{items.value}}</view>
+    </view>
+</view> -->
+

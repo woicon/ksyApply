@@ -1,5 +1,4 @@
 // pages/applydetail/applydetail.js
-var commondata = require('../../utils/data.js');
 var commondata = require('../../pages/apply/formData.js');
 Page({
   /**
@@ -13,31 +12,79 @@ Page({
         shopNames:'西少爷餐饮科技有限公司',
         stat:'已审核',
         checkTime:'2017-07-12 9:00',
-        registrationInfo:{
-            configuration:{
-                name:'西少爷餐饮科技有限公司',
-                simpName:'西少爷',
-                categories:'餐饮-服务行业-中餐',
-                shopArea:'北京市朝阳区',
-                areaInfo:'北苑路北10号院',
-                headPerson:'王世超',
-                headPhone:'13898881234',
-                
+        mcDetails:null,
+    },
+        businessLicenseType:{
+            "NATIONAL_LEGAL": "营业执照",
+            "NATIONAL_LEGAL_MERGE": "营业执照（多证合一）",
+            "INST_RGST_CTF": "事业单位法人证书"
+        },
+        contactType:{
+        "LEGAL_PERSON": "法人",
+        "CONTROLLER": "实际控制人",
+        "AGENT": "代理人",
+        "OTHER": "其他"
+        },
+        mcList:[
+            //进件商户信息
+            {
+                "fullNameCn": "商户名称",
+                "nameCn": "商户简称",
+                "tradeType": "经营类目",
+                "tradeTypeName": "经营类目名称",
+                "customerPhone": "客服电话",
+                "contactType": "联系人类型",
+                "contactName": "联系人姓名",
+                "certificateNo": "联系人身份证号码",
+                "contactPhone": "联系人电话",
+                "contactMobile": "联系人手机号",
+                "contactEmail": "联系人邮箱",
+                "businessLicenseType": "营业执照类型",
+                "businessLicenseNo": "营业执照编号",
+                "province": "商户所在省",
+                "provinceId": "商户所在省ID",
+                "city": "商户所在市",
+                "cityId": "商户所在市ID",
+                "area": "商户所在区",
+                "areaId": "商户所在区ID",
+                "address": "商户详细地址"
             },
-            shopInfo:{
-
+            //进件费率信息
+            {
+                "configureName": "配置名称",
+                "passId": "通道id",
+                "passType": "通道类型",
+                "passName": "通道名称",
+                "alipayRateId": "支付宝费率ID",
+                "alipayRateName": "支付宝费率名称",
+                "alipayRate": "支付宝费率",
+                "wechatRateId": "微信费率ID",
+                "wechatRateName": "微信费率名称",
+                "wechatRate": "微信费率",
+                "remark": "配置备注"
             },
-            settlement:{
-
+            //银行账户信息
+            {
+                "accountType": "账户类型",
+                "bank": "开户银行",
+                "cardNo": "银行卡号/对公账号",
+                "accountHolder": "开户人/企业名称"
+            },
+            //资质照片
+            {
+                "businessLicenseUrl": "营业执照照片",
+                "identificationFrontUrl": "负责人身份证正面照片",
+                "identificationOppositeUrl": "负责人身份证反面照片",
+                "openingPermitUrl": "开户许可证照片"
             }
-        }
-    }
+        ],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+      let that = this;
       wx.setNavigationBarTitle({
           title: '审核状态',
       });
@@ -45,6 +92,15 @@ Page({
           frontColor: '#ffffff',
           backgroundColor: '#27CFB1',
       });
+      wx.getStorage({
+          key: 'mcDetails',
+          success: function(res) {
+              that.setData({
+                  mcDetails: JSON.parse(res.data)
+              });
+              
+          },
+      })
   },
 
   /**

@@ -74,6 +74,7 @@ page{
     background:#27CFB1;
     color:#fff;
 }
+
 .fgroup{
     position:relative;
     align-items:center;
@@ -98,6 +99,9 @@ page{
      width:200%;
 }
 .fgroup.block:after{
+    border:none;
+}
+.apply-form .fgroup:last-child:after{
     border:none;
 }
 .fgroup label{

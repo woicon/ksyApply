@@ -1,10 +1,8 @@
 var category = require('./data/businessCategory.js');
 var bank = require('./data/bankData.js');
-var member = require('./data/member.js');
 var area = require('./data/area.js');
-console.log(category);
+
 module.exports = {
-    member: member,//代理商列表
     industry:category,//经营类目
     bank: bank,//浦发开户银行
     area:area,//银行开户地市选择
@@ -13,6 +11,7 @@ module.exports = {
         //column: 0, value: 2
         function setColumn(data,id){
             var column = [];
+            // data.filter().map(data);
             for (i in data) {
                 if (data[i].p_id == id) {
                     column.push(data[i]);

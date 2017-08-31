@@ -23,6 +23,7 @@
 .stat{
     width:110rpx;
     height:110rpx;
+    opacity:.8;
 }
 .stat text{
     position:absolute;
@@ -32,9 +33,9 @@
     margin-top:-24rpx;
     padding:12rpx 0;
     background:#fff;
-    color:#444;
     font-size:28rpx;
     text-align:center;
+    color:#27CFB1;
     border-radius:3px;
 }
 .stat:after,

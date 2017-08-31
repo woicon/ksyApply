@@ -1,7 +1,7 @@
 var app = getApp();
 var categoryData = require('../../pages/apply/data.js');
 var formData = require('../../pages/apply/formData.js');
-var xmlToJSON = require('../../libs/xmlToJSON/xmlToJSON.js');
+var base = require('../../utils/util.js');
 Page({
     data: {
         stepBar: ['商户信息', '结算信息', '进件信息'],
@@ -18,17 +18,17 @@ Page({
             applicationName:'',
             agentNo: app.api.partner_id,
             openId: app.api.openId,
-            operationDatetime:null,
-        },
-        stepCache:[{},{},{}],
+            operationDatetime:base.getNowDate(),
+            productNo:'148',
+        }
     },
     nextStep: function () {
         this.stepJump(+1);
     },
-    backStep: function () {
+    backStep:()=> {
         this.stepJump(-1);
     },
-    stepJump: function (jump) {
+    stepJump:(jump)=> {
         var that = this;
         var steped = that.data.currentStep;
         var _stepStats = that.data.stepStat;
@@ -45,18 +45,18 @@ Page({
         });
     },
     //上传图片
-    uploadPhoto: function (e) {
+    uploadPhoto:(e)=> {
         var that = this;
         let imgName = e.currentTarget.dataset.name;
         //需要签名的参数
-        var upParmas = {
+        let upParmas = {
             service: 'agent_app_upload_file',
             partner_id: app.api.partner_id,
             version: app.api.version,
             input_charset: app.api.input_charset,
             core_merchant_no: app.api.core_merchant_no,
         }
-        let parmas = app.toParmas(upParmas, app.api.key);
+        let parmas = app.getSign(upParmas, app.api.key);
         let _parmas = app.toQueryParams(parmas);
         let upImage = new Promise((res, rej)=> {
             wx.chooseImage({
@@ -83,7 +83,7 @@ Page({
                 },
                 complete: function (res) {
                     wx.hideLoading();
-                    let _imgUrl = that.XMLtoJSON(res.data).ebill.file_url;
+                    let _imgUrl = base.XMLtoJSON(res.data).ebill.file_url;
                     let imgUrl = _imgUrl.substring(0, _imgUrl.length - 1);
                     let _postData = that.data.postData;
                     _postData[imgName] = imgUrl;
@@ -114,23 +114,6 @@ Page({
             })
         });
     },
-   
-    XMLtoJSON:function(xml){
-            var myOptions = {
-            normalize:false,
-            mergeCDATA: false,
-            xmlns: true,
-            grokText:false,
-            textKey:false,
-            grokAttr:false,
-            childrenAsArray:false,
-            stripAttrPrefix:false,
-            stripElemPrefix:false,
-            normalize:false,
-            attrsAsObject:false
-        }
-        return xmlToJSON.xmlToJSON.parseString(xml, myOptions);
-    },
     
     //picker控件选值存储
     changePicker: function (e) {
@@ -148,7 +131,6 @@ Page({
 
         //选择银行
         //经营类目
-
         //地市选择
         //选择账户类型个人或者企业
         if (currentId == "accountType" && _value == 0) {
@@ -217,8 +199,6 @@ Page({
             node = nodes.data.range;
         //col.name
         let value = node[0][e.detail.value[0]].cat + ',' + node[1][e.detail.value[1] || 1].cat + ',' + node[2][e.detail.value[2] || 1].cat;
-
-    
         that.setPostData(nodes.name,value);
         that.setPostData('businessCategory', node[2][e.detail.value[2]].bcat);
         
@@ -263,15 +243,16 @@ Page({
         wx.setNavigationBarTitle({
             title: '注册快收银',
         });
-
         wx.setNavigationBarColor({
             frontColor: '#ffffff',
             backgroundColor: '#27CFB1',
         });
+
         var _stepStat = [];
         for (var i = 0; i < that.data.stepBar.length; i++) {
             _stepStat.push(false);
         }
+        
         that.setData({
             stepStat: _stepStat
         });
