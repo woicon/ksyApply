@@ -47,7 +47,6 @@ function sortObj(obj) {
     for (var i = 0; i < len; i++) {
         obj[arr[i][0]] = arr[i][1];
     }
-    console.log(obj);
     return obj;
 }
 //转URL参数

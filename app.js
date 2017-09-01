@@ -41,8 +41,8 @@ App({
             parmas.applicationName = '快收银一键开户';
             parmas.agencyCodeName = partnerId;
             parmas.core_merchant_no = partnerId;
-            delete parmas.openId;
-            parmas.agentAuditNo = '3386',
+            // delete parmas.openId;
+            // parmas.agentAuditNo = '3386',
             //console.log(that.parseParam(that.getSign(parmas,partner.key), true));
             wx.request({
                 url: that.url.host,
@@ -63,9 +63,9 @@ App({
                         })
                         wx.setStorageSync('mcDetails', data.mcDetails);
                     } else {
-                        wx.navigateTo({
-                            url: '/pages/index/index',
-                        })
+                        // wx.navigateTo({
+                        //     url: '/pages/index/index',
+                        // })
                     }
                 }
             });
@@ -88,7 +88,6 @@ App({
         input_charset:'UTF-8',
         version:'1.0',
     },
-    
     
     getUserInfo: function (cb) {
         var that = this

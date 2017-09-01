@@ -1,4 +1,5 @@
 var commondata = require('../../pages/apply/data.js');
+
 module.exports =[
     [
         {
@@ -27,12 +28,13 @@ module.exports =[
             "name": "businessCategoryName",
             "placeholder": "请选择",
             "type": "1",
+            "range": commondata.category,
             "data": {
                 mode: 'multiSelector',
-                range: commondata.setCategory(commondata.industry),
-                rangekey: 'cat',
+                range: commondata.initRange(commondata.category),
+                rangekey: '1',
                 selected:'请选择',
-                bindchange: "bindMultiPickerChange",
+                bindchange: "changePicker",
                 bindcolumnchange: 'columnChange'
             },
             "stat": "false",
@@ -40,6 +42,21 @@ module.exports =[
             "bindtap": "",
             "value": ""
         },
+        // {
+        //     "label": "商户所属地",
+        //     "name": "area",
+        //     "placeholder": "请选择",
+        //     "type": "1",
+        //     "data": "",
+        //     "stat": "false",
+        //     "bindtap": "",
+        //     "data": {
+        //         mode: 'region',
+        //         selected: '请选择',
+        //         bindchange: "changePicker"
+        //     },
+        //     "value": ""
+        // },
         {
             "label": "商户所属地",
             "name": "area",
@@ -48,10 +65,14 @@ module.exports =[
             "data": "",
             "stat": "false",
             "bindtap": "",
+            "range": commondata.area,
             "data": {
-                mode: 'region',
+                mode: 'multiSelector',
                 selected: '请选择',
-                bindchange: "changePicker"
+                rangekey: '1',
+                range: commondata.initRange(commondata.area),
+                bindchange: "changePicker",
+                bindcolumnchange: 'columnChange'
             },
             "value": ""
         },
@@ -156,17 +177,7 @@ module.exports =[
             "stat": "false",
             "bindtap": "",
             "value": ""
-        },
-        {
-            "label": "产品版本id",
-            "name": "productNo",
-            "placeholder": "选择",
-            "type": "0",
-            "data": "",
-            "stat": "false",
-            "bindtap": "",
-            "value": ""
-        },
+        }
     ],
     [
         {

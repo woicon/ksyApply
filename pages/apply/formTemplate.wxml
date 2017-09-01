@@ -42,7 +42,9 @@
             bindcolumnchange="{{item.data.bindcolumnchange}}"
             bindchange="{{item.data.bindchange}}"
             value="{{value[item.name]||''}}"  
-            id="{{index}}"
+            data-id="{{index}}"
+            data-range="{{item.range}}"
+            id="{{item.name}}"
             disabled="{{item.data.disabled}}">
                 <view class="picker">{{item.data.selected}}</view>
             </picker>

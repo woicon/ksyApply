@@ -1,58 +1,44 @@
 var category = require('./data/businessCategory.js');
 var bank = require('./data/bankData.js');
 var area = require('./data/area.js');
+function setArrary(data) {
+    let _arrary = [[], [], []];
+    let toArrary = (_item, _index, _arr) => {
+        return _item.split('|');
+    }
+    data.map((item, index, arr) => {
+        _arrary[index] = arr[index].map(toArrary);
+    });
+    return _arrary;
+}
+const areaArrey = setArrary(area);
+const categoryArrey = setArrary(category);
 
 module.exports = {
-    industry:category,//经营类目
-    bank: bank,//浦发开户银行
-    area:area,//银行开户地市选择
-    setCategory: function (data,e){
-        var initData = [[],[],[]];
-        //column: 0, value: 2
-        function setColumn(data,id){
-            var column = [];
-            // data.filter().map(data);
-            for (i in data) {
-                if (data[i].p_id == id) {
-                    column.push(data[i]);
-                }
-            }
-            return column;
-        }
-        if (e){  
-            let nextColumn = data[e.column + 1];
-            let sel = e.value + 1;
-            switch (e.column) {
-                case 0:
-                    var nColumn = [], nsColumn = [];
-                    initData[0] = data[0];
-                    let nextColumns = data[e.column + 2];
-                    initData[e.column + 1] = setColumn(nextColumn, sel);
-                    nextid = setColumn(nextColumn, sel)[0].id;
-                    initData[e.column + 2] = setColumn(nextColumns, nextid);
-                    return initData;
-                break;
-                case 1:
-                    var nColumn = [];
-                    initData[0] = data[0];
-                    for (let i in nextColumn) {
-                        if (nextColumn[i].p_id == sel) {
-                            nColumn.push(nextColumn[i]);
-                        }
-                    }
-                    return nColumn;
-                break;
-                case 2:
-                break;
-            }
-        }else{
-            //初始化
-            initData = [data[0], setColumn(data[1], 1), setColumn(data[2], 1)];
-            return initData;
+    category: categoryArrey,//经营类目
+    bank:bank,//浦发开户银行
+    area: areaArrey,
+    change: function (pageDate,e,range){
+        switch (e.column){
+            case 0:
+                let city = this.getNode(range[1], range[0][e.value][0]);
+                return [pageDate[0], city, this.getNode(range[2], city[0][0])];
+            break;
+            case 1:
+                return [pageDate[0], pageDate[1], this.getNode(range[2], pageDate[1][e.value][0])];
+            break;
+            case 2:
+                return pageDate;
+            break;
         }
     },
-    columnChange:function(data,e){
-        return this.setCategory(data,e);
+    getNode: function (data,id){
+        let isId = (value, index, array) => {
+            return array[index][2] == id
+        }
+        return data.filter(isId);
     },
-    
+    initRange:function(range){
+        return [range[0], this.getNode(range[1], range[0][0][0]), this.getNode(range[2], range[1][0][0])];
+    }
 }

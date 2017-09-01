@@ -65,3 +65,17 @@
 }
 .linegroup{
     background:#fff;}
+.imglist{
+  width:50%;
+  display:inline-block;
+  font-size:20rpx;
+  text-align:center;
+  margin-top:20rpx;
+}
+.imgarea{
+  width:330rpx;
+  height:220rpx;
+}
+.title{
+  padding-top:10rpx;
+}
