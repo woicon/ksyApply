@@ -124,6 +124,8 @@ Page({
         var nodeData = currNode[_id].data;
         let _postData = that.data.postData;
         _postData[e.target.id] = e.detail.value;
+
+        
         if (currentId == "accountType" && _value == 0) {
             _formData[_currentStep] = formList[1];
         } else if (currentId == "accountType" && _value == 1) {
@@ -137,10 +139,6 @@ Page({
         } else {
             currNode[_id].data.selected = _value;
         }
-        wx.setStorage({
-            key: 'REGDATA',
-            data: _formData,
-        });
         //存储data
         that.setData({
             formData: _formData
