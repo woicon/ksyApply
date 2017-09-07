@@ -22,20 +22,45 @@ Page({
             productNo:'148',
         },
     },
-    multiSelector:function(e){
-        console.log(e);
+    multiChange:function(e){
+        let that = this;
+        console.log(e)
+        let _formData = that.data.formData;
+        let _postData = that.data.postData;
+        let _id = e.target.dataset.id;
+        let _curr = that.data.currentStep;
+        let currNode = _formData[_curr][_id];
+        let _name = e.target.dataset.name;
+        let _value = e.detail.value;
+        let _range = currNode.data.range;
+        let _selected = _range[0][_value[0]][1] + ',' + _range[1][_value[1]][1] + ',' + _range[2][_value[2]][1];
+        currNode.data.selected = _selected;
+        _formData[_curr][_id] = currNode;
+        _postData[e.target.id] = _selected;
+        _postData[_name] = _range[0][_value[0]][0] + ',' + _range[1][_value[1]][2] + ',' + _range[2][_value[2]][2];
+        console.log(_postData);
+        that.setData({
+            formData: _formData,
+            postData: _postData
+        });
+    },
+    getFormid:function(){
+
     },
     nextStep: function () {
         this.stepJump(+1);
     },
-    backStep:()=> {
+    backStep:function() {
         this.stepJump(-1);
     },
-    stepJump:(jump)=> {
+    stepJump:function(jump) {
         var that = this;
         var steped = that.data.currentStep;
         var _stepStats = that.data.stepStat;
         var stats = steped + jump;
+        let __stepStats = _stepStats.map((value) =>{
+            return value = false;
+        });
         for (var i = 0; i < _stepStats.length; i++) {
             _stepStats[i] = false;
         }
@@ -44,7 +69,7 @@ Page({
         }
         that.setData({
             currentStep: stats,
-            stepStat: _stepStats
+            stepStat:_stepStats
         });
     },
     //上传图片
@@ -59,8 +84,8 @@ Page({
             input_charset: app.api.input_charset,
             core_merchant_no: app.api.core_merchant_no,
         }
-        let parmas = app.getSign(upParmas, app.api.key);
-        let _parmas = app.toQueryParams(parmas);
+        let parmas = base.getSign(upParmas, app.api.key);
+        let _parmas = base.toQueryParams(parmas);
         let upImage = new Promise((res, rej)=> {
             wx.chooseImage({
                 count: 1,
@@ -113,7 +138,7 @@ Page({
     
     //picker控件选值存储
     changePicker: function (e) {
-        console.log(e);
+        console.log(e.detail);
         var that = this;
         var _id = e.target.dataset.id;
         var currentId = e.currentTarget.dataset.id;
@@ -212,7 +237,6 @@ Page({
             frontColor: '#ffffff',
             backgroundColor: '#27CFB1',
         });
-
         var _stepStat = [];
         for (var i = 0; i < that.data.stepBar.length; i++) {
             _stepStat.push(false);

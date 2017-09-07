@@ -26,6 +26,7 @@ module.exports =[
         {
             "label": "经营类目",
             "name": "businessCategoryName",
+            "id":"businessCategory",
             "placeholder": "请选择",
             "type": "1",
             "range": commondata.category,
@@ -34,7 +35,7 @@ module.exports =[
                 range: commondata.initRange(commondata.category),
                 rangekey: '1',
                 selected:'请选择',
-                bindchange: "changePicker",
+                bindchange: "multiChange",
                 bindcolumnchange: 'columnChange'
             },
             "stat": "false",
@@ -71,7 +72,7 @@ module.exports =[
                 selected: '请选择',
                 rangekey: '1',
                 range: commondata.initRange(commondata.area),
-                bindchange: "changePicker",
+                bindchange: "multiChange",
                 bindcolumnchange: 'columnChange'
             },
             "value": ""

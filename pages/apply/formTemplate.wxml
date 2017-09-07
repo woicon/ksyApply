@@ -35,16 +35,15 @@
 
             <picker wx:elif="{{item.data.mode == 'multiSelector'}}" 
             mode="{{item.data.mode}}"
-            name="{{item.name}}" 
             range="{{item.data.range}}" 
             range-key="{{item.data.rangekey}}"
             value="{{item.data.selected}}" 
             bindcolumnchange="{{item.data.bindcolumnchange}}"
             bindchange="{{item.data.bindchange}}"
-            value="{{value[item.name]||''}}"  
             data-id="{{index}}"
             data-range="{{item.range}}"
             id="{{item.name}}"
+            data-name='{{item.id}}'
             disabled="{{item.data.disabled}}">
                 <view class="picker">{{item.data.selected}}</view>
             </picker>
