@@ -63,6 +63,7 @@ module.exports =[
             "name": "area",
             "placeholder": "请选择",
             "type": "1",
+            "data-id":'',
             "data": "",
             "stat": "false",
             "bindtap": "",
@@ -172,9 +173,12 @@ module.exports =[
         {
             "label": "联系人身份证号",
             "name": "certificateNo",
-            "placeholder": "10字以内",
+            "placeholder": "18字以内",
             "type": "0",
-            "data": "",
+            "data": {
+                maxlength: "18",
+                type:"idcard"
+            },
             "stat": "false",
             "bindtap": "",
             "value": ""

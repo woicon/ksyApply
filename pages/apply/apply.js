@@ -36,9 +36,21 @@ Page({
         let _selected = _range[0][_value[0]][1] + ',' + _range[1][_value[1]][1] + ',' + _range[2][_value[2]][1];
         currNode.data.selected = _selected;
         _formData[_curr][_id] = currNode;
-        _postData[e.target.id] = _selected;
-        _postData[_name] = _range[0][_value[0]][0] + ',' + _range[1][_value[1]][2] + ',' + _range[2][_value[2]][2];
-        console.log(_postData);
+        if (e.target.id == "area"){
+            _postData['province'] = _range[0][_value[0]][1];
+            _postData['provinceId'] = _range[0][_value[0]][0];
+            
+            _postData['city'] = _range[1][_value[1]][1];
+            _postData['cityId'] = _range[1][_value[1]][0];
+            
+            _postData['area'] = _range[2][_value[2]][1];
+            _postData['areaId'] = _range[2][_value[2]][0];
+        }else{
+            
+            _postData[e.target.id] = _selected;
+            _postData[_name] = _range[0][_value[0]][0] + ',' + _range[1][_value[1]][2] + ',' + _range[2][_value[2]][2];
+            
+        }
         that.setData({
             formData: _formData,
             postData: _postData
