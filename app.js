@@ -42,9 +42,11 @@ App({
             delete parmas.key;
             console.log(parmas);
             parmas.operationDatetime = base.getNowDate();
+
             //  delete parmas.openId;
             //  parmas.agentAuditNo = '3386';
             //console.log(that.parseParam(that.getSign(parmas,partner.key), true));
+
             wx.request({
                 url: that.url.host,
                 data: base.getSign(parmas, partner.key),
@@ -53,7 +55,7 @@ App({
                     'content-type': 'application/x-www-form-urlencoded'
                 },
                 success: function (res) {
-                    
+                   // console.log(res);
                 },
                 complete:function (res){
                     let data = base.XMLtoJSON(res.data).ebill;
@@ -70,6 +72,9 @@ App({
                             url: '/pages/index/index',
                         })
                     }
+                },
+                fail:function(err){
+                  console.log(err);
                 }
             });
         })
@@ -83,10 +88,12 @@ App({
         }
     },
     url:{
+
         host: 'http://192.168.19.47:8000/front/baseV3/gateway.in',
         //host:'http://front.51ebill.com/front/baseV3/gateway.in',
         //upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in',//文件上传
         upfile:'http://192.168.19.47:8000/front/agentAppV3/uploadFile.in'
+
     },
     api:{
         input_charset: 'UTF-8',
@@ -94,6 +101,7 @@ App({
     },
     key:null,
     partnerId:null,
+
     getUserInfo: function (cb) {
         
     },

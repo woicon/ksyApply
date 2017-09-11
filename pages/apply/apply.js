@@ -87,6 +87,7 @@ Page({
             _postData[e.target.id] = _selected;
             _postData[_name] = range[0][value[0]][0] + ',' + range[1][value[1]][2] + ',' + range[2][value[2]][2];
         }
+        console.log(_postData);
         that.setData({
             formData: _formData,
             postData: _postData
@@ -105,6 +106,7 @@ Page({
       if (e.target.dataset.extend){
           _postData[e.target.dataset.extend] = range[e.detail.value][0];
       }
+
       if (e.target.dataset.id === 'accountType'){
           let _form = _formData[1];
           if (e.detail.value === '1'){
@@ -115,6 +117,7 @@ Page({
               _form[3].label = '持卡人姓名';
          }
       }
+
       that.setData({
         formData: _formData,
         postData: _postData
@@ -208,6 +211,7 @@ Page({
             //     console.log('已经上传的数据长度', res.totalBytesSent)
             //     console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
             // })
+
         });
     },
     setPostData:function(id,value){
