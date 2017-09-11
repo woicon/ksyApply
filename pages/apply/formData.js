@@ -11,6 +11,9 @@ module.exports =[
             "stat": "false",
             "bindtap": "",
             "block":true,
+            "required":"请输入正确的商户名称!",
+            "bindblur":"formBlur",
+            "tip":"请输入商户名称全称，如'西少爷餐饮科技有限公司'",
             "value": ""
         },
         {
@@ -21,6 +24,10 @@ module.exports =[
             "data": "",
             "stat": "false",
             "bindtap": "",
+            "block": true,
+            "required": "请输入商户简称!",
+            "bindblur": "formBlur",
+            "tip": "请输入商户简称，如'西少爷'",
             "value": ""
         },
         {
@@ -40,24 +47,8 @@ module.exports =[
             },
             "stat": "false",
             "block": true,
-            "bindtap": "",
-            "value": ""
+            "value":[0,0,0]
         },
-        // {
-        //     "label": "商户所属地",
-        //     "name": "area",
-        //     "placeholder": "请选择",
-        //     "type": "1",
-        //     "data": "",
-        //     "stat": "false",
-        //     "bindtap": "",
-        //     "data": {
-        //         mode: 'region',
-        //         selected: '请选择',
-        //         bindchange: "changePicker"
-        //     },
-        //     "value": ""
-        // },
         {
             "label": "商户所属地",
             "name": "area",
@@ -66,7 +57,6 @@ module.exports =[
             "data-id":'',
             "data": "",
             "stat": "false",
-            "bindtap": "",
             "range": commondata.area,
             "data": {
                 mode: 'multiSelector',
@@ -76,7 +66,7 @@ module.exports =[
                 bindchange: "multiChange",
                 bindcolumnchange: 'columnChange'
             },
-            "value": ""
+            "value": [0,0,0]
         },
         {
             "label": "商户详细地址",
@@ -94,18 +84,19 @@ module.exports =[
         {
             "label": "营业执照类型",
             "placeholder": "请选择",
+            "name":"businessLicenseType",
             "type": "1",
             "data": {
                 mode: 'selector',
-                range: ['营业执照', '营业执照（多证合一）','事业单位法人证书'],
-                rangeType: ['NATIONAL_LEGAL','NATIONAL_LEGAL_MERGE','INST_RGST_CTF'],
-                selected: '营业执照',
+                range: [['营业执照', 'NATIONAL_LEGAL'],['营业执照（多证合一）', 'NATIONAL_LEGAL_MERGE'], ['事业单位法人证书','INST_RGST_CTF']],
+                selected: '请选择',
                 bindchange: "changePicker",
+                rangekey: "0",
                 id: "accountType"
             },
             "stat": "false",
             "bindtap": "",
-            "value": ""
+            "value":[0,0,0]
         },
         {
             "label": "营业执照编号",
@@ -115,6 +106,8 @@ module.exports =[
             "data": "",
             "stat": "false",
             "bindtap": "",
+            "required": "请输入正确的营业执照编号!",
+            "bindblur": "formBlur",
             "value": ""
         },
         {
@@ -128,6 +121,8 @@ module.exports =[
             },
             "stat": "false",
             "bindtap": "",
+            "bindblur": "formBlur",
+            "required": "请输入正确的客服电话!",
             "value": ""
         },
         {
@@ -137,9 +132,10 @@ module.exports =[
             "type": "1",
             "data": {
                 mode: 'selector',
-                range: ['法人', '实际控制人','代理人','其他'],
-                rangeType: ['LEGAL_PERSON', 'CONTROLLER ','AGENT','OTHER' ],
-                selected: '法人',
+                range: [['法人', 'LEGAL_PERSON'], ['实际控制人', 'CONTROLLER'], ['代理人', 'AGENT'], ['其他','OTHER']],
+                rangeType: ['', 'CONTROLLER ','AGENT','OTHER' ],
+                selected: '请选择',
+                rangekey:'0',
                 bindchange: "changePicker",
                 id: "accountType"
             },
@@ -152,7 +148,10 @@ module.exports =[
             "name":"contactName",
             "placeholder": "10字以内",
             "type": "0",
-            "data": "",
+            "required": "请输入正确的姓名!",
+            "data":{
+                "maxlength":"10"
+            },
             "stat": "false",
             "bindtap": "",
             "value": ""
@@ -160,27 +159,31 @@ module.exports =[
         {
             "label": "商户联系人手机号",
             "name": "contactPhone",
+            "required": "请输入正确的手机号!",
             "placeholder": "11位手机号",
             "type": "0",
             "data": {
-                maxlength: "11",
-                type: "number"
+                "maxlength": "11",
+                "type": "number"
             },
             "stat": "false",
             "bindtap": "",
+            "bindblur": "formBlur",
             "value": ""
         },
         {
             "label": "联系人身份证号",
+            "required": "请输入正确的身份证号!",
             "name": "certificateNo",
             "placeholder": "18字以内",
             "type": "0",
             "data": {
-                maxlength: "18",
-                type:"idcard"
+                "maxlength": "18",
+                "type":"idcard"
             },
             "stat": "false",
             "bindtap": "",
+            "bindblur": "formBlur",
             "value": ""
         }
     ],
@@ -192,35 +195,39 @@ module.exports =[
             "type": "1",
             "data": {
                 mode: 'selector',
-                range: ['个人', '企业'],
-                selected: '个人',
+                range: [['个人','1'],['企业','2']],
+                selected: '请选择',
+                rangekey:'0',
                 bindchange: "changePicker",
                 id: "accountType"
             },
             "stat": "false",
             "bindtap": "",
-            "value": "1"
+            "value": ""
         },
         {
             "label": "开户银行",
             "placeholder": "请选择",
-            "name":"bankName",
+            "name":"bankNo",
             "type": "1",
             "data": {
                 mode: 'selector',
                 selected: '请选择',
                 range: commondata.bank,
-                rangekey: "bankName",
+                rangekey: "0",
+                extend:"bankName",
                 bindchange: "changePicker"
             },
             "stat": "false",
             "bindtap": "",
             "value": "",
+            "bindblur": "formBlur",
             "_value":"",
         },
         {
             "label": "银行卡号",
             "name": "cardNo",
+            "required": "请输入正确的银行卡号!",
             "placeholder": "20个字符以内",
             "type": "0",
             "data": {
@@ -234,41 +241,16 @@ module.exports =[
         {
             "label": "持卡人姓名",
             "name":"accountHolder",
+            "required": "请输入正确的姓名!",
             "placeholder": "持卡人姓名",
             "type": "0",
             "data": {
-                type: 'idcard'
+                maxlength: "10",
             },
             "stat": "false",
             "bindtap": "",
             "value": ""
-        },
-        // {
-        //     "label": "证件有效期",
-        //     "placeholder": "选择有效期",
-        //     "type": "1",
-        //     "data": {
-        //         mode: 'date',
-        //         fields: "month",
-        //         selected: "12-22",
-        //         bindchange: "changePicker"
-        //     },
-        //     "stat": "false",
-        //     "bindtap": "changeDate",
-        //     "value": ""
-        // },
-        // {
-        //     "label": "银行预留手机号",
-        //     "placeholder": "11位手机号",
-        //     "type": "0",
-        //     "data": {
-        //         maxlength: "11",
-        //         type: "number"
-        //     },
-        //     "stat": "false",
-        //     "bindtap": "",
-        //     "value": ""
-        // }
+        }
     ],
     [
         {

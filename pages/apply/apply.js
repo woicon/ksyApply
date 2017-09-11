@@ -1,5 +1,5 @@
 var app = getApp();
-var categoryData = require('../../pages/apply/data.js');
+var form = require('../../pages/apply/data.js');
 var formData = require('../../pages/apply/formData.js');
 var base = require('../../utils/util.js');
 Page({
@@ -8,6 +8,7 @@ Page({
         formType: ['input', 'picker', 'upfile', 'textarea', 'time', 'area'],
         currentStep: 0,
         formData: formData,
+        formStat:[],
         //提交进件数据
         postData:{
             service: 'mp_pf_add_configure',
@@ -21,43 +22,145 @@ Page({
             operationDatetime:base.getNowDate(),
             productNo:'148',
         },
+        required:{
+            IsChinese: /^[\u0391-\uFFE5]+$/,
+        }
     },
+    forms: function () {
+        let _formData = this.data.formData;
+        let _postData = this.data.postData;
+
+        function getNode(id) {
+            let currNode = _formData[this.data.currentStep];
+            return currNode[id];
+        }
+        
+        function setPost(att, value) {
+            _postData[attr] = value;
+        }
+
+        function setData() {
+            that.setData({
+                postData: _formData,
+                formData: _postData
+            });
+        }
+    },
+
+    formBlur:function(e){
+        if(e.detail.value == ''){
+            wx.showModal({
+                content: '请输入',     
+                showCancel:false
+            })
+        }
+        let _post = form.post;
+        let _postData = this.data.postData;
+        _post[this.data.currentStep].forEach((val,index,arr)=>{12
+            if(!_postData[val]){
+                console.log('ssss');
+            }
+            // if (_postData[val]){
+            //     return false;
+            // }
+            //return _postData.hasOwnProperty(val);
+        });
+    },
+
+    getNode: function (id) {
+        let _formData = this.data.formData;
+        let currNode = _formData[this.data.currentStep];
+        return currNode[id];
+    },
+
+    columnChange: function (e) {
+        let that = this,
+            detail = e.detail;
+        console.log(e);
+        let _formData = that.data.formData;
+        let node = _formData[that.data.currentStep][e.currentTarget.dataset.id];
+        let _column = form.change(node.data.range, detail, e.currentTarget.dataset.range);
+        let _value = node.value;
+        _value[detail.column] = detail.value;
+        console.log(detail);
+
+        switch (detail.column){
+            case 0:
+                _value[1] = 0;
+                _value[2] = 0;
+            break;
+
+            case 1:
+                _value[2] = 0;
+            break;
+
+            case 2:
+            break;
+
+        }
+        
+       console.log(_value);
+        node.value = _value;
+        
+        node.data.range = _column;
+        that.setData({
+            formData: _formData
+        })
+    },
+
     multiChange:function(e){
         let that = this;
-        console.log(e)
         let _formData = that.data.formData;
         let _postData = that.data.postData;
         let _id = e.target.dataset.id;
         let _curr = that.data.currentStep;
         let currNode = _formData[_curr][_id];
         let _name = e.target.dataset.name;
-        let _value = e.detail.value;
-        let _range = currNode.data.range;
-        let _selected = _range[0][_value[0]][1] + ',' + _range[1][_value[1]][1] + ',' + _range[2][_value[2]][1];
+        let value = e.detail.value;
+        let range = currNode.data.range;
+        let _selected = range[0][value[0]][1] + ',' + range[1][value[1]][1] + ',' + range[2][value[2]][1];
+        
+        currNode.value = e.detail.value;
         currNode.data.selected = _selected;
         _formData[_curr][_id] = currNode;
+
         if (e.target.id == "area"){
-            _postData['province'] = _range[0][_value[0]][1];
-            _postData['provinceId'] = _range[0][_value[0]][0];
-            
-            _postData['city'] = _range[1][_value[1]][1];
-            _postData['cityId'] = _range[1][_value[1]][0];
-            
-            _postData['area'] = _range[2][_value[2]][1];
-            _postData['areaId'] = _range[2][_value[2]][0];
+            _postData['province'] = range[0][value[0]][1];
+            _postData['provinceId'] = range[0][value[0]][0];
+            _postData['city'] = range[1][value[1]][1];
+            _postData['cityId'] = range[1][value[1]][0];
+            _postData['area'] = range[2][value[2]][1];
+            _postData['areaId'] = range[2][value[2]][0];
         }else{
-            
             _postData[e.target.id] = _selected;
-            _postData[_name] = _range[0][_value[0]][0] + ',' + _range[1][_value[1]][2] + ',' + _range[2][_value[2]][2];
+            _postData[_name] = range[0][value[0]][0] + ',' + range[1][value[1]][2] + ',' + range[2][value[2]][2];
             
         }
+        console.log(_postData);
         that.setData({
             formData: _formData,
             postData: _postData
         });
     },
-    getFormid:function(){
 
+    //picker控件选值存储
+    changePicker: function (e) {
+      console.log(e);
+      let that = this;
+      var _formData = that.data.formData;
+      let _node = that.getNode(e.target.id);
+      _node.value =e.detail.value;
+      let range = _node.data.range;
+      _node.data.selected = range[e.detail.value][0];
+      let _postData = this.data.postData;
+      _postData[e.target.dataset.name] = range[e.detail.value][1];
+      if (e.target.dataset.extend){
+          _postData[e.target.dataset.extend] = range[e.detail.value][0];
+      }
+      that.setData({
+        formData: _formData,
+        postData: _postData
+      });
     },
     nextStep: function () {
         this.stepJump(+1);
@@ -147,57 +250,6 @@ Page({
             })
         });
     },
-    
-    //picker控件选值存储
-    changePicker: function (e) {
-        console.log(e.detail);
-        var that = this;
-        var _id = e.target.dataset.id;
-        var currentId = e.currentTarget.dataset.id;
-        var _value = e.detail.value;
-        var _formData = that.data.formData;
-        var _currentStep = that.data.currentStep;
-        var currNode = _formData[_currentStep];
-        var nodeData = currNode[_id].data;
-        let _postData = that.data.postData;
-        _postData[e.target.id] = e.detail.value;
-
-        
-        if (currentId == "accountType" && _value == 0) {
-            _formData[_currentStep] = formList[1];
-        } else if (currentId == "accountType" && _value == 1) {
-            _formData[_currentStep] = formList.group;
-        }
-
-        if (nodeData.mode == 'selector') {
-            var nodeValue = nodeData.range[_value];
-            var nodekey = nodeData.rangekey;
-            currNode[_id].data.selected = nodekey ? nodeValue[nodekey] : nodeValue;
-        } else {
-            currNode[_id].data.selected = _value;
-        }
-        //存储data
-        that.setData({
-            formData: _formData
-        });
-    },
-    columnChange: function (e) {  
-        let that = this,
-            detail = e.detail;
-        let _formData = that.data.formData;
-        let node = _formData[that.data.currentStep][e.currentTarget.dataset.id];
-        let _column = categoryData.change(node.data.range, detail, e.currentTarget.dataset.range);
-        node.data.range = _column;
-        that.setData({
-            formData: _formData
-        })
-    },
-    getNode:function(id){
-        let that = this;
-        let _formData = that.data.formData;
-        let currNode = _formData[that.data.currentStep];
-        return currNode[id];
-    },
     setPostData:function(id,value){
         let that = this;
         let _postData = that.data.postData;
@@ -210,6 +262,7 @@ Page({
         var that = this;
         that.setPostData(e.target.id, e.detail.value);
     },
+
     setFormData: function (node, value) {
         var that = this;
         var _formData = that.data.formData;
@@ -228,18 +281,18 @@ Page({
             formData: _formData
         });
     },
-    bindMultiPickerColumnChange: function () {
 
-    },
     formSubmit: function (e) {
         console.log(e)
     },
+
     //提交
     submintForm: function () {
         wx.navigateTo({
             url: '/pages/applycomplete/applycomplete',
         })
     },
+
     onLoad: function (options) {
         var that = this;
         wx.setNavigationBarTitle({
@@ -258,6 +311,7 @@ Page({
             stepStat: _stepStat
         });
     },
+
     onReady: function () {
         var that = this;
       
