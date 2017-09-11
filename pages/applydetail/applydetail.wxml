@@ -1,29 +1,32 @@
 <!--pages/applydetail/applydetail.wxml-->
 <view class="head">
     <view class="name">
-        <view class="name">{{info.shopName}}</view>
-        <view class="shopname">{{info.shopNames}}</view>
+        <view class="name">{{mcDetails.coreMerchantName}}</view>
+        <view class="shopname">{{mcDetails.fullNameCn}}</view>
     </view>
     <view class="stat">
-        <text>{{info.stat}}</text>
+        <block wx:for="{{stat}}" wx:key="stat">
+          <text class="value" wx:if="{{mcDetails.auditorStatus==index}}">{{item}}</text>
+        </block>
     </view>
 </view>
-<view class="coltitle">配置信息</view>
+<!-- <view class="coltitle">配置信息</view>
 <view class="linegroup">
       <view class="lines">
         进件审核配置ID<view class="value">{{mcDetails.configureCommonAuditId}}</view>
       </view>
-      <view class="lines">
+      <!-- <view class="lines">
         支付配置编号<view class="value">{{mcDetails.transitionId}}</view>
       </view>
       <view class="lines">
         浦发平台商户号<view class="value">{{mcDetails.platformMerchantNo}}</view>
-      </view>
+      </view> 
       <view class="lines">
         进件类型
         <view class="value" wx:if="{{mcDetails.configureType==1}}">新增</view>
       </view>
-</view>
+</view> -->
+<block wx:if="{{mcDetails.auditorStatus  == 4 || mcDetails.auditorStatus  == 6}}">
 <view class="coltitle">审核信息</view>
 <view class="linegroup">
       <view class="lines">
@@ -35,13 +38,8 @@
       <view class="lines">
         审核备注<view class="value">{{mcDetails.auditorRemark}}</view>
       </view>
-      <view class="lines">
-        审核状态
-        <block wx:for="{{stat}}">
-          <view class="value" wx:if="{{mcDetails.auditorStatus==index}}">{{item}}</view>
-        </block>
-      </view>
 </view>
+</block> 
 <view class="coltitle">进件主体</view>
 <view class="linegroup">
       <view class="lines">
@@ -70,7 +68,7 @@
       </view>
       <view class="lines">
         通道类型
-        <block wx:for="{{passType}}">
+        <block wx:for="{{passType}}" wx:key="passType">
           <view class="value" wx:if="{{mcDetails.passType==index}}">{{item}}</view>
         </block>
       </view>
@@ -107,18 +105,16 @@
       <view class="lines">
         商户名称<view class="value">{{mcDetails.fullNameCn}}</view>
       </view>
+
       <view class="lines">
-        经营类目<view class="value">{{mcDetails.tradeType}}</view>
-      </view>
-      <view class="lines">
-        经营类目名称<view class="value">{{mcDetails.tradeTypeName}}</view>
+        经营类目名称<view class="value">{{mcDetails.businessCategoryName}}</view>
       </view>
       <view class="lines">
         客服电话<view class="value">{{mcDetails.customerPhone}}</view>
       </view>
       <view class="lines">
         联系人类型
-        <block wx:for="{{contactType}}">
+        <block wx:for="{{contactType}}" wx:key="contactType">
           <view class="value" wx:if="{{mcDetails.contactType==index}}">{{item}}</view>
         </block>
       </view>
@@ -139,7 +135,7 @@
       </view>
       <view class="lines">
         营业执照类型
-        <block wx:for="{{businessLicenseType}}">
+        <block wx:for="{{businessLicenseType}}" wx:key="businessLicenseType">
           <view class="value" wx:if="{{mcDetails.businessLicenseType==index}}">{{item}}</view>
         </block>
       </view>
@@ -175,60 +171,22 @@
 <!--businessLicenseUrl、identificationOppositeUrl、openingPermitUrl、src="{{mcDetails.identificationFrontUrl}}"-->
 <view class="linegroup">
       <view class="imglist">
-        <image class="imgarea" src="../images/{{mcDetails.businessLicenseUrl}}"></image>
-        <view class="title">营业执照照片</view>
-      </view>
-      <view class="imglist">
-        <image class="imgarea" src="../images/{{mcDetails.identificationFrontUrl}}"></image>
+        <image class="imgarea" src="{{mcDetails.identificationFrontPfUrl}}"></image>
         <view class="title">负责人身份证正面照片</view>
       </view>
       <view class="imglist">
-        <image class="imgarea" src="../images/{{mcDetails.identificationOppositeUrl}}"></image>
+        <image class="imgarea" src="{{mcDetails.identificationOppositePfUrl}}"></image>
         <view class="title">负责人身份证反面照片</view>
       </view>
+<view class="imglist">
+        <image class="imgarea" src="{{mcDetails.businessLicensePfUrl}}"></image>
+        <view class="title">营业执照照片</view>
+      </view>
       <view class="imglist">
-        <image class="imgarea" src="../images/{{mcDetails.openingPermitUrl}}"></image>
+        <image class="imgarea" src="{{mcDetails.openingPermitPfUrl}}"></image>
         <view class="title">开户许可证照片</view>
       </view>
-      <view class="lines">
-        授权书<view class="value"> aaaaaaaaaaaaaaaa </view>
-      </view>
 </view>
-<block wx:for="{{mcList}}" wx:key="mcList">
-        <!-- <block wx:if="{{index == 0}}">
-            <view class="coltitle">商户信息</view>
-            <block wx:for="{{item}}" wx:for-item="_item" wx:for-index ="_index" wx:key="itemlist">
-                
-                <block wx:for="{{mcDetails}}" wx:for-item="value" wx:for-index="label" wx:key="mcDetails" >
-                         <view class="">{{_index}} {{_item}}</view>  
-                    <view class="linegroup" wx:if="{{label == _item}}">
-                        <view class="lines">
-                            {{label}}
-                            <view class="value">{{value}}</view>
-                        </view>
-                    </view>
-                </block>
-            </block>
-        </block> -->
-        <!-- <view class="linegroup" wx:elif="{{index == 1}}">
-        <view class="coltitle" wx:elif="{{index == 1}}">结算信息</view>
-            <view class="lines" wx:for="{{item}}" wx:key="list" wx:for-item="items" wx:for-index="indexs">
-                {{items.label}}
-                <view class="value">{{items.value}}</view>
-            </view>
-        </view>
-        <view class="linegroup" wx:elif="{{index == 2}}">
-            <view class="coltitle" wx:elif="{{index == 2}}">证件照片</view>
-            <view class="lines" wx:for="{{item}}" wx:key="list" wx:for-item="items" wx:for-index="indexs">
-                {{items.label}}
-                <view class="value">{{items.value}}</view>
-            </view>
-        </view> -->
+<block wx:if="{{mcDetails.auditorStatus  == 6}}">
+    <view class='block-button' bindtap='editForm'>修改</view>
 </block>
-<!-- <view class="linegroup">
-    <view class="lines" wx:for="{{item}}" wx:key="list" wx:for-item="items" wx:for-index="indexs">
-        {{items.label}}
-        <view class="value">{{items.value}}</view>
-    </view>
-</view> -->
-

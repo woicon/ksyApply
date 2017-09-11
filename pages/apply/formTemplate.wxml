@@ -12,6 +12,7 @@
             bindtap="{{item.bindtap}}"
             data-name="{{item.name}}"
             id="{{item.name}}"
+            bindblur="{{item.bindblur}}"
             value="{{value[item.name]||''}}"
             maxlength="{{item.data.maxlength || '-1'}}"
             disabled="{{item.data.disabled}}" />
@@ -21,14 +22,15 @@
         <view class="type" wx:elif="{{item.type == '1'}}">
             <picker wx:if="{{item.data.mode == 'selector'}}"
             mode="{{item.data.mode}}"
-            name="{{item.name}}"
             range="{{item.data.range}}"
             range-key="{{item.data.rangekey}}"
-            value="{{item.data.selected}}"
+            value="{{item.value}}"
+            data-extend="{{item.data.extend}}"
             disabled="{{item.data.disabled}}"
             bindchange="{{item.data.bindchange}}"
             data-id="{{item.data.id}}"
-            value="{{value[item.name]||''}}"
+            data-name="{{item.name}}"
+            value="0"
             id="{{index}}">
                 <view class="picker">{{item.data.selected}} </view>
             </picker>
@@ -37,7 +39,7 @@
             mode="{{item.data.mode}}"
             range="{{item.data.range}}" 
             range-key="{{item.data.rangekey}}"
-            value="{{item.data.selected}}" 
+            value="{{item.value}}" 
             bindcolumnchange="{{item.data.bindcolumnchange}}"
             bindchange="{{item.data.bindchange}}"
             data-id="{{index}}"
@@ -93,9 +95,15 @@
         </view>
         <!-- textarea 多行文本 -->
         <view class="type textarealine" wx:elif="{{item.type == '3'}}">
-            <textarea placeholder="{{item.placeholder}}" data-name="{{item.name}}" id="{{item.name}}" bindinput="bindKeyInput"/>
+            <textarea 
+            placeholder="{{item.placeholder}}" 
+            data-name="{{item.name}}" id="{{item.name}}" 
+            bindinput="bindKeyInput"
+             bindblur="{{item.bindblur}}"/>
         </view>
-
     </view>
+    <block wx:if="{{item.tip}}">
+        <view class="tip">{{item.tip}}</view>
+        </block>
     </block>
 </template>

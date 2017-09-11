@@ -14,16 +14,16 @@
     </view>
     <view class="btnbar">
         <block wx:if="{{currentStep == 0}}">
-            <view class="btn" hover="true" formType="submit" hover-class="btn-hover" bindtap="nextStep">下一步</view>
+            <view class="btn {{buttonStat[0]?'disable':''}}" hover="true" formType="submit" hover-class="btn-hover" bindtap="nextStep">下一步</view>
         </block>
         <block wx:elif="{{currentStep == 1}}">
             <view class="btn prev" hover="true" hover-class="btns-hover" bindtap="backStep">上一步</view>
-            <view class="btn" hover="true" formType="submit" hover-class="btn-hover" bindtap="nextStep">下一步</view>
+            <view class="btn {{buttonStat[1]?'disable':''}}" hover="true" formType="submit" hover-class="btn-hover" bindtap="nextStep">下一步</view>
         </block>
         <block wx:elif="{{currentStep == 2}}">
             <view class="info">点击提交即表示同意用户注册协议</view>
             <view class="btn prev" hover="true" hover-class="btns-hover" bindtap="backStep">上一步</view>
-            <view class="btn" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">提交</view>
+            <view class="btn {{buttonStat[2]?'disable':''}}" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">提交</view>
         </block>
     </view>
 </view>

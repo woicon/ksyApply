@@ -1,19 +1,7 @@
-// pages/applydetail/applydetail.js
-var commondata = require('../../pages/apply/formData.js');
+var app = getApp();
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
-    stat: { "2":'待审核',"3":'处理中',"4":'不通过',"6":'通过'},
-    shopInfo:commondata,
-    info:{
-        shopName:'西少爷肉夹馍',
-        shopNames:'西少爷餐饮科技有限公司',
-        stat:'已审核',
-        checkTime:'2017-07-12 9:00',
-        mcDetails:null,
-    },
+    stat: { "2":'待审核',"3":'处理中',"4":'不通过',"6":'审核通过'},
     businessLicenseType:{
         "NATIONAL_LEGAL": "营业执照",
         "NATIONAL_LEGAL_MERGE": "营业执照（多证合一）",
@@ -33,6 +21,7 @@ Page({
       "5":"微信二清",
       "6":"浦发银行"
     },
+    
     mcList:[
         //进件商户信息
         {
@@ -88,9 +77,12 @@ Page({
     ],
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  editForm: function () {
+      console.log('2')
+      wx.redirectTo({
+          url: '/pages/apply/apply?stat=true',
+      })
+  },
   onLoad: function (options) {
       let that = this;
       wx.setNavigationBarTitle({
@@ -106,9 +98,11 @@ Page({
               that.setData({
                   mcDetails: JSON.parse(res.data)
               });
-              
+              console.log(JSON.parse(res.data))
           },
       })
+
+      
   },
 
   /**

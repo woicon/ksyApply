@@ -128,16 +128,19 @@ page{
     height:1.4rem;
     min-height:1.4rem;
     line-height:1.4rem;
+    
 }
 .fgroup .picker{
     padding-right:24rpx;
     position:relative;
      height:1.4rem;
     min-height:1.4rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 .fgroup .type{
     position:relative;
-    z-index:2;
     overflow:hidden;
     padding-left:180rpx;
 }
@@ -155,6 +158,13 @@ page{
     right:1px;
     top:50%;
     margin-top:-4px;
+}
+.apply-form .tip{
+    font-size:22rpx;
+    color:#999;
+    padding:0 30rpx;
+    margin-bottom:40rpx;
+    margin-top:-14rpx;
 }
 .fgroup .textarealine{
     width:100%;

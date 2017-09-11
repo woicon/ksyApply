@@ -2,7 +2,7 @@ var partners= require('./utils/member.js');
 var base = require('./utils/util.js');
 App({
     onLaunch: function (options) {
-        var that = this;
+        let that = this;
         let init = new Promise((res,rej)=>{
             wx.login({
                 success: function (data) {
@@ -27,22 +27,23 @@ App({
             });
         })
         .then((res)=>{
-            //检测是否注册
-            let partnerId = options.query.no || 'EW_N8636137588';
-            var partner = that.getPartner(partnerId);
+            let partnerId = options.query.no || 'EW_N2254856689';
+            let partner = that.getPartner(partnerId);
             for (var i in partner) {
                 that.api[i] = partner[i];
             }
-            let parmas = that.api;
+            that.key = partner.key;
+            that.api.service = 'mp_pf_audit_details';
+            that.api.agencyCodeName = partnerId;
+            that.api.applicationName = '快收银一键开户';
+            that.api.agentNo = partnerId;
+         
+            const parmas = that.api;
             delete parmas.key;
+            console.log(parmas);
             parmas.operationDatetime = base.getNowDate();
-            parmas.service = 'mp_pf_audit_details';
-            parmas.agencyCodeName = partnerId;
-            parmas.applicationName = '快收银一键开户';
-            parmas.agencyCodeName = partnerId;
-            parmas.core_merchant_no = partnerId;
-            // delete parmas.openId;
-            // parmas.agentAuditNo = '3386',
+            //  delete parmas.openId;
+            //  parmas.agentAuditNo = '3386';
             //console.log(that.parseParam(that.getSign(parmas,partner.key), true));
             wx.request({
                 url: that.url.host,
@@ -58,14 +59,16 @@ App({
                     let data = base.XMLtoJSON(res.data).ebill;
                     console.log(data);
                     if (data.mcDetails) {
-                        wx.navigateTo({
-                            url: '/pages/applydetail/applydetail',
-                        })
+                        if (!options.query.edit){
+                            wx.navigateTo({
+                                url: '/pages/applydetail/applydetail',
+                            })
+                        }
                         wx.setStorageSync('mcDetails', data.mcDetails);
                     } else {
-                        // wx.navigateTo({
-                        //     url: '/pages/index/index',
-                        // })
+                        wx.navigateTo({
+                            url: '/pages/index/index',
+                        })
                     }
                 }
             });
@@ -82,27 +85,17 @@ App({
     url:{
         host: 'http://192.168.19.47:8000/front/baseV3/gateway.in',
         //host:'http://front.51ebill.com/front/baseV3/gateway.in',
-        upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in'//文件上传
+        //upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in',//文件上传
+        upfile:'http://192.168.19.47:8000/front/agentAppV3/uploadFile.in'
     },
     api:{
-        input_charset:'UTF-8',
-        version:'1.0',
+        input_charset: 'UTF-8',
+        version: '1.0',
     },
-    
+    key:null,
+    partnerId:null,
     getUserInfo: function (cb) {
-        var that = this
-        if (this.globalData.userInfo) {
-            typeof cb == "function" && cb(this.globalData.userInfo)
-        } else {
-            //调用登录接口
-            wx.getUserInfo({
-                withCredentials: false,
-                success: function (res) {
-                    that.globalData.userInfo = res.userInfo
-                    typeof cb == "function" && cb(that.globalData.userInfo)
-                }
-            })
-        }
+        
     },
     globalData: {
         userInfo: null,

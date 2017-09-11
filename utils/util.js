@@ -77,7 +77,6 @@ function parseParam(obj, encode) {
             ret.push(toQueryPair(key, values));
         }
     }
-    console.log(ret.join('&'))
     return ret.join('&');
 }
 
@@ -109,6 +108,16 @@ function toQueryParams(par) {
     });
     return ret;
 }
+let reg = {
+    business:"/^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/",
+    phone: "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$", 
+    chinese:"/^[\u0391-\uFFE5]+$/",
+}
+
+function validation(str){
+
+}
+
 //生成签名参数
 function getSign(parmas, key) {
     var that = this;
