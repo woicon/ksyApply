@@ -11,13 +11,14 @@ function formatTime(date) {
 }
 
 function formatNumber(n) {
-  n = n.toString()
-  return n[1] ? n : '0' + n
+    n = n.toString()
+    return n[1] ? n : '0' + n
 }
 
 function getNowDate() {
     return formatTime(new Date());
 }
+
 //XML转JSON /(ㄒoㄒ)/~💩
 function XMLtoJSON(xml) {
     var myOptions = {
@@ -109,15 +110,16 @@ function toQueryParams(par) {
     return ret;
 }
 let reg = {
-    business:"/^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/",
-    phone: "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$", 
-    chinese:"/^[\u0391-\uFFE5]+$/",
+    business:/^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/,
+    phone: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$/, 
+    chinese:/^[\u0391-\uFFE5]+$/,
+    idcard:/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[A-Z])$/,
 }
-
-function validation(str){
-
+function validation(str,reg){
+    phoneValue = valueTrim(phoneValue);
+    var reg = /^[1][0-9]{10}$/;
+    return reg.test(phoneValue);
 }
-
 //生成签名参数
 function getSign(parmas, key) {
     var that = this;
@@ -134,5 +136,7 @@ module.exports = {
     toQueryParams: toQueryParams,
     parseParam: parseParam,
     sortObj: sortObj,
-    getSign:getSign
+    getSign:getSign,
+    reg:reg,
+    validation: validation
 }

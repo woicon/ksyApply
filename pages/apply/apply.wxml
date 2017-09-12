@@ -23,7 +23,7 @@
         <block wx:elif="{{currentStep == 2}}">
             <view class="info">点击提交即表示同意用户注册协议</view>
             <view class="btn prev" hover="true" hover-class="btns-hover" bindtap="backStep">上一步</view>
-            <view class="btn {{buttonStat[2]?'disable':''}}" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">提交</view>
+            <view class="btn {{buttonStat[2]?'disable':''}}" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">注册</view>
         </block>
     </view>
 </view>

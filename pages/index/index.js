@@ -1,9 +1,6 @@
-//index.js
-//获取应用实例
 var app = getApp()
 Page({
     data: {
-        motto: '欢迎注册快收银',
         userInfo: {}
     },
     goReg: function () {

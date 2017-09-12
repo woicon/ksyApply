@@ -2,7 +2,6 @@
 
 .head{
     background:#27CFB1;
-
     height:200rpx;
     position:relative;
     padding:90rpx 0 30rpx 40rpx;

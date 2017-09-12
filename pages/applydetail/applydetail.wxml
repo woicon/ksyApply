@@ -51,12 +51,12 @@
       <view class="lines">
         商户名称<view class="value">{{mcDetails.coreMerchantName}}</view>
       </view>
-      <view class="lines">
+      <!-- <view class="lines">
         门店编号<view class="value">{{mcDetails.storeNo}}</view>
       </view>
         <view class="lines">
         门店名称<view class="value">{{mcDetails.storeName}}</view>
-      </view>
+      </view> -->
 </view>
 <view class="coltitle">进件费率信息</view>
 <view class="linegroup">
@@ -82,7 +82,7 @@
         支付宝费率名称<view class="value">{{mcDetails.alipayRateName}}</view>
       </view>
        <view class="lines">
-        支付宝费率<view class="value">{{mcDetails.alipayRate}}</view>
+        支付宝费率<view class="value">{{mcDetails.alipayRate}}‰</view>
       </view>
        <view class="lines">
         微信费率ID<view class="value">{{mcDetails.wechatRateId}}</view>
@@ -91,11 +91,11 @@
         微信费率名称<view class="value">{{mcDetails.wechatRateName}}</view>
       </view>
        <view class="lines">
-        微信费率<view class="value">{{mcDetails.wechatRate}}</view>
+        微信费率<view class="value">{{mcDetails.wechatRate}}‰</view>
       </view>
-       <view class="lines">
+       <!-- <view class="lines">
         配置备注<view class="value">{{mcDetails.remark}}</view>
-      </view>
+      </view> -->
 </view>
 <view class="coltitle">进件商户信息</view>
 <view class="linegroup">
@@ -125,14 +125,12 @@
         联系人身份证号码<view class="value">{{mcDetails.certificateNo}}</view>
       </view>
       <view class="lines">
-        联系人电话<view class="value">{{mcDetails.contactPhone}}</view>
+        联系人手机号<view class="value">{{mcDetails.contactPhone}}</view>
       </view>
-      <view class="lines">
-        联系人手机号<view class="value">{{mcDetails.contactMobile}}</view>
-      </view>
-      <view class="lines">
+     
+      <!-- <view class="lines">
         联系人邮箱<view class="value">{{mcDetails.contactEmail}}</view>
-      </view>
+      </view> -->
       <view class="lines">
         营业执照类型
         <block wx:for="{{businessLicenseType}}" wx:key="businessLicenseType">
@@ -148,11 +146,8 @@
        <view class="lines">
         商户详细地址<view class="value">{{mcDetails.address}}</view>
       </view>
-       <view class="lines">
-        备注<view class="value"></view>
-      </view>
 </view>
-<view class="coltitle">银行账户信息</view>
+<view class="coltitle">结算信息</view>
 <view class="linegroup">
       <view class="lines">
         账户类型<view class="value">{{mcDetails.accountType ==1 ? "个人" : "企业"}}</view>
@@ -164,7 +159,7 @@
         银行卡号/对公账号<view class="value">{{mcDetails.cardNo}}</view>
       </view>
       <view class="lines">
-        开户人/企业名称<view class="value">{{mcDetails.accountHolder}}</view>
+        开户人/企业名称<view class="value">{{mcDetails.merchantCorporation}}</view>
       </view>
 </view>
 <view class="coltitle">资质照片</view>
@@ -187,6 +182,6 @@
         <view class="title">开户许可证照片</view>
       </view>
 </view>
-<block wx:if="{{mcDetails.auditorStatus  == 6}}">
-    <view class='block-button' bindtap='editForm'>修改</view>
+<block wx:if="{{mcDetails.auditorStatus  == 4}}">
+    <view class='block-button' bindtap='editForm'>重新注册</view>
 </block>

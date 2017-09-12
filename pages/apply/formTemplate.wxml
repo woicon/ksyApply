@@ -1,8 +1,6 @@
 <template name="formtemp">
-    
     <block wx:for="{{formlist}}" wx:key="form{{index}}" >
     <view class="fgroup {{item.type == '2' ? 'photo':''}} {{item.block ? 'block':''}}" data-id="{{index}}" name='{{item.name}}'>
-
         <label class="label">{{item.label}}</label>
         <!-- input 输入框 -->
         <view class="type" wx:if="{{item.type == '0'}}">
@@ -24,15 +22,14 @@
             mode="{{item.data.mode}}"
             range="{{item.data.range}}"
             range-key="{{item.data.rangekey}}"
-            value="{{item.value}}"
+            value="{{0 || item.value}}"
             data-extend="{{item.data.extend}}"
             disabled="{{item.data.disabled}}"
             bindchange="{{item.data.bindchange}}"
             data-id="{{item.data.id}}"
             data-name="{{item.name}}"
-            value="0"
             id="{{index}}">
-                <view class="picker">{{item.data.selected}} </view>
+                <view class="picker">{{value[item.name] || item.data.selected}} </view>
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'multiSelector'}}" 
@@ -97,9 +94,11 @@
         <view class="type textarealine" wx:elif="{{item.type == '3'}}">
             <textarea 
             placeholder="{{item.placeholder}}" 
-            data-name="{{item.name}}" id="{{item.name}}" 
+            data-name="{{item.name}}" 
+            id="{{item.name}}" 
             bindinput="bindKeyInput"
-             bindblur="{{item.bindblur}}"/>
+            value="{{value[item.name]||''}}"
+            bindblur="{{item.bindblur}}"/>
         </view>
     </view>
     <block wx:if="{{item.tip}}">

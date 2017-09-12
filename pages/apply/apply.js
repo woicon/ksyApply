@@ -6,7 +6,7 @@ Page({
     data: {
         stepBar: ['商户信息', '结算信息', '进件信息'],
         formType: ['input', 'picker', 'upfile', 'textarea', 'time', 'area'],
-        currentStep: 0,
+        currentStep: 2,
         formData: formData,
         formStat:[],
         postData:null
@@ -24,24 +24,21 @@ Page({
             
         });
     },
-
     getNode: function (id) {
         let _formData = this.data.formData;
         let currNode = _formData[this.data.currentStep];
         return currNode[id];
     },
-
     columnChange: function (e) {
         let that = this,
             detail = e.detail;
-        console.log(e);
+        //console.log(e);
         let _formData = that.data.formData;
         let node = _formData[that.data.currentStep][e.currentTarget.dataset.id];
         let _column = form.change(node.data.range, detail, e.currentTarget.dataset.range);
         let _value = node.value;
         _value[detail.column] = detail.value;
-        console.log(detail);
-
+        //console.log(detail);
         switch (detail.column){
             case 0:
                 _value[1] = 0;
@@ -117,7 +114,6 @@ Page({
               _form[3].label = '持卡人姓名';
          }
       }
-
       that.setData({
         formData: _formData,
         postData: _postData
@@ -126,10 +122,10 @@ Page({
     nextStep: function () {
         let that = this;
         this.stepJump(+1);
-        wx.setStorage({
+        wx.setStorageSync({
             key: 'parmas',
             data: that.data.postData,
-        })
+        });
     },
     backStep:function() {
         this.stepJump(-1);
@@ -168,6 +164,7 @@ Page({
         let parmas = base.getSign(upParmas, app.key);
         //let _parmas = base.toQueryParams(parmas);
         let upImage = new Promise((res, rej)=> {
+            
             wx.chooseImage({
                 count: 1,
                 success: (data)=> {
@@ -176,18 +173,20 @@ Page({
             })
         })
         .then((res)=> {
+            wx.showLoading({
+                title: '上传中',
+                mask:true
+            });
             let that = this;
             let tempFilePaths = res.tempFilePaths;
             parmas.url = encodeURIComponent(tempFilePaths[0]);
             let new_parmas = base.parseParam(parmas);
-            console.log(new_parmas);
             const uploadTask = wx.uploadFile({
                 url: app.url.upfile + '?' + new_parmas,
                 filePath: tempFilePaths[0],
                 name: 'files',
                 method: 'POST',
-                complete: function (res) {
-                    wx.hideLoading();
+                success: function (res) {
                     console.log(base.XMLtoJSON(res.data))
                     let _imgUrl = base.XMLtoJSON(res.data).ebill.file_url;
                     let imgUrl = _imgUrl.substring(0, _imgUrl.length - 1);
@@ -196,22 +195,12 @@ Page({
                     that.setData({
                         postData: _postData
                     });
-                },
-                success: function (res) {
-                    wx.showLoading({
-                        title: '上传中',
-                    })
+                    wx.hideLoading();
                 },
                 fail: function (res) {
                     console.log(res);
                 }
             });
-            // uploadTask.onProgressUpdate((res) => {
-            //     console.log('上传进度', res.progress)
-            //     console.log('已经上传的数据长度', res.totalBytesSent)
-            //     console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
-            // })
-
         });
     },
     setPostData:function(id,value){
@@ -250,61 +239,17 @@ Page({
     //提交
     submintForm: function () {
         wx.showLoading({
-            title: '正在提交',
+            title: '',
+            mask:true
         });
         let that = this;
         let parmas = that.data.postData;
-        // let parmas = {
-        //     "input_charset": "UTF-8",
-        //     "version": "1.0",
-        //     "openId": "ooo3w0OMtRB2UQVuqlblZOa2-eZs",
-        //     "partner_id": "16112109533877254",
-        //     "operatorName": "快收银一键开户测试（勿动）",
-        //     "operationLoginName": "ksykaihu",
-        //     "core_merchant_no": "EW_N8636137588",
-        //     "operationDatetime": "2017-09-11 16:10:06",
-        //     "service": "mp_pf_audit_details",
-        //     "agencyCodeName": "EW_N2254856689",
-        //     "applicationName": "快收银一键开户",
-        //     "agentNo": "EW_N2254856689",
-        //     "sign": "fd45b40bc6b2e1e1e21f1afc06940221",
-        //     "sign_type": "MD5",
-        //     "merchantFullName": "北京市全聚德",
-        //     "merchantName": "全聚德",
-        //     "businessCategoryName": "企业,电商/团购,线上商超",
-        //     "businessCategory": "1,1,1",
-        //     "province": "北京市",
-        //     "provinceId": "110000",
-        //     "city": "北京市",
-        //     "cityId": "110100",
-        //     "area": "东城区",
-        //     "areaId": "110101",
-        //     "address": "北京市朝阳区北苑路",
-        //     "businessLicenseType": "NATIONAL_LEGAL",
-        //     "businessLicenseNo": "283019283091231231",
-        //     "customerPhone": "12312312312",
-        //     "contactType": "AGENT",
-        //     "contactName": "张岩",
-        //     "contactPhone": "15212938127",
-        //     "certificateNo": "431221992138192381",
-        //     "accountType": "2",
-        //     "bank": "105100000017",
-        //     "bankName": "中国建设银行股份有限公司总行",
-        //     "cardNo": "81829318293819238192",
-        //     "accountHolder": "王贺",
-        //     identificationFrontPfUrl: 'http://mpic.tiankong.com/c82/c50/c82c507691e5e5885832105922c44624/640.jpg',
-        //     identificationOppositePfUrl: 'http://mpic.tiankong.com/c82/c50/c82c507691e5e5885832105922c44624/640.jpg',
-        //     businessLicensePfUrl: 'http://mpic.tiankong.com/c82/c50/c82c507691e5e5885832105922c44624/640.jpg',
-        //     openingPermitPfUrl: 'http://mpic.tiankong.com/c82/c50/c82c507691e5e5885832105922c44624/640.jpg'
-        // }
         delete parmas.sign_type;
         delete parmas.sign;
         delete parmas.agentAuditNo;
         parmas.operationDatetime = base.getNowDate();
         parmas.service = 'mp_pf_add_configure';
         parmas.productId = '480';
-        parmas.openId = 'ooo3w0OMtRB2UQVuqlblZOa2-eZpp';
-        console.log(parmas);
         let _parmas = base.getSign(parmas,app.key);
         wx.request({
             url: app.url.host,
@@ -313,7 +258,7 @@ Page({
             header: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            complete:function(res){
+            success:function(res){
                 wx.hideLoading();
                 let data = base.XMLtoJSON(res.data);
                 console.log(data)
@@ -327,15 +272,20 @@ Page({
                         content: data.ebill.message,
                     })
                 }
+            },
+            fail:function(error){
+                wx.showToast({
+                    title: '注册失败',
+                })
             }
         });
-        // wx.navigateTo({
-        //     url: '/pages/applycomplete/applycomplete',
-        // });
+        wx.navigateTo({
+            url: '/pages/applycomplete/applycomplete',
+        });
     },
 
     onLoad: function (options) {
-        console.log('111');
+        console.log(options);
         var that = this;
         wx.setNavigationBarTitle({
             title: '注册快收银',
@@ -348,19 +298,31 @@ Page({
         for (var i = 0; i < that.data.stepBar.length; i++) {
             _stepStat.push(false);
         }
-        console.log(app.api);
-        that.setData({
-            stepStat: _stepStat
-        });
-    },
-
-    onReady: function () {
         var that = this;
         let postData = app.api;
         delete postData.key;
+ 
+        if (options.edit){
+            console.log('sdf');
+            wx.getStorage({
+                key: 'parmas',
+                success: function(res) {
+                    //console.log(res);
+                    //that.data.postData = res.data
+                    that.setData({
+                        postData: res.data
+                    });
+                },
+            })
+        }
         that.setData({
+            stepStat: _stepStat,
             postData: postData
         });
+        
+    },
+    onReady: function () {
+       
     },
     onShow: function () {
         console.log('333');

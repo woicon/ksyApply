@@ -21,7 +21,6 @@ Page({
       "5":"微信二清",
       "6":"浦发银行"
     },
-    
     mcList:[
         //进件商户信息
         {
@@ -76,17 +75,16 @@ Page({
         }
     ],
   },
-
   editForm: function () {
       console.log('2')
       wx.redirectTo({
-          url: '/pages/apply/apply?stat=true',
+          url: '/pages/apply/apply?edit=true',
       })
   },
   onLoad: function (options) {
       let that = this;
       wx.setNavigationBarTitle({
-          title: '审核状态',
+          title: '注册审核状态',
       });
       wx.setNavigationBarColor({
           frontColor: '#ffffff',
@@ -98,51 +96,24 @@ Page({
               that.setData({
                   mcDetails: JSON.parse(res.data)
               });
-              console.log(JSON.parse(res.data))
           },
       })
-
-      
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
   
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
   
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
   onHide: function () {
   
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
   onUnload: function () {
   
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
   
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
   
   },
