@@ -6,16 +6,16 @@
 </view>
 
 <view class="shop-info">
-    <view class="lines">商户名称 <view class="value">肯德基</view></view>
-     <view class="lines">商户登录名<view class="value">kfc</view></view>
+    <view class="lines">商户名称 <view class="value">{{mallInfo.name}}</view></view>
+     <view class="lines">商户登录名<view class="value">{{detail.merchantLoginName}}</view></view>
 </view>
 <view class="shop-info">
-     <view class="lines">门店名称 <view class="value">肯德基0001</view></view>
-     <view class="lines">门店登录名<view class="value">kfc0001</view></view>
+     <view class="lines">门店登录名<view class="value">{{detail.storeLoginName}}</view></view>
 </view>
 <view class="head-txt">
-    <view class="p">进件申请成，我方会在一个工作日内完成审核，审核期间使用快收银软件只支持现金收款。</view>
-    <view class="p">系统已默认创建商户及门店，登录密码均默认123456abc</view>
+    <view class="p">注册成功，我方会在一个工作日内完成审核，审核期间使用快收银软件只支持现金收款。</view>
+    <view class="p">系统已默认创建商户及门店，登录密码均默认{{detail.storePassword}}</view>
 </view>
-
-  <view class="btn" hover="true" hover-class="btn-hover" bindtap="finshReg">完成注册</view>
+<view class='btnbar'>
+    <view class="btn" hover="true" hover-class="btn-hover" bindtap="finshReg">完成</view>
+  </view>

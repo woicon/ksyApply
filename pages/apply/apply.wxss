@@ -204,7 +204,7 @@ page{
     align-items: center;
     justify-content:space-between;
     padding:0;
-    height:200rpx;
+    height:220rpx;
 }
 .photo:after{
     border:none;
@@ -251,13 +251,14 @@ page{
     font-size:28rpx;
     line-height:32rpx;
     position:absolute;
-    right:16rpx;
-    top:16rpx;
+    right:30rpx;
+    top:30rpx;
     width:100rpx;
     height:100rpx;
     display:flex;
     justify-content:center;
     align-items:center;
+    opacity:.7;
 }
 .reference .title:after,
 .reference .title:before{
@@ -289,32 +290,7 @@ page{
     position:relative;
     z-index:9;
 }
-.btnbar {
-    text-align:center;
-    padding:20px 0 60px;
-}
-.btnbar .info{
-    margin:0 30rpx 50rpx;
-    font-size:24rpx;
-    text-align:left;
-    color:#27CFB1;
-}
-.btnbar .btn{
-    display:inline-block;
-    width:40%;
-    padding:10px;
-    font-size:36rpx;
-    background:#27CFB1;color:#fff;
-    margin:0 5px;
-    border-radius:4rpx;
-    vertical-align:top;
-    line-height:normal;
-}
 
-.btnbar .btns-hover{
-    background:#ccc;
-    color:#888;
-}
 
 .btnbar .btn-hover{
     background:#12be9f;

@@ -96,3 +96,6 @@
     padding:14rpx 0;
     font-size:30rpx;
 }
+page{
+    padding-bottom:60rpx;
+}

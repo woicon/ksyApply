@@ -93,6 +93,7 @@ Page({
       wx.getStorage({
           key: 'mcDetails',
           success: function(res) {
+              console.log(JSON.parse(res.data));
               that.setData({
                   mcDetails: JSON.parse(res.data)
               });

@@ -7,8 +7,7 @@
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
-} 
-
+}
 page{
     background:#fafafa;
 }
@@ -68,7 +67,7 @@ page{
     padding:32rpx 0;
     margin:0 30rpx;
     justify-content:space-between;
-    font-size:30rpx;
+    font-size:28rpx;
     color:#999;
     position:relative;
     background:#fff;
@@ -90,8 +89,43 @@ page{
 .lines:last-child::after{
     border:none;
 }
+.lines text{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
 .lines .value{
-    font-size:32rpx;
+    font-size:30rpx;
     color:#444;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    text-align:right;
+}
+.btnbar {
+    text-align:center;
+    padding:20px 0 60px;
+}
+.btnbar .info{
+    margin:0 30rpx 50rpx;
+    font-size:24rpx;
+    text-align:left;
+    color:#27CFB1;
+}
+.btnbar .btn{
+    display:inline-block;
+    width:40%;
+    padding:8px 0;
+    font-size:36rpx;
+    background:#27CFB1;color:#fff;
+    margin:0 5px;
+    border-radius:4rpx;
+    vertical-align:top;
+    line-height:normal;
+}
+
+.btnbar .btns-hover{
+    background:#ccc;
+    color:#888;
 }
 

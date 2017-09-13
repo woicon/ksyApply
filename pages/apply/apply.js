@@ -6,7 +6,7 @@ Page({
     data: {
         stepBar: ['商户信息', '结算信息', '进件信息'],
         formType: ['input', 'picker', 'upfile', 'textarea', 'time', 'area'],
-        currentStep: 2,
+        currentStep:0,
         formData: formData,
         formStat:[],
         postData:null
@@ -14,7 +14,7 @@ Page({
     formBlur:function(e){
         if(e.detail.value == ''){
             wx.showModal({
-                content: '请输入',     
+                content: '请输入',
                 showCancel:false
             })
         }
@@ -122,7 +122,7 @@ Page({
     nextStep: function () {
         let that = this;
         this.stepJump(+1);
-        wx.setStorageSync({
+        wx.setStorage({
             key: 'parmas',
             data: that.data.postData,
         });
@@ -251,41 +251,90 @@ Page({
         parmas.service = 'mp_pf_add_configure';
         parmas.productId = '480';
         let _parmas = base.getSign(parmas,app.key);
-        wx.request({
-            url: app.url.host,
-            data: _parmas,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            success:function(res){
-                wx.hideLoading();
-                let data = base.XMLtoJSON(res.data);
-                console.log(data)
-                if(data.ebill.is_success === 'S'){
-                    wx.navigateTo({
-                        url: '/pages/applycomplete/applycomplete',
-                    })
-                }else{
-                    wx.showModal({
-                        title: '提交出错',
-                        content: data.ebill.message,
+        let submitReg = new Promise(()=>{
+            wx.request({
+                url: app.url.host,
+                data: _parmas,
+                method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                success:function(res){
+                    wx.hideLoading();
+                    let data = base.XMLtoJSON(res.data);
+                    console.log(data.ebill);
+                    if(data.ebill.is_success === 'S'){
+                        wx.setStorage({
+                            key: 'loginInfo',
+                            data: data.ebill.mcDetails,
+                        });
+                        wx.setStorage({
+                            key: 'mallInfo',
+                            data:{
+                                name:that.data.postData.merchantFullName
+                            },
+                        });
+                        wx.getStorage({
+                            key: 'token',
+                            success: function (res) {
+                                wx.request({
+                                    url: 'https://api.weixin.qq.com/cgi-bin/wxopen/template/library/list?access_token=' + res.data,
+                                    method: 'POST',
+                                    data: {
+                                        "touser": "ooo3w0OMtRB2UQVuqlblZOa2-eZs",
+                                        "template_id": "RbxT2BNL9d_0DHAfZrR6EDH9bEjPzSKKVIZzuNDPxj8",
+                                        "page": "index",
+                                        "form_id": "submitApply",
+                                        "data": {
+                                            "keyword1": {
+                                                "value": base.getNowDate()
+                                            },
+                                            "keyword2": {
+                                                "value": that.data.postData.merchantFullName,
+                                            },
+                                            "keyword3": {
+                                                "value": that.data.postData.contactName,
+                                            },
+                                            "keyword4": {
+                                                "value": that.data.postData.contactPhone,
+                                            },
+                                            "keyword5": {
+                                                "value": "注册成功，我方会在一个工作日内完成审核，审核期间使用快收银软件只支持现金收款。系统已默认创建商户及门店，登录密码均默认123456abc"
+                                            }
+                                        }
+                                    },
+                                    success: function (res) {
+                                        console.log(res);
+                                    },
+                                    complete: function (res) {
+                                        console.log(res);
+                                    }
+                                })
+                            },
+                        })
+                    }else{
+                        wx.showModal({
+                            title: '',
+                            content: data.ebill.message,
+                            showCancel:false
+                        })
+                    }
+                },
+                fail:function(error){
+                    wx.showToast({
+                        title: '注册失败',
                     })
                 }
-            },
-            fail:function(error){
-                wx.showToast({
-                    title: '注册失败',
-                })
-            }
-        });
-        wx.navigateTo({
-            url: '/pages/applycomplete/applycomplete',
-        });
+            });
+        })
+        .then(() => {
+            wx.navigateTo({
+                url: '/pages/applycomplete/applycomplete',
+            });
+        })
     },
-
     onLoad: function (options) {
-        console.log(options);
+        wx.showLoading();
         var that = this;
         wx.setNavigationBarTitle({
             title: '注册快收银',
@@ -303,12 +352,9 @@ Page({
         delete postData.key;
  
         if (options.edit){
-            console.log('sdf');
             wx.getStorage({
                 key: 'parmas',
                 success: function(res) {
-                    //console.log(res);
-                    //that.data.postData = res.data
                     that.setData({
                         postData: res.data
                     });
@@ -322,16 +368,13 @@ Page({
         
     },
     onReady: function () {
-       
+        wx.hideLoading()
     },
     onShow: function () {
-        console.log('333');
     },
     onHide: function () {
-
     },
     onUnload: function () {
-
     },
     onPullDownRefresh: function () {
 

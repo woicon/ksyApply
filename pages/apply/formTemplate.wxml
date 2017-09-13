@@ -28,8 +28,9 @@
             bindchange="{{item.data.bindchange}}"
             data-id="{{item.data.id}}"
             data-name="{{item.name}}"
+            data-node="{{item.data.node}}"
             id="{{index}}">
-                <view class="picker">{{value[item.name] || item.data.selected}} </view>
+                <view class="picker">{{item.node[value[item.name]]||'请选择'}} </view>
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'multiSelector'}}" 
@@ -83,7 +84,7 @@
                 <view class="title">上传图片</view>
             </view>
             <view class="wimg {{value[item.name] ? 'show':''}}">
-                <image src="{{value[item.name]}}" mode="aspectFill"></image>
+                <image src="{{value[item.name]}}" wx:if="{{value[item.name]}}" mode="aspectFill"></image>
             </view>
             <view class="reference">
                 <image src="{{item.data.reference}}" mode="aspectFit"></image>

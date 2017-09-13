@@ -53,46 +53,50 @@
       </view>
       <!-- <view class="lines">
         门店编号<view class="value">{{mcDetails.storeNo}}</view>
-      </view>
-        <view class="lines">
+      </view>-->
+        <!-- <view class="lines">
         门店名称<view class="value">{{mcDetails.storeName}}</view>
       </view> -->
 </view>
 <view class="coltitle">进件费率信息</view>
 <view class="linegroup">
       <view class="lines">
-        配置名称<view class="value">{{mcDetails.configureName}}</view>
+        <text>配置名称</text>
+        <view class="value">{{mcDetails.configureName}}</view>
       </view>
-      <view class="lines">
+      <!-- <view class="lines">
         通道id<view class="value">{{mcDetails.passId}}</view>
-      </view>
+      </view> -->
       <view class="lines">
-        通道类型
+        <text>通道类型</text>
         <block wx:for="{{passType}}" wx:key="passType">
           <view class="value" wx:if="{{mcDetails.passType==index}}">{{item}}</view>
         </block>
       </view>
       <view class="lines">
-        通道名称<view class="value">{{mcDetails.passName}}</view>
+        <text>通道名称</text>
+        <view class="value">{{mcDetails.passName}}</view>
       </view>
-      <view class="lines">
+      <!-- <view class="lines">
         支付宝费率ID<view class="value">{{mcDetails.alipayRateId}}</view>
-      </view>
+      </view> -->
        <view class="lines">
-        支付宝费率名称<view class="value">{{mcDetails.alipayRateName}}</view>
+        <text>支付宝费率</text>
+        <view class="value">{{mcDetails.alipayRateName}} - {{mcDetails.alipayRate}}‰</view>
       </view>
-       <view class="lines">
-        支付宝费率<view class="value">{{mcDetails.alipayRate}}‰</view>
-      </view>
-       <view class="lines">
+       <!-- <view class="lines">
+        支付宝费率<view class="value"></view>
+      </view> -->
+       <!-- <view class="lines">
         微信费率ID<view class="value">{{mcDetails.wechatRateId}}</view>
-      </view>
+      </view> -->
        <view class="lines">
-        微信费率名称<view class="value">{{mcDetails.wechatRateName}}</view>
+        <text>微信费率</text>
+        <view class="value">{{mcDetails.wechatRateName}} - {{mcDetails.wechatRate}}‰</view>
       </view>
-       <view class="lines">
-        微信费率<view class="value">{{mcDetails.wechatRate}}‰</view>
-      </view>
+       <!-- <view class="lines">
+        微信费率<view class="value">/view>
+      </view> -->
        <!-- <view class="lines">
         配置备注<view class="value">{{mcDetails.remark}}</view>
       </view> -->
@@ -100,48 +104,56 @@
 <view class="coltitle">进件商户信息</view>
 <view class="linegroup">
       <view class="lines">
-        商户简称<view class="value">{{mcDetails.nameCn}}</view>
+        <text>商户简称</text>
+        <view class="value">{{mcDetails.nameCn}}</view>
       </view>
       <view class="lines">
-        商户名称<view class="value">{{mcDetails.fullNameCn}}</view>
+        <text>商户名称</text>
+        <view class="value">{{mcDetails.fullNameCn}}</view>
       </view>
 
       <view class="lines">
-        经营类目名称<view class="value">{{mcDetails.businessCategoryName}}</view>
+        <text>经营类目名称</text>
+        <view class="value">{{mcDetails.businessCategoryName}}</view>
       </view>
       <view class="lines">
-        客服电话<view class="value">{{mcDetails.customerPhone}}</view>
+        <text>客服电话</text>
+        <view class="value">{{mcDetails.customerPhone}}</view>
       </view>
       <view class="lines">
-        联系人类型
+        <text>联系人类型</text>
         <block wx:for="{{contactType}}" wx:key="contactType">
           <view class="value" wx:if="{{mcDetails.contactType==index}}">{{item}}</view>
         </block>
       </view>
       <view class="lines">
-        联系人姓名<view class="value">{{mcDetails.contactName}}</view>
+        <text>联系人姓名</text>
+        <view class="value">{{mcDetails.contactName}}</view>
       </view>
       <view class="lines">
-        联系人身份证号码<view class="value">{{mcDetails.certificateNo}}</view>
+        <text>联系人身份证号码</text>
+        <view class="value">{{mcDetails.certificateNo}}</view>
       </view>
       <view class="lines">
-        联系人手机号<view class="value">{{mcDetails.contactPhone}}</view>
+        <text>联系人手机号</text>
+        <view class="value">{{mcDetails.contactPhone}}</view>
       </view>
-     
       <!-- <view class="lines">
         联系人邮箱<view class="value">{{mcDetails.contactEmail}}</view>
       </view> -->
       <view class="lines">
-        营业执照类型
+        <text>营业执照类型</text>
         <block wx:for="{{businessLicenseType}}" wx:key="businessLicenseType">
           <view class="value" wx:if="{{mcDetails.businessLicenseType==index}}">{{item}}</view>
         </block>
       </view>
       <view class="lines">
-        营业执照编号<view class="value">{{mcDetails.businessLicenseNo}}</view>
+        <text>营业执照编号</text>
+        <view class="value">{{mcDetails.businessLicenseNo}}</view>
       </view>
        <view class="lines">
-        商户所在省市区<view class="value">{{mcDetails.province}}{{mcDetails.city}}{{mcDetails.area}}</view>
+        <text>商户所在省市区</text>
+        <view class="value">{{mcDetails.province}}{{mcDetails.city}}{{mcDetails.area}}</view>
       </view>
        <view class="lines">
         商户详细地址<view class="value">{{mcDetails.address}}</view>
@@ -150,35 +162,38 @@
 <view class="coltitle">结算信息</view>
 <view class="linegroup">
       <view class="lines">
-        账户类型<view class="value">{{mcDetails.accountType ==1 ? "个人" : "企业"}}</view>
+        <text>账户类型</text>
+        <view class="value">{{mcDetails.accountType ==1 ? "个人" : "企业"}}</view>
       </view>
       <view class="lines">
-        开户银行<view class="value">{{mcDetails.bank}}</view>
+        <text>开户银行</text>
+        <view class="value">{{mcDetails.bank}}</view>
       </view>
       <view class="lines">
-        银行卡号/对公账号<view class="value">{{mcDetails.cardNo}}</view>
+        <text>银行卡号/对公账号</text>
+        <view class="value">{{mcDetails.cardNo}}</view>
       </view>
       <view class="lines">
-        开户人/企业名称<view class="value">{{mcDetails.merchantCorporation}}</view>
+        <text>开户人/企业名称</text>
+        <view class="value">{{mcDetails.merchantCorporation}}</view>
       </view>
 </view>
 <view class="coltitle">资质照片</view>
-<!--businessLicenseUrl、identificationOppositeUrl、openingPermitUrl、src="{{mcDetails.identificationFrontUrl}}"-->
-<view class="linegroup">
+<view class="linegroup imggroup">
       <view class="imglist">
-        <image class="imgarea" src="{{mcDetails.identificationFrontPfUrl}}"></image>
+        <image class="imgarea" wx:if="{{mcDetails.identificationFrontPfUrl}}" src="{{mcDetails.identificationFrontPfUrl}}"></image>
         <view class="title">负责人身份证正面照片</view>
       </view>
       <view class="imglist">
-        <image class="imgarea" src="{{mcDetails.identificationOppositePfUrl}}"></image>
+        <image class="imgarea" wx:if="{{mcDetails.identificationOppositePfUrl}}" src="{{mcDetails.identificationOppositePfUrl}}"></image>
         <view class="title">负责人身份证反面照片</view>
       </view>
 <view class="imglist">
-        <image class="imgarea" src="{{mcDetails.businessLicensePfUrl}}"></image>
+        <image class="imgarea" wx:if="{{mcDetails.businessLicensePfUrl}}" src="{{mcDetails.businessLicensePfUrl}}"></image>
         <view class="title">营业执照照片</view>
       </view>
       <view class="imglist">
-        <image class="imgarea" src="{{mcDetails.openingPermitPfUrl}}"></image>
+        <image class="imgarea" wx:if="{{mcDetails.openingPermitPfUrl}}" src="{{mcDetails.openingPermitPfUrl}}"></image>
         <view class="title">开户许可证照片</view>
       </view>
 </view>

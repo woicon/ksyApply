@@ -38,15 +38,7 @@ page{
 .shop-info{
     background:#fff;
 }
-.btn{
-    padding:16px;
-    font-size:36rpx;
-    margin:40rpx 30rpx;
-    background:#27CFB1;
-    color:#fff;
-    border-radius:4rpx;
-    text-align:center;
-}
+
 .lines{
     display:flex;
     align-items:center;

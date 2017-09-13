@@ -2,6 +2,7 @@ var partners= require('./utils/member.js')
 var base = require('./utils/util.js')
 App({
     onLaunch: function (options) {
+        wx.showLoading();
         let that = this;
         let init = new Promise((res,rej)=>{
             wx.login({
@@ -16,6 +17,7 @@ App({
                                 grant_type: data.code
                             },
                             success: function (re) {
+                                console.log(re);
                                 that.api.openId = re.data.openid
                                 res(re);
                             },
@@ -33,7 +35,7 @@ App({
                 that.api[i] = partner[i];
             }
             that.key = partner.key;
-            that.api.openId = "ooo3w0OMtRB2UQVuqlblZOa20000-01";
+            //that.api.openId = "ooo3w0OMtRB2UQVuqlblZOa99";
             that.api.service = 'mp_pf_audit_details';
             that.api.agencyCodeName = partnerId;
             that.api.applicationName = '快收银一键开户';
@@ -60,15 +62,26 @@ App({
                         }
                         wx.setStorageSync('mcDetails', data.mcDetails);
                     } else {
-                        // wx.navigateTo({
-                        //     url: '/pages/index/index',
-                        // })
+                        wx.navigateTo({
+                            url: '/pages/index/index',
+                        })
                     }
                 },
                 fail:function(err){
                     console.log(err);
                 }
             });
+        })
+        .then(()=>{
+            wx.request({
+                url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxea7c589ca4c29bd4&secret=61b6dd0b328b48fac3517bfc62d75fc4',
+                success:function(res){
+                    wx.setStorage({
+                        key: 'token',
+                        data: res.data.access_token,
+                    })
+                }
+            })
         })
         .catch((res)=>{
             wx.showModal({

@@ -5,6 +5,7 @@ Page({
   
   },
   onLoad: function (options) {
+    let that = this;
     wx.setNavigationBarTitle({
         title: '注册成功',
     });
@@ -12,21 +13,34 @@ Page({
         frontColor: '#ffffff',
         backgroundColor: '#27CFB1',
     });
-    wx.onUserCaptureScreen(function (res) {
-        console.log('用户截屏了')
-    });
     wx.showModal({
         title: '提示',
         content: '请妥善保管商户及门店登录账户及密码',
-    })
+    });
+    wx.getStorage({
+        key: 'loginInfo',
+        success: function(res) {
+            that.setData({
+                detail: JSON.parse(res.data)
+            });
+        }
+    });
+    wx.getStorage({
+        key: 'mallInfo',
+        success: function (res) {
+            that.setData({
+                mallInfo:res.data
+            });
+        }
+    });
   },
   finshReg:function (){
-    // wx.navigateTo({
-    //     url: '/pages/applydetail/applydetail',
-    // });
+    wx.navigateTo({
+        url: '/pages/applydetail/applydetail',
+    });
   },
   onReady: function () {
-  
+    wx.hideLoading();
   },
   onShow: function () {
   

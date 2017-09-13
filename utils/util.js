@@ -115,6 +115,17 @@ let reg = {
     chinese:/^[\u0391-\uFFE5]+$/,
     idcard:/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[A-Z])$/,
 }
+function getToken(){
+    var token;
+    wx.request({
+        url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxea7c589ca4c29bd4&secret=61b6dd0b328b48fac3517bfc62d75fc4',
+        method:'POST',
+        success: function (res) {
+            console.log(res);
+            token = res.data.access_token;
+        }
+    });
+}
 function validation(str,reg){
     phoneValue = valueTrim(phoneValue);
     var reg = /^[1][0-9]{10}$/;
@@ -138,5 +149,6 @@ module.exports = {
     sortObj: sortObj,
     getSign:getSign,
     reg:reg,
-    validation: validation
+    validation: validation,
+    getToken: getToken
 }
