@@ -1,4 +1,4 @@
-<!--pages/applycomplete/applycomplete.wxml-->
+ <!--pages/applycomplete/applycomplete.wxml-->
 
 <view class="success-head">
     <view class="icon ico-trophy"></view>
@@ -8,8 +8,8 @@
 <view class="shop-info">
     <view class="lines">商户名称 <view class="value">{{mallInfo.name}}</view></view>
      <view class="lines">商户登录名<view class="value">{{detail.merchantLoginName}}</view></view>
-</view>
-<view class="shop-info">
+
+<view class="lines">门店名称 <view class="value">{{mallInfo.name}}001</view></view>
      <view class="lines">门店登录名<view class="value">{{detail.storeLoginName}}</view></view>
 </view>
 <view class="head-txt">

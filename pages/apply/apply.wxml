@@ -1,5 +1,5 @@
 <!--pages/apply/apply.wxml-->
-<form id='submitApply'>
+
 <view class="apply">
     <view class="apply-step">
         <view class="step-item {{currentStep == index || stepStat[index] ? 'active':''}}" wx:for="{{stepBar}}" wx:key="stepbar">
@@ -24,8 +24,9 @@
         <block wx:elif="{{currentStep == 2}}">
             <view class="info">点击提交即表示同意用户注册协议</view>
             <view class="btn prev" hover="true" hover-class="btns-hover" bindtap="backStep">上一步</view>
-            <view class="btn {{buttonStat[2]?'disable':''}}" hover="true" formType="submit" hover-class="btn-hover" bindtap="submintForm">提交注册</view>
+            <form id='submitApply'name='pushMsgFm' report-submit bindsubmit='submintForm'>
+                <button class="btn {{buttonStat[2]?'disable':''}}" hover="true" formType="submit" hover-class="btn-hover">提交注册</button>
+            </form>
         </block>
     </view>
 </view>
-</form>

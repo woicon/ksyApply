@@ -62,7 +62,9 @@ page{
     width:200%;
 
 }
-
+.shop-info .lines:last-child:after{
+    background:#fff;
+}
 .lines:last-child::after{
     border:none;
 }

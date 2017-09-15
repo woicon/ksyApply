@@ -31,4 +31,6 @@ page{color:#1FC6A9;background:#fff;padding-bottom: 50px;}
 .content{padding-left:120rpx;}
 .product_about .point{font-size:26rpx;}
 .product_about .describe{font-size:22rpx;line-height:1.5;padding-top:10rpx;}
-.reg{text-align:center;padding:20rpx 0;background:#00BB9C;color:#fff;width:80%;margin:0 auto;border-radius:6rpx;font-size:34rpx;margin-top:20rpx;}
+.reg{text-align:center;padding:26rpx 0;background:#00BB9C;color:#fff;width:80%;margin:0 auto;border-radius:6rpx;font-size:32rpx;margin-top:20rpx;
+box-shadow:0 30rpx 60rpx rgba(0,0,0,.2);
+}

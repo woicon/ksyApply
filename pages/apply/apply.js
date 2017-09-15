@@ -11,18 +11,20 @@ Page({
         formStat:[],
         postData:null
     },
+    inputFocus:function(e){
+        
+    },
     formBlur:function(e){
-        if(e.detail.value == ''){
-            wx.showModal({
-                content: '请输入',
-                showCancel:false
-            })
+        let _reg = base.reg;
+        const data = e.target.dataset;
+        if (data.reg){
+            if ( e.detail.value =='' || !base.validation(e.detail.value, _reg[data.reg])){
+                wx.showModal({
+                    content: data.error,
+                    showCancel:false
+                })
+            }
         }
-        let _post = form.post;
-        let _postData = this.data.postData;
-        _post[this.data.currentStep].forEach((val,index,arr)=>{
-            
-        });
     },
     getNode: function (id) {
         let _formData = this.data.formData;
@@ -103,15 +105,18 @@ Page({
       if (e.target.dataset.extend){
           _postData[e.target.dataset.extend] = range[e.detail.value][0];
       }
-
       if (e.target.dataset.id === 'accountType'){
           let _form = _formData[1];
           if (e.detail.value === '1'){
              _form[2].label = '对公账户';
              _form[3].label = '企业名称';
+             _form[2].placeholder = '请输入对公账号';
+             _form[3].placeholder = '请输入企业名称';
          }else{
               _form[2].label = '银行卡号';
               _form[3].label = '持卡人姓名';
+              _form[2].placeholder = '请输入银行卡号';
+              _form[3].placeholder = '请输入持卡人姓名';
          }
       }
       that.setData({
@@ -164,7 +169,6 @@ Page({
         let parmas = base.getSign(upParmas, app.key);
         //let _parmas = base.toQueryParams(parmas);
         let upImage = new Promise((res, rej)=> {
-            
             wx.chooseImage({
                 count: 1,
                 success: (data)=> {
@@ -190,7 +194,6 @@ Page({
                     console.log(base.XMLtoJSON(res.data))
                     let _imgUrl = base.XMLtoJSON(res.data).ebill.file_url;
                     let imgUrl = _imgUrl.substring(0, _imgUrl.length - 1);
-                    
                     _postData[imgName] = imgUrl;
                     that.setData({
                         postData: _postData
@@ -198,9 +201,16 @@ Page({
                     wx.hideLoading();
                 },
                 fail: function (res) {
+                    wx.hideLoading();
                     console.log(res);
                 }
             });
+        }).catch((error)=>{
+            wx.showModal({
+                title: '出了点小问题',
+                content: error,
+                showCancel:false
+            })
         });
     },
     setPostData:function(id,value){
@@ -237,33 +247,59 @@ Page({
     },
 
     //提交
-    submintForm: function () {
+    submintForm: function (e) {
+        let that = this;
         wx.showLoading({
-            title: '',
             mask:true
         });
-        let that = this;
+        wx.setStorage({
+            key: 'parmas',
+            data: that.data.postData,
+        });
+        var formId = e.detail.formId;
         let parmas = that.data.postData;
         delete parmas.sign_type;
         delete parmas.sign;
         delete parmas.agentAuditNo;
         parmas.operationDatetime = base.getNowDate();
         parmas.service = 'mp_pf_add_configure';
-        parmas.productId = '480';
+        // 快收银连锁版
+        parmas.productId = '484';//线下环境
+        //parmas.productId = '421';//线上环境
         let _parmas = base.getSign(parmas,app.key);
-        let submitReg = new Promise(()=>{
+        let submitReg = new Promise((_res)=>{
             wx.request({
                 url: app.url.host,
                 data: _parmas,
                 method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
+                header: {'content-type': 'application/x-www-form-urlencoded'},
                 success:function(res){
                     wx.hideLoading();
                     let data = base.XMLtoJSON(res.data);
-                    console.log(data.ebill);
                     if(data.ebill.is_success === 'S'){
+                        let mcDetails = JSON.parse(data.ebill.mcDetails);
+                        _res({
+                            "keyword1": {
+                                "value": base.getNowDate(),
+                                "color": "#4a4a4a"
+                            },
+                            "keyword2": {
+                                "value": that.data.postData.contactPhone,
+                                "color": "#9b9b9b"
+                            },
+                            "keyword3": {
+                                "value": that.data.postData.merchantFullName,
+                                "color": "#9b9b9b"
+                            },
+                            "keyword4": {
+                                "value": "商户登录账号：" + mcDetails.merchantLoginName + "门店登录账号：" + mcDetails.storeLoginName,
+                                "color": "#9b9b9b"
+                            },
+                            "keyword5": {
+                                "value": "注册成功，我方会在一个工作日内完成审核，审核期间使用快收银软件只支持现金收款。系统已默认创建商户及门店，登录密码均默认" + mcDetails.storePassword,
+                                "color": "#9b9b9b"
+                            }
+                        });
                         wx.setStorage({
                             key: 'loginInfo',
                             data: data.ebill.mcDetails,
@@ -274,47 +310,9 @@ Page({
                                 name:that.data.postData.merchantFullName
                             },
                         });
-                        wx.getStorage({
-                            key: 'token',
-                            success: function (res) {
-                                wx.request({
-                                    url: 'https://api.weixin.qq.com/cgi-bin/wxopen/template/library/list?access_token=' + res.data,
-                                    method: 'POST',
-                                    data: {
-                                        "touser": "ooo3w0OMtRB2UQVuqlblZOa2-eZs",
-                                        "template_id": "RbxT2BNL9d_0DHAfZrR6EDH9bEjPzSKKVIZzuNDPxj8",
-                                        "page": "index",
-                                        "form_id": "submitApply",
-                                        "data": {
-                                            "keyword1": {
-                                                "value": base.getNowDate()
-                                            },
-                                            "keyword2": {
-                                                "value": that.data.postData.merchantFullName,
-                                            },
-                                            "keyword3": {
-                                                "value": that.data.postData.contactName,
-                                            },
-                                            "keyword4": {
-                                                "value": that.data.postData.contactPhone,
-                                            },
-                                            "keyword5": {
-                                                "value": "注册成功，我方会在一个工作日内完成审核，审核期间使用快收银软件只支持现金收款。系统已默认创建商户及门店，登录密码均默认123456abc"
-                                            }
-                                        }
-                                    },
-                                    success: function (res) {
-                                        console.log(res);
-                                    },
-                                    complete: function (res) {
-                                        console.log(res);
-                                    }
-                                })
-                            },
-                        })
+                        _res(data.ebill.mcDetails);
                     }else{
                         wx.showModal({
-                            title: '',
                             content: data.ebill.message,
                             showCancel:false
                         })
@@ -326,11 +324,29 @@ Page({
                     })
                 }
             });
-        })
-        .then(() => {
-            wx.navigateTo({
-                url: '/pages/applycomplete/applycomplete',
-            });
+        }).then((res)=>{
+            wx.request({
+                url: 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=' + app.globalData.token,
+                data: {
+                    //touser: "ooo3w0OMtRB2UQVuqlblZOa2-eZs",
+                    touser:app.api.openId,
+                    template_id: 'RbxT2BNL9d_0DHAfZrR6ELEskkJ8OYg_X4ngfPmfHO0',
+                    page: '/pages/applydetail/applydetail',
+                    form_id: formId,
+                    data: res
+                },
+                method: 'POST',
+                success: function (res) {
+                    console.log(res);
+                    wx.navigateTo({
+                        url: '/pages/applycomplete/applycomplete',
+                    });
+                },
+                fail: function (err) {
+                    console.log("push err");
+                    console.log(err);
+                }
+            })
         })
     },
     onLoad: function (options) {
@@ -338,11 +354,21 @@ Page({
         var that = this;
         wx.setNavigationBarTitle({
             title: '注册快收银',
-        });
-        wx.setNavigationBarColor({
-            frontColor: '#ffffff',
-            backgroundColor: '#27CFB1',
-        });
+        }); 
+        
+        if (wx.setNavigationBarColor) {
+            wx.setNavigationBarColor({
+                frontColor: '#ffffff',
+                backgroundColor: '#27CFB1',
+            });
+        } else {
+            // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+            wx.showModal({
+                title: '提示',
+                content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+            })
+        }
+        
         var _stepStat = [];
         for (var i = 0; i < that.data.stepBar.length; i++) {
             _stepStat.push(false);
@@ -350,7 +376,16 @@ Page({
         var that = this;
         let postData = app.api;
         delete postData.key;
- 
+        wx.getStorage({
+            key: 'parmas',
+            complete:function(res){
+                if(res.data){
+                    that.setData({
+                        postData: res.data
+                    });
+                };
+            }
+        })
         if (options.edit){
             wx.getStorage({
                 key: 'parmas',
@@ -365,7 +400,6 @@ Page({
             stepStat: _stepStat,
             postData: postData
         });
-        
     },
     onReady: function () {
         wx.hideLoading()

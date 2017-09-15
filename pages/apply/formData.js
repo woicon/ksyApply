@@ -110,7 +110,7 @@ module.exports =[
         {
             "label": "营业执照编号",
             "name":'businessLicenseNo',
-            "placeholder": "18字以内",
+            "placeholder": "15字或者18字执照编号",
             "type": "0",
             "data":{
                 "maxlength":"18",
@@ -175,8 +175,10 @@ module.exports =[
         {
             "label": "商户联系人手机号",
             "name": "contactPhone",
-            "required": "请输入正确的手机号!",
+            "error": "请输入正确的手机号!",
             "placeholder": "11位手机号",
+            "reg":"phone",
+            "bindfocus":"inputFocus",
             "type": "0",
             "data": {
                 "maxlength": "11",
@@ -189,8 +191,9 @@ module.exports =[
         },
         {
             "label": "联系人身份证号",
-            "required": "请输入正确的身份证号!",
+            "error": "请输入正确的身份证号!",
             "name": "certificateNo",
+            "reg":"idcard",
             "placeholder": "18字以内",
             "type": "0",
             "data": {
@@ -280,7 +283,7 @@ module.exports =[
             "label": "银行卡号",
             "name": "cardNo",
             "required": "请输入正确的银行卡号!",
-            "placeholder": "20个字符以内",
+            "placeholder": "请输入银行卡号",
             "type": "0",
             "data": {
                 type:'number',

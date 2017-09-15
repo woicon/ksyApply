@@ -3,7 +3,7 @@
     <view class="logo">
         <image src="../images/logo.png"></image>
     </view>
-    <view class="title">开店就有快收银</view>
+    <view class="title">开店就用快收银</view>
     <view class="smtitle">4大亮点成就餐饮SaaS精品之作！</view>
     <view class="product_about">
         <view class="list clearfix">
@@ -35,5 +35,5 @@
               </view>
         </view>
     </view>
-    <view class="reg" bindtap="regInfo" bindtap="goReg">我要注册</view>
+    <view class='reg' bindtap='goReg' hover-class="button-hover">马上注册</view>
 </view>

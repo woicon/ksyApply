@@ -9,17 +9,21 @@ function formatTime(date) {
   var second = date.getSeconds()
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
-
+const app ={
+    appId:'wxea7c589ca4c29bd4',
+    appSecret:'61b6dd0b328b48fac3517bfc62d75fc4'
+}
 function formatNumber(n) {
     n = n.toString()
     return n[1] ? n : '0' + n
 }
-
 function getNowDate() {
     return formatTime(new Date());
 }
+function sedMsg(){
 
-//XML转JSON /(ㄒoㄒ)/~💩
+}
+//XML转JSON /(ㄒoㄒ)/
 function XMLtoJSON(xml) {
     var myOptions = {
         normalize: false,
@@ -50,6 +54,7 @@ function sortObj(obj) {
     }
     return obj;
 }
+
 //转URL参数
 function parseParam(obj, encode) {
     function toQueryPair(key, value) {
@@ -111,25 +116,22 @@ function toQueryParams(par) {
 }
 let reg = {
     business:/^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/,
-    phone: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$/, 
+    phone: /^[1][3,4,5,7,8][0-9]{9}$/,
     chinese:/^[\u0391-\uFFE5]+$/,
     idcard:/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[A-Z])$/,
 }
 function getToken(){
-    var token;
-    wx.request({
-        url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxea7c589ca4c29bd4&secret=61b6dd0b328b48fac3517bfc62d75fc4',
-        method:'POST',
-        success: function (res) {
-            console.log(res);
-            token = res.data.access_token;
-        }
-    });
+    // wx.request({
+    //     url: 'http://wxcs.liantuo.com/app/token.do?'+a.appId+'&appSecret='+a.appSecret,
+    //     method:'POST',
+    //     success: function (res) {
+    //         return res.data.result;
+    //     }
+    // });
 }
 function validation(str,reg){
-    phoneValue = valueTrim(phoneValue);
-    var reg = /^[1][0-9]{10}$/;
-    return reg.test(phoneValue);
+    let res = reg.test(str);
+    return res;
 }
 //生成签名参数
 function getSign(parmas, key) {
@@ -150,5 +152,6 @@ module.exports = {
     getSign:getSign,
     reg:reg,
     validation: validation,
-    getToken: getToken
+    app:app,
+    getToken: getToken,
 }

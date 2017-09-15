@@ -6,11 +6,14 @@
         <view class="type" wx:if="{{item.type == '0'}}">
             <input placeholder="{{item.placeholder}}"
             bindinput="bindKeyInput"
-            type="{{item.data.type || 'text'}}" 
+            type="{{item.data.type || 'text'}}"
             bindtap="{{item.bindtap}}"
             data-name="{{item.name}}"
             id="{{item.name}}"
             bindblur="{{item.bindblur}}"
+            bindfocus="{{item.bindfocus}}"
+            data-reg="{{item.reg}}"
+            data-error="{{item.error}}"
             value="{{value[item.name]||''}}"
             maxlength="{{item.data.maxlength || '-1'}}"
             disabled="{{item.data.disabled}}" />

@@ -197,6 +197,33 @@
         <view class="title">开户许可证照片</view>
       </view>
 </view>
+
 <block wx:if="{{mcDetails.auditorStatus  == 4}}">
     <view class='block-button' bindtap='editForm'>重新注册</view>
 </block>
+
+<view style='margin:0 50rpx;'>
+    <view style='font-size:24rpx;line-height:1.5;margin-top:30rpx;margin-bottom:20rpx;'>测试重新注册，需要先一定清理缓存,输入openId</view>
+    <button bindtap='clearStore' style='margin-bottom:20rpx'>清理缓存</button>
+    <input bindinput='sets' style='border:1rpx solid #eee;padding:20rpx 10rpx;font-size:26rpx;margin-bottom:20rpx' value='' placeholder='输入openID,最大长度32位'></input>
+    <button bindtap='{{openId?"goindex":""}}' disabled='{{!openId?"true":""}}'>重新注册</button>
+</view>
+
+  <form name='pushMsgFm' id="formid" report-submit bindsubmit='orderSign'>  
+ <view class='fgroup'>
+    enter product:<input type="text" name="product" value='' placeholder="enter your name" />  
+    </view>
+    <view class='fgroup'>
+    detail: <input type="text" name='detail' placeholder="enter desc" />  
+    </view>
+        <view class='fgroup'>
+    detail: <input type="text" name='phone' placeholder="enter desc" />  
+    </view>
+
+    <view class='fgroup'>
+    value:<input type="text" name='username' placeholder="enter desc"></input>
+    </view>
+    <button form-type="submit">submit</button> 
+</form>   
+
+

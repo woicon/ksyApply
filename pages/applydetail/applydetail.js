@@ -1,4 +1,5 @@
 var app = getApp();
+var base = require('../../utils/util.js');
 Page({
   data: {
     stat: { "2":'待审核',"3":'处理中',"4":'不通过',"6":'审核通过'},
@@ -90,18 +91,69 @@ Page({
           frontColor: '#ffffff',
           backgroundColor: '#27CFB1',
       });
-      wx.getStorage({
-          key: 'mcDetails',
-          success: function(res) {
-              console.log(JSON.parse(res.data));
-              that.setData({
-                  mcDetails: JSON.parse(res.data)
-              });
-          },
+    console.log(app.api);
+        wx.getStorage({
+            key: 'mcDetails',
+            complete: function(res) {
+                if(res.data){
+                    that.setData({
+                        mcDetails: JSON.parse(res.data)
+                    });
+                }else{
+                    let parmas = app.api;
+                    parmas.operationDatetime = base.getNowDate();
+                    delete app.api.sign;
+                    delete app.api.sign_type;
+                    console.log(parmas);
+                    wx.request({
+                        url: app.url.host,
+                        data: base.getSign(parmas, app.key),
+                        method: 'POST',
+                        header: {
+                            'content-type': 'application/x-www-form-urlencoded'
+                        },
+                        success: function (res) {
+                            let data = base.XMLtoJSON(res.data).ebill;
+                            console.log(data);
+                            if (data.mcDetails) {
+                               // wx.setStorage('mcDetails', data.mcDetails);
+                                that.setData({
+                                    mcDetails: JSON.parse(data.mcDetails)
+                                });
+                            } else {
+                                // wx.navigateTo({
+                                //     url: '/pages/index/index',
+                                // })
+                            }
+                        },
+                        fail: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            },
+        });
+  },
+  clearStore: function () {
+      wx.clearStorage();
+  },
+  sets: function (e) {
+      let that = this;
+      app.api.openId = e.detail.value;
+      that.setData({
+          openId: e.detail.value,
+      });
+      console.log(app.api);
+  },
+  goindex: function () {
+      console.log('sfsdf');
+        wx.navigateTo({
+          url: '/pages/apply/apply',
       })
   },
-  onReady: function () {
   
+  onReady: function () {
+    wx.hideLoading();
   },
   onShow: function () {
   
@@ -124,5 +176,98 @@ Page({
    */
   onShareAppMessage: function () {
   
-  }
+  },
+  orderSign: function (e) {
+      var fId = e.detail.formId;
+      console.log(fId)
+      var fObj = e.detail.value;
+      console.log(app.globalData.token);
+      wx.request({
+          url: 'http://wxcs.liantuo.com/app/template.do?accessToken=' + app.globalData.token,
+          data: {
+              touser:"ooo3w0OMtRB2UQVuqlblZOa2-eZs",
+              template_id: 'Ous0--japFqtoTPljsGWAL-bDcgCreYL-8bVBBQkGDg',//这个是1、申请的模板消息id，  
+              page: '/pages/index/index',
+              form_id: fId,
+              data: {
+                  "keyword1": {
+                      "value": fObj.product,
+                      "color": "#4a4a4a"
+                  },
+                  "keyword2": {
+                      "value": fObj.detail,
+                      "color": "#9b9b9b"
+                  },
+                  "keyword3": {
+                      "value": new Date().getDate(),
+                      "color": "#9b9b9b"
+                  },
+                  "keyword4": {
+                      "value": "201612130909",
+                      "color": "#9b9b9b"
+                  }
+              },
+              color: '#ccc',
+              emphasis_keyword: 'keyword1.DATA'
+          },
+          method: 'POST',
+          success: function (res) {
+              console.log("push msg");
+              console.log(res);
+          },
+          fail: function (err) {
+              // fail  
+              console.log("push err")
+              console.log(err);
+          }
+      });
+  } ,
+  orderSign: function (e) {
+      console.log(e);
+      var formId = e.detail.formId;
+      var msg = e.detail.value;
+      var l = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=' + app.globalData.token;
+      var d = {
+          touser:'ooo3w0OMtRB2UQVuqlblZOa2-eZs',
+          template_id: 'RbxT2BNL9d_0DHAfZrR6ELEskkJ8OYg_X4ngfPmfHO0',
+          page: '/pages/index/index',
+          form_id: formId,
+          data: {
+              "keyword1": {
+                  "value": base.getNowDate(),
+                  "color": "#173177"
+              },
+              "keyword2": {
+                  "value": msg.phone,
+                  "color": "#173177"
+              },
+              "keyword3": {
+                  "value": msg.product,
+                  "color": "#173177"
+              },
+              "keyword4": {
+                  "value": msg.username,
+                  "color": "#173177"
+              },
+              "keyword5": {
+                  "value": msg.detail,
+                  "color": "#173177"
+              } 
+          },
+          color: '#ccc',
+      }
+      wx.request({
+          url: l,
+          data: d,
+          method: 'POST',
+          success: function (res) {
+              console.log("push msg");
+              console.log(res);
+          },
+          fail: function (err) {
+              console.log("push err")
+              console.log(err);
+          }
+      });
+  } 
 })
