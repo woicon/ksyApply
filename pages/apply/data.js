@@ -1,6 +1,7 @@
 var category = require('./data/businessCategory.js');
 var bank = require('./data/bankData.js');
 var area = require('./data/area.js');
+let picker = require('./data/picker.js');
 function setArrary(data) {
     let _arrary = [[], [], []];
     let toArrary = (item, index, array) => {
@@ -11,6 +12,7 @@ function setArrary(data) {
     });
     return _arrary;
 }
+
 const areaArrey = setArrary(area);
 const categoryArrey = setArrary(category);
 
@@ -38,34 +40,6 @@ module.exports = {
         }
         return data.filter(isId);
     },
-    post:[["businessCategoryName",
-        "businessCategory",
-        "merchantName",
-        "merchantFullName",
-        "address",
-        "businessLicenseNo",
-        "customerPhone",
-        "contactType",
-        "contactPhone",
-        "contactName",
-        "certificateNo",
-        "businessLicenseType",
-        "province",
-        "provinceId",
-        "city",
-        "cityId",
-        "area",
-        "areaId"],[
-        "accountType",
-        "bankName",
-        "bankNo",
-        "cardNo",
-        "accountHolder",],[
-        "identificationFrontPfUrl",
-        "identificationOppositePfUrl",
-        "businessLicensePfUrl",
-        "openingPermitPfUrl",
-    ]],
     initRange:function(range){
         return [range[0], this.getNode(range[1], range[0][0][0]), this.getNode(range[2], range[1][0][0])];
     }

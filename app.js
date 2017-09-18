@@ -3,10 +3,8 @@ var base = require('./utils/util.js')
 App({
     onLaunch: function (options) {
         wx.showLoading();
-        
         let that = this;
         let appInit = new Promise((rests) => {
-            
             //微信登录
             wx.login({
                 success: (res) => {
@@ -20,6 +18,7 @@ App({
                                 code: res.code
                             },
                             success: (_res) => {
+                                console.log(_res);
                                 that.api.openId = _res.data.wechatVo.openId;
                                 rests(res);
                             }
@@ -52,48 +51,48 @@ App({
             }
             console.log(_parmas);
             //注册状态检测
-            wx.request({
-                url:that.url.host,
-                data: base.getSign(_parmas, partner.key),
-                method:'POST',
-                header: {'content-type': 'application/x-www-form-urlencoded'},
-                success:(checkStat)=>{
-                    let checkData = base.XMLtoJSON(checkStat.data).ebill;
-                    console.log(checkData);
-                    if (checkData.mcDetails) {
-                        if (!options.query.edit){
-                            wx.redirectTo({
-                                url: '/pages/applydetail/applydetail'
-                            })
-                        }
-                    } else {
-                        wx.navigateTo({
-                            url: '/pages/index/index'
-                        })
-                    }
-                },
-                fail:(err) => {
-                    console.log(err);
-                }
-            });
+            // wx.request({
+            //     url:that.url.host,
+            //     data: base.getSign(_parmas, partner.key),
+            //     method:'POST',
+            //     header: {'content-type': 'application/x-www-form-urlencoded'},
+            //     success:(checkStat)=>{
+            //         let checkData = base.XMLtoJSON(checkStat.data).ebill;
+            //         console.log(checkData);
+            //         if (checkData.mcDetails) {
+            //             if (!options.query.edit){
+            //                 wx.redirectTo({
+            //                     url: '/pages/applydetail/applydetail'
+            //                 })
+            //             }
+            //         } else {
+            //             wx.navigateTo({
+            //                 url: '/pages/index/index'
+            //             })
+            //         }
+            //     },
+            //     fail:(err) => {
+            //         console.log(err);
+            //     }
+            // });
         })
-        .then(()=> {
-            //获取Token
-            wx.request({
-                url: that.url.getToken,
-                data:{
-                    appId:base.app.appId,
-                    appSecret:base.app.appSecret
-                },
-                success: (token) => {
-                    that.globalData.token = token.data.result;
-                    wx.setStorage({
-                        key: 'token',
-                        data: token.data.result,
-                    });
-                }
-            })
-        })
+        // .then(()=> {
+        //     //获取Token
+        //     wx.request({
+        //         url: that.url.getToken,
+        //         data:{
+        //             appId:base.app.appId,
+        //             appSecret:base.app.appSecret
+        //         },
+        //         success: (token) => {
+        //             that.globalData.token = token.data.result;
+        //             wx.setStorage({
+        //                 key: 'token',
+        //                 data: token.data.result,
+        //             });
+        //         }
+        //     })
+        // })
     },
     //获取partner
     getPartner:function(id){

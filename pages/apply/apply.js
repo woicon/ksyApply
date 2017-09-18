@@ -2,6 +2,7 @@ var app = getApp();
 var form = require('../../pages/apply/data.js');
 var formData = require('../../pages/apply/formData.js');
 var base = require('../../utils/util.js');
+var picker = require('../../pages/apply/data/picker.js');
 Page({
     data: {
         stepBar: ['商户信息', '结算信息', '进件信息'],
@@ -9,11 +10,14 @@ Page({
         currentStep:0,
         formData: formData,
         formStat:[],
-        postData:null
+        picker:picker,
+        postData:null,
+        mupicker:{},
     },
     inputFocus:function(e){
         
     },
+    
     formBlur:function(e){
         let _reg = base.reg;
         const data = e.target.dataset;
@@ -26,55 +30,67 @@ Page({
             }
         }
     },
+
     getNode: function (id) {
         let _formData = this.data.formData;
         let currNode = _formData[this.data.currentStep];
         return currNode[id];
     },
+
     columnChange: function (e) {
         let that = this,
             detail = e.detail;
-        //console.log(e);
+        console.log(e);
         let _formData = that.data.formData;
         let node = _formData[that.data.currentStep][e.currentTarget.dataset.id];
         let _column = form.change(node.data.range, detail, e.currentTarget.dataset.range);
-        let _value = node.value;
-        _value[detail.column] = detail.value;
-        //console.log(detail);
-        switch (detail.column){
-            case 0:
-                _value[1] = 0;
-                _value[2] = 0;
-            break;
-            case 1:
-                _value[2] = 0;
-            break;
-            case 2:
-            break;
+        let _mupicker = that.data.mupicker;
+        console.log(!_mupicker[e.target.id]);
+        if (!_mupicker[e.target.id]){
+            // _value = _mupicker[e.target.id]||[0,0,0];
+            // _value[detail.column] = detail.value;
         }
-        node.value = _value;
+        //console.log(detail);
+        // switch (detail.column){
+        //     case 0:
+        //         _value[1] = 0;
+        //         _value[2] = 0;
+        //     break;
+        //     case 1:
+        //         _value[2] = 0;
+        //     break;
+        //     case 2:
+        //     break;
+        // }
+       // node.value = _value;
         node.data.range = _column;
+
         that.setData({
-            formData: _formData
+            formData: _formData,
+            mupicker:_mupicker,
         })
     },
 
     multiChange:function(e){
         let that = this;
+        wx.showLoading();
+        console.log(e);
         let _formData = that.data.formData;
         let _postData = that.data.postData;
         let _id = e.target.dataset.id;
         let _curr = that.data.currentStep;
         let currNode = _formData[_curr][_id];
-        let _name = e.target.dataset.name;
+        //let _name = e.target.dataset.name;
         let value = e.detail.value;
         let range = currNode.data.range;
-        let _selected = range[0][value[0]][1] + ',' + range[1][value[1]][1] + ',' + range[2][value[2]][1];
-        
-        currNode.value = e.detail.value;
-        currNode.data.selected = _selected;
+        //let _selected = range[0][value[0]][1] + ',' + range[1][value[1]][1] + ',' + range[2][value[2]][1];
+        //currNode.value = e.detail.value;
+        //currNode.data.selected = _selected;
         _formData[_curr][_id] = currNode;
+        let _mupicker = that.data.mupicker;
+        _mupicker[e.target.id] = e.detail.value;
 
+        
         if (e.target.id == "area"){
             _postData['province'] = range[0][value[0]][1];
             _postData['provinceId'] = range[0][value[0]][0];
@@ -83,47 +99,64 @@ Page({
             _postData['area'] = range[2][value[2]][1];
             _postData['areaId'] = range[2][value[2]][0];
         }else{
-            _postData[e.target.id] = _selected;
-            _postData[_name] = range[0][value[0]][0] + ',' + range[1][value[1]][2] + ',' + range[2][value[2]][2];
+           // _postData[e.target.id] = _selected;
+            _postData[e.target.dataset.name] = range[0][value[0]][0] + ',' + range[1][value[1]][2] + ',' + range[2][value[2]][2];
         }
         console.log(_postData);
         that.setData({
             formData: _formData,
-            postData: _postData
+            postData: _postData,
+            mupicker: _mupicker
         });
+        wx.hideLoading();
     },
+
     //picker控件选值存储
     changePicker: function (e) {
-      let that = this;
-      var _formData = that.data.formData;
-      let _node = that.getNode(e.target.id);
-      _node.value =e.detail.value;
-      let range = _node.data.range;
-      _node.data.selected = range[e.detail.value][0];
-      let _postData = this.data.postData;
-      _postData[e.target.dataset.name] = range[e.detail.value][1];
-      if (e.target.dataset.extend){
-          _postData[e.target.dataset.extend] = range[e.detail.value][0];
+        console.log(e);
+        wx.showLoading();
+        let that = this;
+        let _postData = this.data.postData;
+        // let _node = that.getNode(e.target.id);
+        // //_node.value =e.detail.value;
+        // let range = _node.data.range;
+        let pickerData = that.data.picker; 
+
+        let nodes = base.keys(pickerData[e.target.dataset.name]);
+        _postData[e.target.dataset.name] = nodes[e.detail.value];
+
+        if (e.target.dataset.extend){
+            values = base.values(pickerData[e.target.dataset.name]);
+            _postData[e.target.dataset.extend] = values[e.detail.value];
+        }
+      
+        if (e.currentTarget.dataset.name === 'accountType'){
+        let _formData = that.data.formData;
+        let _form = _formData[1];
+        if (e.detail.value === '1'){
+            _form[2].label = '对公账户';
+            _form[3].label = '企业名称';
+            _form[2].placeholder = '请输入对公账号';
+            _form[3].placeholder = '请输入企业名称';
+        }else{
+            _form[2].label = '银行卡号';
+            _form[3].label = '持卡人姓名';
+            _form[2].placeholder = '请输入银行卡号';
+            _form[3].placeholder = '请输入持卡人姓名';
+        }
+
+        that.setData({
+            formData: _formData
+        });
+
       }
-      if (e.target.dataset.id === 'accountType'){
-          let _form = _formData[1];
-          if (e.detail.value === '1'){
-             _form[2].label = '对公账户';
-             _form[3].label = '企业名称';
-             _form[2].placeholder = '请输入对公账号';
-             _form[3].placeholder = '请输入企业名称';
-         }else{
-              _form[2].label = '银行卡号';
-              _form[3].label = '持卡人姓名';
-              _form[2].placeholder = '请输入银行卡号';
-              _form[3].placeholder = '请输入持卡人姓名';
-         }
-      }
+
       that.setData({
-        formData: _formData,
         postData: _postData
       });
+      wx.hideLoading();
     },
+
     nextStep: function () {
         let that = this;
         this.stepJump(+1);
@@ -356,23 +389,16 @@ Page({
             title: '注册快收银',
         }); 
         
-        if (wx.setNavigationBarColor) {
-            wx.setNavigationBarColor({
-                frontColor: '#ffffff',
-                backgroundColor: '#27CFB1',
-            });
-        } else {
-            // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
-            wx.showModal({
-                title: '提示',
-                content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
-            })
-        }
+        wx.setNavigationBarColor({
+            frontColor: '#ffffff',
+            backgroundColor: '#27CFB1',
+        });
         
         var _stepStat = [];
         for (var i = 0; i < that.data.stepBar.length; i++) {
             _stepStat.push(false);
         }
+        
         var that = this;
         let postData = app.api;
         delete postData.key;
@@ -400,6 +426,7 @@ Page({
             stepStat: _stepStat,
             postData: postData
         });
+
     },
     onReady: function () {
         wx.hideLoading()

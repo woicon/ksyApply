@@ -1,5 +1,6 @@
+var base = require('../../utils/util.js');
 var commondata = require('../../pages/apply/data.js');
-
+var picker = require('../../pages/apply/data/picker.js');
 module.exports =[
     [
         {
@@ -92,20 +93,14 @@ module.exports =[
             "type": "1",
             "data": {
                 mode: 'selector',
-                range: [['营业执照', 'NATIONAL_LEGAL'],['营业执照（多证合一）', 'NATIONAL_LEGAL_MERGE'], ['事业单位法人证书','INST_RGST_CTF']],
+                range: base.values(picker.businessLicenseType),
                 selected: '请选择',
                 bindchange: "changePicker",
-                rangekey: "0",
-                id: "accountType"
-            },
-            "node":{
-                NATIONAL_LEGAL:'营业执照',
-                NATIONAL_LEGAL_MERGE:'营业执照（多证合一）',
-                INST_RGST_CTF:'事业单位法人证书'
+                //rangekey: "0",
             },
             "stat": "false",
             "bindtap": "",
-            "value":[0,0,0]
+            "value":""
         },
         {
             "label": "营业执照编号",
@@ -143,21 +138,14 @@ module.exports =[
             "type": "1",
             "data": {
                 mode: 'selector',
-                range: [['法人','LEGAL_PERSON'], ['实际控制人', 'CONTROLLER'], ['代理人', 'AGENT'], ['其他','OTHER']],
+                range: base.values(picker.contactType),
                 selected: '请选择',
-                rangekey:'0',
+                //rangekey:,
                 bindchange: "changePicker",
-                id: "accountType"
             },
             "stat": "false",
             "bindtap": "",
             "value": "",
-            "node": {
-                LEGAL_PERSON: '法人',
-                CONTROLLER: '实际控制人',
-                AGENT: '代理人',
-                OTHER: '其他'
-            }
         },
         {
             "label": "商户联系人姓名",
@@ -214,16 +202,11 @@ module.exports =[
             "type": "1",
             "data": {
                 mode: 'selector',
-                range: [['个人','1'],['企业','2']],
+                range: base.values(picker.accountType),
                 selected: '请选择',
-                rangekey:'0',
                 bindchange: "changePicker",
-                id: "accountType"
             },
-            "node":{
-                1:'个人',
-                2:'企业'
-            },
+            
             "stat": "false",
             "bindtap": "",
             "value": ""
@@ -236,46 +219,13 @@ module.exports =[
             "data": {
                 mode: 'selector',
                 selected: '请选择',
-                range: commondata.bank,
-                rangekey: "0",
+                range: base.values(picker.bank),
                 extend:"bankName",
                 bindchange: "changePicker"
             },
             "stat": "false",
             "bindtap": "",
             "value": "",
-            "node": {
-                "102100099996": "中国工商银行",
-                "103100000026": "中国农业银行股份有限公司",
-                "104100000004": "中国银行总行",
-                "105100000017": "中国建设银行股份有限公司总行",
-                "301290000007": "交通银行",
-                "302100011000": "中信银行股份有限公司",
-                "303100000006": "中国光大银行",
-                "304100040000": "华夏银行股份有限公司总行",
-                "305100000013": "中国民生银行",
-                "306581000003": "广发银行股份有限公司",
-                "307584007998": "平安银行（原深圳发展银行）",
-                "308584000013": "招商银行股份有限公司",
-                "309391000011": "兴业银行总行",
-                "310290000013": "上海浦东发展银行",
-                "313100000013": "北京银行",
-                "313192000013": "包商银行股份有限公司",
-                "313241066661": "吉林银行",
-                "313261000018": "哈尔滨银行结算中心",
-                "313301099999": "江苏银行股份有限公司",
-                "313331000014": "杭州银行股份有限公司",
-                "313651099999": "成都银行",
-                "313653000013": "重庆银行",
-                "313791000015": "西安银行股份有限公司",
-                "315456000105": "恒丰银行",
-                "316331000018": "浙商银行",
-                "319361000013": "徽商银行股份有限公司",
-                "325290000012": "上海银行股份有限公司",
-                "402100000018": "北京农村商业银行股份有限公司",
-                "403100000004": "中国邮政储蓄银行有限责任公司",
-                "402221010013": "辽宁省农村信用社联合社"
-            },
             "bindblur": "formBlur",
             "_value":"",
         },

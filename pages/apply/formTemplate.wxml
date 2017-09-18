@@ -25,22 +25,20 @@
             mode="{{item.data.mode}}"
             range="{{item.data.range}}"
             range-key="{{item.data.rangekey}}"
-            value="{{0 || item.value}}"
+            value="{{Object.keys(picker[item.name])[value[item.name]]||''}}"
             data-extend="{{item.data.extend}}"
             disabled="{{item.data.disabled}}"
             bindchange="{{item.data.bindchange}}"
-            data-id="{{item.data.id}}"
             data-name="{{item.name}}"
-            data-node="{{item.data.node}}"
             id="{{index}}">
-                <view class="picker">{{item.node[value[item.name]]||'请选择'}} </view>
+            <view class="picker">{{picker[item.name][value[item.name]]||'请选择'}} </view>
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'multiSelector'}}" 
             mode="{{item.data.mode}}"
             range="{{item.data.range}}" 
             range-key="{{item.data.rangekey}}"
-            value="{{item.value}}" 
+            value="{{mupicker[item.name]}}" 
             bindcolumnchange="{{item.data.bindcolumnchange}}"
             bindchange="{{item.data.bindchange}}"
             data-id="{{index}}"
@@ -48,7 +46,9 @@
             id="{{item.name}}"
             data-name='{{item.id}}'
             disabled="{{item.data.disabled}}">
-                <view class="picker">{{item.data.selected}}</view>
+             <view class="picker" wx:if="{{item.name == 'area'}}">{{(value["province"] + value["city"] + value["area"]) || '请选择'}}</view>
+            <view class="picker" wx:else>{{value[item.name]||'请选择'}} </view> 
+            
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'date'}}" 

@@ -129,6 +129,23 @@ function getToken(){
     //     }
     // });
 }
+//低版本支持
+function values(obj){
+    let arr=[];
+    for(var key in obj){
+        arr.push(obj[key]);
+    }
+    return arr;
+}
+
+function keys(obj) {
+    let arr = [];
+    for (var key in obj) {
+        arr.push(key);
+    }
+    return arr;
+}
+
 function validation(str,reg){
     let res = reg.test(str);
     return res;
@@ -151,7 +168,9 @@ module.exports = {
     sortObj: sortObj,
     getSign:getSign,
     reg:reg,
+    values:values,
     validation: validation,
     app:app,
+    keys:keys,
     getToken: getToken,
 }
