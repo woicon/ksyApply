@@ -44,7 +44,7 @@ module.exports =[
             "range": commondata.category,
             "data": {
                 mode: 'multiSelector',
-                range: commondata.initRange(commondata.category),
+                //range: commondata.initRange(commondata.category),
                 rangekey: '1',
                 selected:'请选择',
                 bindchange: "multiChange",
@@ -67,7 +67,7 @@ module.exports =[
                 mode: 'multiSelector',
                 selected: '请选择',
                 rangekey: '1',
-                range: commondata.initRange(commondata.area),
+                //range: commondata.initRange(commondata.area),
                 bindchange: "multiChange",
                 bindcolumnchange: 'columnChange'
             },
@@ -119,7 +119,7 @@ module.exports =[
         {
             "label": "客服电话",
             "name": 'customerPhone',
-            "placeholder": "只允许数字以及-",
+            "placeholder": "请输入客服电话",
             "type": "0",
             "data": {
                 "maxlength": "11",
@@ -264,7 +264,7 @@ module.exports =[
             "placeholder": "请选择",
             "type": "2",
             "data": {
-                reference: '../../pages/images/idcardf.jpg',
+                reference:'../../pages/images/idcardz.jpg',
 
             },
             "stat": "false",
@@ -277,7 +277,7 @@ module.exports =[
             "placeholder": "请选择",
             "type": "2",
             "data": {
-                reference:'../../pages/images/idcardz.jpg',
+                reference:'../../pages/images/idcardf.jpg',
 
             },
             "stat": "false",

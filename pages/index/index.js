@@ -8,7 +8,6 @@ Page({
             url: '/pages/apply/apply',
         });
     },
-    
     onLoad: function () {
         var that = this;
         wx.getWeRunData({
@@ -18,14 +17,8 @@ Page({
         });
         wx.setNavigationBarTitle({
             title: '快收银开户注册',
-        })
-        app.getUserInfo(function (userInfo) {
-            that.setData({
-                userInfo: userInfo
-            })
-        })
+        });
     },
-    
     onReady:function(){
         wx.hideLoading();
     }

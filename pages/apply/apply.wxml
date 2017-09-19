@@ -10,7 +10,7 @@
     <view class="apply-form">
         <form bindsubmit="formSubmit" bindreset="formReset">
         <import src="../../pages/apply/formTemplate.wxml" />
-        <template is="formtemp" data="{{formlist:formData[currentStep],key:'step'+currentStep,imgCache:imgCache,value:postData,picker:picker,mupicker:mupicker}}" />
+        <template is="formtemp" data="{{formlist:formData[currentStep],key:'step'+currentStep,imgCache:imgCache,value:postData,picker:picker,mupicker:mupicker,murange:murange}}" />
         </form>
     </view>
     <view class="btnbar">

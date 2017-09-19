@@ -123,7 +123,9 @@ page{
     vertical-align:top;
     line-height:normal;
 }
-
+.btnbar .btn:after{
+    border:none;
+}
 .btnbar .btns-hover{
     background:#ccc;
     color:#888;

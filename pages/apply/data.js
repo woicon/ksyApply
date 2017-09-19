@@ -12,13 +12,10 @@ function setArrary(data) {
     });
     return _arrary;
 }
-
 const areaArrey = setArrary(area);
 const categoryArrey = setArrary(category);
-
 module.exports = {
     category: categoryArrey,//经营类目
-    bank:bank,//浦发开户银行
     area: areaArrey,
     change: function (pageDate,e,range){
         switch (e.column){

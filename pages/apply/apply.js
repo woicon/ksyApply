@@ -3,6 +3,7 @@ var form = require('../../pages/apply/data.js');
 var formData = require('../../pages/apply/formData.js');
 var base = require('../../utils/util.js');
 var picker = require('../../pages/apply/data/picker.js');
+var commondata = require('../../pages/apply/data.js');
 Page({
     data: {
         stepBar: ['商户信息', '结算信息', '进件信息'],
@@ -12,12 +13,13 @@ Page({
         formStat:[],
         picker:picker,
         postData:null,
-        mupicker:{},
+        mupicker:{
+            businessCategoryName:[0,0,0],
+            area:[0,0,0]
+        },
     },
     inputFocus:function(e){
-        
     },
-    
     formBlur:function(e){
         let _reg = base.reg;
         const data = e.target.dataset;
@@ -30,68 +32,55 @@ Page({
             }
         }
     },
-
     getNode: function (id) {
         let _formData = this.data.formData;
         let currNode = _formData[this.data.currentStep];
         return currNode[id];
     },
-
     columnChange: function (e) {
-        let that = this,
-            detail = e.detail;
-        console.log(e);
-        let _formData = that.data.formData;
-        let node = _formData[that.data.currentStep][e.currentTarget.dataset.id];
-        let _column = form.change(node.data.range, detail, e.currentTarget.dataset.range);
+        wx.showLoading({
+            mask:true
+        });
+        let that = this;
+        let node = e.target.id;
+        let range = that.data.range[node];
+        let pageDate = that.data.murange[node];
+        let _murange = that.data.murange;
         let _mupicker = that.data.mupicker;
-        console.log(!_mupicker[e.target.id]);
-        if (!_mupicker[e.target.id]){
-            // _value = _mupicker[e.target.id]||[0,0,0];
-            // _value[detail.column] = detail.value;
+        let _value = _mupicker[node];
+        _value[e.detail.column] = e.detail.value;
+        switch (e.detail.column) {
+            case 0:
+                let city = commondata.getNode(range[1], range[0][e.detail.value][0]);
+                _murange[node] = [pageDate[0], city, commondata.getNode(range[2], city[0][0])];
+                _value[1] = 0;
+                _value[2] = 0;
+                break;
+            case 1:
+                _value[2] = 0;
+                _murange[node] = [pageDate[0], pageDate[1], commondata.getNode(range[2], pageDate[1][e.detail.value][0])];
+                break;
+            case 2:
+                _murange[node] = pageDate;
+                break;
         }
-        //console.log(detail);
-        // switch (detail.column){
-        //     case 0:
-        //         _value[1] = 0;
-        //         _value[2] = 0;
-        //     break;
-        //     case 1:
-        //         _value[2] = 0;
-        //     break;
-        //     case 2:
-        //     break;
-        // }
-       // node.value = _value;
-        node.data.range = _column;
-
         that.setData({
-            formData: _formData,
             mupicker:_mupicker,
-        })
+            murange: _murange
+        });
+        wx.hideLoading();
     },
 
     multiChange:function(e){
         let that = this;
-        wx.showLoading();
         console.log(e);
-        let _formData = that.data.formData;
+        let node = e.target.id;
         let _postData = that.data.postData;
-        let _id = e.target.dataset.id;
-        let _curr = that.data.currentStep;
-        let currNode = _formData[_curr][_id];
-        //let _name = e.target.dataset.name;
+        let range = that.data.murange[node];
         let value = e.detail.value;
-        let range = currNode.data.range;
-        //let _selected = range[0][value[0]][1] + ',' + range[1][value[1]][1] + ',' + range[2][value[2]][1];
-        //currNode.value = e.detail.value;
-        //currNode.data.selected = _selected;
-        _formData[_curr][_id] = currNode;
-        let _mupicker = that.data.mupicker;
-        _mupicker[e.target.id] = e.detail.value;
-
-        
+        console.log(value);
         if (e.target.id == "area"){
+            wx.showLoading();
             _postData['province'] = range[0][value[0]][1];
             _postData['provinceId'] = range[0][value[0]][0];
             _postData['city'] = range[1][value[1]][1];
@@ -99,41 +88,31 @@ Page({
             _postData['area'] = range[2][value[2]][1];
             _postData['areaId'] = range[2][value[2]][0];
         }else{
-           // _postData[e.target.id] = _selected;
-            _postData[e.target.dataset.name] = range[0][value[0]][0] + ',' + range[1][value[1]][2] + ',' + range[2][value[2]][2];
+            _postData[e.target.id] = range[0][value[0]][1] + ',' + range[1][value[1]][1] + ',' + range[2][value[2]][1];
+            //_postData[e.target.dataset.name] = range[0][value[0]][0] + ',' + range[1][value[1]][2] + ',' + range[2][value[2]][2];
+            _postData[e.target.dataset.name] = range[2][value[2]][0];
         }
-        console.log(_postData);
         that.setData({
-            formData: _formData,
             postData: _postData,
-            mupicker: _mupicker
         });
         wx.hideLoading();
     },
-
     //picker控件选值存储
     changePicker: function (e) {
-        console.log(e);
-        wx.showLoading();
         let that = this;
         let _postData = this.data.postData;
-        // let _node = that.getNode(e.target.id);
-        // //_node.value =e.detail.value;
-        // let range = _node.data.range;
         let pickerData = that.data.picker; 
-
         let nodes = base.keys(pickerData[e.target.dataset.name]);
         _postData[e.target.dataset.name] = nodes[e.detail.value];
-
         if (e.target.dataset.extend){
-            values = base.values(pickerData[e.target.dataset.name]);
+            let values = base.values(pickerData[e.target.dataset.name]);
             _postData[e.target.dataset.extend] = values[e.detail.value];
         }
-      
         if (e.currentTarget.dataset.name === 'accountType'){
         let _formData = that.data.formData;
         let _form = _formData[1];
         if (e.detail.value === '1'){
+            wx.showLoading();
             _form[2].label = '对公账户';
             _form[3].label = '企业名称';
             _form[2].placeholder = '请输入对公账号';
@@ -144,19 +123,15 @@ Page({
             _form[2].placeholder = '请输入银行卡号';
             _form[3].placeholder = '请输入持卡人姓名';
         }
-
         that.setData({
             formData: _formData
         });
-
+        wx.hideLoading();
       }
-
       that.setData({
         postData: _postData
       });
-      wx.hideLoading();
     },
-
     nextStep: function () {
         let that = this;
         this.stepJump(+1);
@@ -200,7 +175,6 @@ Page({
             core_merchant_no: app.api.core_merchant_no,
         }
         let parmas = base.getSign(upParmas, app.key);
-        //let _parmas = base.toQueryParams(parmas);
         let upImage = new Promise((res, rej)=> {
             wx.chooseImage({
                 count: 1,
@@ -224,13 +198,22 @@ Page({
                 name: 'files',
                 method: 'POST',
                 success: function (res) {
-                    console.log(base.XMLtoJSON(res.data))
-                    let _imgUrl = base.XMLtoJSON(res.data).ebill.file_url;
-                    let imgUrl = _imgUrl.substring(0, _imgUrl.length - 1);
-                    _postData[imgName] = imgUrl;
-                    that.setData({
-                        postData: _postData
-                    });
+                    const data = base.XMLtoJSON(res.data);
+                    console.log(data);
+                    if(data.ebill.is_success == 'S'){
+                        let _imgUrl = base.XMLtoJSON(res.data).ebill.file_url;
+                        let imgUrl = _imgUrl.substring(0, _imgUrl.length - 1);
+                        _postData[imgName] = imgUrl;
+                        that.setData({
+                            postData: _postData
+                        });
+                    }else{
+                        wx.showModal({
+                            title: '提示',
+                            content: '服务器除了点小问题',
+                            showCancel:false
+                        })
+                    };
                     wx.hideLoading();
                 },
                 fail: function (res) {
@@ -282,9 +265,7 @@ Page({
     //提交
     submintForm: function (e) {
         let that = this;
-        wx.showLoading({
-            mask:true
-        });
+        
         wx.setStorage({
             key: 'parmas',
             data: that.data.postData,
@@ -301,60 +282,78 @@ Page({
         //parmas.productId = '421';//线上环境
         let _parmas = base.getSign(parmas,app.key);
         let submitReg = new Promise((_res)=>{
-            wx.request({
-                url: app.url.host,
-                data: _parmas,
-                method: 'POST',
-                header: {'content-type': 'application/x-www-form-urlencoded'},
-                success:function(res){
+            wx.getStorage({
+                key: 'submitstat',
+                success: function(res) {
                     wx.hideLoading();
-                    let data = base.XMLtoJSON(res.data);
-                    if(data.ebill.is_success === 'S'){
-                        let mcDetails = JSON.parse(data.ebill.mcDetails);
-                        _res({
-                            "keyword1": {
-                                "value": base.getNowDate(),
-                                "color": "#4a4a4a"
-                            },
-                            "keyword2": {
-                                "value": that.data.postData.contactPhone,
-                                "color": "#9b9b9b"
-                            },
-                            "keyword3": {
-                                "value": that.data.postData.merchantFullName,
-                                "color": "#9b9b9b"
-                            },
-                            "keyword4": {
-                                "value": "商户登录账号：" + mcDetails.merchantLoginName + "门店登录账号：" + mcDetails.storeLoginName,
-                                "color": "#9b9b9b"
-                            },
-                            "keyword5": {
-                                "value": "注册成功，我方会在一个工作日内完成审核，审核期间使用快收银软件只支持现金收款。系统已默认创建商户及门店，登录密码均默认" + mcDetails.storePassword,
-                                "color": "#9b9b9b"
-                            }
-                        });
-                        wx.setStorage({
-                            key: 'loginInfo',
-                            data: data.ebill.mcDetails,
-                        });
-                        wx.setStorage({
-                            key: 'mallInfo',
-                            data:{
-                                name:that.data.postData.merchantFullName
-                            },
-                        });
-                        _res(data.ebill.mcDetails);
-                    }else{
-                        wx.showModal({
-                            content: data.ebill.message,
-                            showCancel:false
-                        })
-                    }
-                },
-                fail:function(error){
-                    wx.showToast({
-                        title: '注册失败',
+                    wx.showModal({
+                        title: '提示',
+                        content: '您已经提交注册，请勿重复提交！',
                     })
+                },
+                fail:function(){
+                    wx.request({
+                        url: app.url.host,
+                        data: _parmas,
+                        method: 'POST',
+                        header: {'content-type': 'application/x-www-form-urlencoded'},
+                        success:function(res){
+                            wx.hideLoading();
+                            let data = base.XMLtoJSON(res.data);
+                            console.log(data);
+                            if(data.ebill.is_success === 'S'){
+                                let mcDetails = JSON.parse(data.ebill.mcDetails);
+                                _res({
+                                    "keyword1": {
+                                        "value": base.getNowDate(),
+                                        "color": "#4a4a4a"
+                                    },
+                                    "keyword2": {
+                                        "value": that.data.postData.contactPhone,
+                                        "color": "#9b9b9b"
+                                    },
+                                    "keyword3": {
+                                        "value": that.data.postData.merchantFullName,
+                                        "color": "#9b9b9b"
+                                    },
+                                    "keyword4": {
+                                        "value": "商户登录账号：" + mcDetails.merchantLoginName + "门店登录账号：" + mcDetails.storeLoginName,
+                                        "color": "#9b9b9b"
+                                    },
+                                    "keyword5": {
+                                        "value": "注册成功，我方会在一个工作日内完成审核，审核期间使用快收银软件只支持现金收款。系统已默认创建商户及门店，登录密码均默认" + mcDetails.storePassword,
+                                        "color": "#9b9b9b"
+                                    }
+                                });
+                                wx.setStorage({
+                                    key: 'loginInfo',
+                                    data: data.ebill.mcDetails,
+                                });
+                                wx.setStorage({
+                                    key: 'submitstat',
+                                    data: 'lockReg',
+                                });
+                                wx.setStorage({
+                                    key: 'mallInfo',
+                                    data:{
+                                        name:that.data.postData.merchantFullName
+                                    },
+                                });
+                                _res(data.ebill.mcDetails);
+                                
+                            }else{
+                                wx.showModal({
+                                    content: data.ebill.message,
+                                    showCancel:false
+                                })
+                            }
+                        },
+                        fail:function(error){
+                            wx.showToast({
+                                title: '注册失败',
+                            })
+                        }
+                    });
                 }
             });
         }).then((res)=>{
@@ -377,23 +376,37 @@ Page({
                 },
                 fail: function (err) {
                     console.log("push err");
-                    console.log(err);
+                    //console.log(err);
                 }
             })
         })
     },
     onLoad: function (options) {
-        wx.showLoading();
+        if (wx.showLoading) {
+            wx.showLoading();
+        } else {
+            wx.showModal({
+                title: '提示',
+                content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+            })
+        }
         var that = this;
+        
+        if (wx.setNavigationBarColor) {
+            wx.setNavigationBarColor({
+                frontColor: '#ffffff',
+                backgroundColor: '#27CFB1',
+            });
+        } else {
+            wx.showModal({
+                title: '提示',
+                content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+            })
+        }
+        
         wx.setNavigationBarTitle({
             title: '注册快收银',
-        }); 
-        
-        wx.setNavigationBarColor({
-            frontColor: '#ffffff',
-            backgroundColor: '#27CFB1',
         });
-        
         var _stepStat = [];
         for (var i = 0; i < that.data.stepBar.length; i++) {
             _stepStat.push(false);
@@ -402,29 +415,39 @@ Page({
         var that = this;
         let postData = app.api;
         delete postData.key;
-        wx.getStorage({
-            key: 'parmas',
-            complete:function(res){
-                if(res.data){
-                    that.setData({
-                        postData: res.data
-                    });
-                };
-            }
-        })
         if (options.edit){
             wx.getStorage({
                 key: 'parmas',
-                success: function(res) {
-                    that.setData({
-                        postData: res.data
-                    });
-                },
+                complete:function(res){
+                    if (res.data){
+                        let _postData = res.data;
+                        delete _postData.sign;
+                        delete _postData.sign_type;
+                        wx.removeStorageSync({
+                            key: 'lockReg',
+                            success: function (res) {
+                                console.log(res.data)
+                            }
+                        })
+                        that.setData({
+                            postData: _postData
+                        });
+                    };
+                }
             })
         }
+
         that.setData({
             stepStat: _stepStat,
-            postData: postData
+            postData: postData,
+            murange: {
+                area: commondata.initRange(commondata.area),
+                businessCategoryName: commondata.initRange(commondata.category)
+            },
+            range:{
+                 businessCategoryName: commondata.category,
+                 area: commondata.area
+            }
         });
 
     },

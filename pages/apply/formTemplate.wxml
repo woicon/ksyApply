@@ -36,9 +36,9 @@
 
             <picker wx:elif="{{item.data.mode == 'multiSelector'}}" 
             mode="{{item.data.mode}}"
-            range="{{item.data.range}}" 
+            range="{{murange[item.name]}}"
             range-key="{{item.data.rangekey}}"
-            value="{{mupicker[item.name]}}" 
+            value="{{mupicker[item.name]||[0,0,0]}}" 
             bindcolumnchange="{{item.data.bindcolumnchange}}"
             bindchange="{{item.data.bindchange}}"
             data-id="{{index}}"
@@ -46,9 +46,8 @@
             id="{{item.name}}"
             data-name='{{item.id}}'
             disabled="{{item.data.disabled}}">
-             <view class="picker" wx:if="{{item.name == 'area'}}">{{(value["province"] + value["city"] + value["area"]) || '请选择'}}</view>
-            <view class="picker" wx:else>{{value[item.name]||'请选择'}} </view> 
-            
+                <view class="picker" wx:if="{{item.name == 'area'}}">{{(value["province"] + value["city"] + value["area"]) || '请选择'}}</view>
+                <view class="picker" wx:else>{{value[item.name]||'请选择'}} </view>
             </picker>
 
             <picker wx:elif="{{item.data.mode == 'date'}}" 
