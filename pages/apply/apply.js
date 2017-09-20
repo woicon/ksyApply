@@ -1,5 +1,4 @@
 var app = getApp();
-var form = require('../../pages/apply/data.js');
 var formData = require('../../pages/apply/formData.js');
 var base = require('../../utils/util.js');
 var picker = require('../../pages/apply/data/picker.js');
@@ -12,7 +11,8 @@ Page({
         formData: formData,
         formStat:[],
         picker:picker,
-        postData:null,
+        postData:{},
+        canuse: wx.canIUse('picker.mode.multiSelector'),
         mupicker:{
             businessCategoryName:[0,0,0],
             area:[0,0,0]
@@ -38,9 +38,11 @@ Page({
         return currNode[id];
     },
     columnChange: function (e) {
-        wx.showLoading({
-            mask:true
-        });
+        if (wx.showLoading) {
+            wx.showLoading({
+                mask: true
+            });
+        }
         let that = this;
         let node = e.target.id;
         let range = that.data.range[node];
@@ -68,19 +70,22 @@ Page({
             mupicker:_mupicker,
             murange: _murange
         });
-        wx.hideLoading();
+        if (wx.hideLoading) {
+            wx.hideLoading()
+        }
     },
 
     multiChange:function(e){
         let that = this;
-        console.log(e);
         let node = e.target.id;
         let _postData = that.data.postData;
         let range = that.data.murange[node];
         let value = e.detail.value;
         console.log(value);
         if (e.target.id == "area"){
-            wx.showLoading();
+            if (wx.showLoading) {
+                wx.showLoading();
+            }
             _postData['province'] = range[0][value[0]][1];
             _postData['provinceId'] = range[0][value[0]][0];
             _postData['city'] = range[1][value[1]][1];
@@ -95,7 +100,9 @@ Page({
         that.setData({
             postData: _postData,
         });
-        wx.hideLoading();
+        if (wx.hideLoading) {
+            wx.hideLoading()
+        }
     },
     //picker控件选值存储
     changePicker: function (e) {
@@ -112,7 +119,9 @@ Page({
         let _formData = that.data.formData;
         let _form = _formData[1];
         if (e.detail.value === '1'){
+            if (wx.showLoading){
             wx.showLoading();
+            }
             _form[2].label = '对公账户';
             _form[3].label = '企业名称';
             _form[2].placeholder = '请输入对公账号';
@@ -126,7 +135,9 @@ Page({
         that.setData({
             formData: _formData
         });
-        wx.hideLoading();
+        if (wx.hideLoading) {
+            wx.hideLoading()
+        }
       }
       that.setData({
         postData: _postData
@@ -183,11 +194,13 @@ Page({
                 },
             })
         })
-        .then((res)=> {
-            wx.showLoading({
-                title: '上传中',
-                mask:true
-            });
+        .then((res,rej)=> {
+            if(wx.showLoading){
+                wx.showLoading({
+                    title: '上传中',
+                    mask:true
+                });
+            }
             let that = this;
             let tempFilePaths = res.tempFilePaths;
             parmas.url = encodeURIComponent(tempFilePaths[0]);
@@ -214,20 +227,20 @@ Page({
                             showCancel:false
                         })
                     };
-                    wx.hideLoading();
+                    if (wx.hideLoading){
+                        wx.hideLoading()
+                    }
                 },
                 fail: function (res) {
-                    wx.hideLoading();
-                    console.log(res);
+                    if (wx.hideLoading) {
+                        wx.hideLoading()
+                    }
                 }
             });
-        }).catch((error)=>{
-            wx.showModal({
-                title: '出了点小问题',
-                content: error,
-                showCancel:false
-            })
-        });
+            });
+        upImage.catch(()=>{
+            console.log('error')
+        })
     },
     setPostData:function(id,value){
         let that = this;
@@ -281,7 +294,7 @@ Page({
         parmas.productId = '484';//线下环境
         //parmas.productId = '421';//线上环境
         let _parmas = base.getSign(parmas,app.key);
-        let submitReg = new Promise((_res)=>{
+        let submitReg = new Promise((_res,rej)=>{
             wx.getStorage({
                 key: 'submitstat',
                 success: function(res) {
@@ -289,7 +302,7 @@ Page({
                     wx.showModal({
                         title: '提示',
                         content: '您已经提交注册，请勿重复提交！',
-                    })
+                    });
                 },
                 fail:function(){
                     wx.request({
@@ -340,11 +353,17 @@ Page({
                                     },
                                 });
                                 _res(data.ebill.mcDetails);
-                                
                             }else{
+                                //data.ebill.message
                                 wx.showModal({
-                                    content: data.ebill.message,
+                                    content: '请填完整信息后再提交注册！',//data.ebill.message,
                                     showCancel:false
+                                });
+                                wx.removeStorage({
+                                    key: 'submitstat',
+                                    success: function(res) {
+                                        console.log(res);
+                                    },
                                 })
                             }
                         },
@@ -356,7 +375,7 @@ Page({
                     });
                 }
             });
-        }).then((res)=>{
+        }).then((res,rej)=>{
             wx.request({
                 url: 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=' + app.globalData.token,
                 data: {
@@ -379,31 +398,39 @@ Page({
                     //console.log(err);
                 }
             })
+        });
+        submitReg.catch(()=>{
+            console.log('error');
         })
     },
     onLoad: function (options) {
+        var that = this;
+        console.log('可以用吗？'+wx.canIUse('picker.mode.multiSelector'));
         if (wx.showLoading) {
             wx.showLoading();
         } else {
+            that.setData({
+                up: true,
+            });
             wx.showModal({
                 title: '提示',
                 content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
             })
         }
-        var that = this;
-        
         if (wx.setNavigationBarColor) {
             wx.setNavigationBarColor({
                 frontColor: '#ffffff',
                 backgroundColor: '#27CFB1',
             });
         } else {
+            that.setData({
+                up:true,
+            });
             wx.showModal({
                 title: '提示',
                 content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
             })
         }
-        
         wx.setNavigationBarTitle({
             title: '注册快收银',
         });
@@ -411,35 +438,38 @@ Page({
         for (var i = 0; i < that.data.stepBar.length; i++) {
             _stepStat.push(false);
         }
-        
-        var that = this;
-        let postData = app.api;
-        delete postData.key;
-        if (options.edit){
-            wx.getStorage({
-                key: 'parmas',
-                complete:function(res){
-                    if (res.data){
-                        let _postData = res.data;
-                        delete _postData.sign;
-                        delete _postData.sign_type;
-                        wx.removeStorageSync({
-                            key: 'lockReg',
-                            success: function (res) {
-                                console.log(res.data)
-                            }
-                        })
-                        that.setData({
-                            postData: _postData
-                        });
-                    };
-                }
+        let _postData = app.api;
+        delete _postData.key;
+        if(options.edit){
+            wx.removeStorage({
+                key: 'submitstat',
+                success: function(res) {
+                    console.log(res);
+                },
             })
         }
-
+        wx.getStorage({
+            key: 'parmas',
+            success: function (res) {
+                console.log(res);
+                let postData = res.data;
+                delete postData.sign;
+                delete postData.sign_type;
+                that.setData({
+                    postData: postData
+                });
+            },
+            fail:function(res){
+                console.log(res);
+                that.setData({
+                    postData: _postData
+                });
+            }
+        })
+      
+       
         that.setData({
             stepStat: _stepStat,
-            postData: postData,
             murange: {
                 area: commondata.initRange(commondata.area),
                 businessCategoryName: commondata.initRange(commondata.category)
@@ -449,10 +479,11 @@ Page({
                  area: commondata.area
             }
         });
-
     },
     onReady: function () {
-        wx.hideLoading()
+        if (wx.hideLoading){
+                wx.hideLoading()
+        }
     },
     onShow: function () {
     },

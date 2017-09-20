@@ -33,23 +33,23 @@
             id="{{index}}">
             <view class="picker">{{picker[item.name][value[item.name]]||'请选择'}} </view>
             </picker>
-
-            <picker wx:elif="{{item.data.mode == 'multiSelector'}}" 
-            mode="{{item.data.mode}}"
-            range="{{murange[item.name]}}"
-            range-key="{{item.data.rangekey}}"
-            value="{{mupicker[item.name]||[0,0,0]}}" 
-            bindcolumnchange="{{item.data.bindcolumnchange}}"
-            bindchange="{{item.data.bindchange}}"
-            data-id="{{index}}"
-            data-range="{{item.range}}"
-            id="{{item.name}}"
-            data-name='{{item.id}}'
-            disabled="{{item.data.disabled}}">
-                <view class="picker" wx:if="{{item.name == 'area'}}">{{(value["province"] + value["city"] + value["area"]) || '请选择'}}</view>
-                <view class="picker" wx:else>{{value[item.name]||'请选择'}} </view>
-            </picker>
-
+            <!-- <block wx:elif="{{item.data.mode == 'multiSelector'}}"> -->
+            <picker  wx:elif="{{item.data.mode == 'multiSelector'}}"
+                mode="{{item.data.mode}}"
+                range="{{murange[item.name]}}"
+                range-key="{{item.data.rangekey}}"
+                value="{{mupicker[item.name]||[0,0,0]}}" 
+                bindcolumnchange="{{item.data.bindcolumnchange}}"
+                bindchange="{{item.data.bindchange}}"
+                data-id="{{index}}"
+                data-range="{{item.range}}"
+                id="{{item.name}}"
+                data-name='{{item.id}}'
+                disabled="{{item.data.disabled}}">
+                    <view class="picker" wx:if="{{item.name == 'area'}}">{{(value["province"] + value["city"] + value["area"]) || '请选择'}}</view>
+                    <view class="picker" wx:else>{{value[item.name]||'请选择'}} </view>
+                </picker>
+            <!-- </block> -->
             <picker wx:elif="{{item.data.mode == 'date'}}" 
             mode="{{item.data.mode}}"
             name="{{item.name}}"

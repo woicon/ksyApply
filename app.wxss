@@ -133,4 +133,28 @@ page{
 .button-hover{
     background:#0dbf9e;
 }
+.upwx{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    display:none;
+    z-index:9999;
+    background:#fff;
+    text-align:center;
+    align-items:center;
+    justify-content:center;
+}
+.upwx .title{
+    font-size:36rpx;
+    color:#444;
+}
+.upwx view{
+    font-size:28rpx;
+    color:#888;
+}
+.upwx.show{
+    display:flex;
+}
 

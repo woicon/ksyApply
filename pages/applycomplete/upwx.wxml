@@ -1,0 +1,7 @@
+<view class="upwx {{up?'show':''}}">
+    <view style='margin-top:-80rpx'>
+        <view><image src='../../pages/images/logo.png' style='width:120px;height:58px;margin-bottom:90rpx;'></image></view>
+        <view class="title" style='margin-bottom:20rpx'>提示</view>
+        <view style="margin:0 120rpx;">您的微信版本不支持该应用，请您升级到最新版微信使用！</view>
+    </view>
+</view>

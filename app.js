@@ -52,7 +52,6 @@ App({
             const parmas = that.api;
             delete parmas.key;
             that.checkParmas = parmas;
-            console.log(that.checkParmas);
             let _parmas = {};
             for(let i in parmas){
                 _parmas[i] = parmas[i]
@@ -68,7 +67,7 @@ App({
                     let checkData = base.XMLtoJSON(checkStat.data).ebill;
                     if (checkData.mcDetails) {
                         console.log(!options.query.edit);
-                        if (!options.query.edit){
+                        if(!options.query.edit){
                             wx.redirectTo({
                                 url: '/pages/applydetail/applydetail'
                             })
@@ -117,8 +116,8 @@ App({
         //upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in',//文件上传
         upfile:'http://192.168.19.47:8000/front/agentAppV3/uploadFile.in',
         getOpenId:'http://open.liantuobank.cn/api/microappToOpenid.htm',
-        getToken: 'http://wxcs.liantuo.com/app/token.do',
-        sendMsg:'http://wxcs.liantuo.com/app/template.do'
+        getToken: 'http://wx.liantuo.com/app/token.do',
+        sendMsg: 'http://wx.liantuo.com//app/template.do'
     },
     api:{
         input_charset: 'UTF-8',

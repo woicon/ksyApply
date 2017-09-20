@@ -77,10 +77,15 @@ Page({
     ],
   },
   editForm: function () {
-      console.log('2')
+      wx.removeStorage({
+          key: 'lockReg',
+          success: function (res) {
+              console.log(res)
+          }
+      })
       wx.redirectTo({
           url: '/pages/apply/apply?edit=true',
-      })
+      });
   },
   onLoad: function (options) {
       let that = this;

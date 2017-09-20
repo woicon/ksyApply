@@ -16,13 +16,13 @@ module.exports =[
             "block":true,
             "required":"请输入正确的商户名称!",
             "bindblur":"formBlur",
-            "tip":"请输入商户名称全称，如'西少爷餐饮科技有限公司'",
+            "tip":"请输入商户名称全称，如'西少爷餐饮科技有限公司'，支持汉字、字母、数字",
             "value": ""
         },
         {
             "label": "商户简称",
             "name": "merchantName",
-            "placeholder": "如肯德基",
+            "placeholder": "如'西少爷'",
             "type": "0",
             "data": {
                 maxlength:"12",
@@ -32,7 +32,7 @@ module.exports =[
             "block": true,
             "required": "请输入商户简称!", 
             "bindblur": "formBlur",
-            "tip": "请输入商户简称，如'西少爷'",
+            "tip": "请输入商户简称，如'西少爷'，支持汉字、字母、数字",
             "value": ""
         },
         {
@@ -84,6 +84,7 @@ module.exports =[
             "stat": "false",
             "bindtap": "",
             "value": "",
+            "tip": "80个字以内，支持汉字、字母、数字",
             "block": true,
         },
         {
@@ -112,7 +113,9 @@ module.exports =[
             },
             "stat": "false",
             "bindtap": "",
+            "block": true,
             "required": "请输入正确的营业执照编号!",
+            "tip": "数字或者字母，15位或者18位",
             "bindblur": "formBlur",
             "value": ""
         },
@@ -128,6 +131,8 @@ module.exports =[
             "stat": "false",
             "bindtap": "",
             "bindblur": "formBlur",
+            "block": true,
+            "tip": "只允许数字",
             "required": "请输入正确的客服电话!",
             "value": ""
         },
@@ -157,6 +162,8 @@ module.exports =[
                 "maxlength":"10"
             },
             "stat": "false",
+            "block":true,
+            "tip": "最长10个汉字，不支持英文名及特殊字符",
             "bindtap": "",
             "value": ""
         },

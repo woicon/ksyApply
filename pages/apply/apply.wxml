@@ -1,5 +1,5 @@
 <!--pages/apply/apply.wxml-->
-
+<include src="../../pages/applycomplete/upwx.wxml"/>
 <view class="apply">
     <view class="apply-step">
         <view class="step-item {{currentStep == index || stepStat[index] ? 'active':''}}" wx:for="{{stepBar}}" wx:key="stepbar">
