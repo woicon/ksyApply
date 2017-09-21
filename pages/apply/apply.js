@@ -186,6 +186,8 @@ Page({
             core_merchant_no: app.api.core_merchant_no,
         }
         let parmas = base.getSign(upParmas, app.key);
+        //let parmas = upParmas;//免签
+        console.log(parmas);
         let upImage = new Promise((res, rej)=> {
             wx.chooseImage({
                 count: 1,
@@ -291,9 +293,10 @@ Page({
         parmas.operationDatetime = base.getNowDate();
         parmas.service = 'mp_pf_add_configure';
         // 快收银连锁版
-        parmas.productId = '484';//线下环境
-        //parmas.productId = '421';//线上环境
-        let _parmas = base.getSign(parmas,app.key);
+        //parmas.productId = '484';//线下环境
+        parmas.productId = '421';//线上环境
+        let _parmas = base.getSign(parmas,app.key);  
+        //let _parmas = parmas;//免签
         let submitReg = new Promise((_res,rej)=>{
             wx.getStorage({
                 key: 'submitstat',

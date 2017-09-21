@@ -113,6 +113,7 @@ Page({
                     wx.request({
                         url: app.url.host,
                         data: base.getSign(parmas, app.key),
+                        //data: parmas,//免签
                         method: 'POST',
                         header: {
                             'content-type': 'application/x-www-form-urlencoded'

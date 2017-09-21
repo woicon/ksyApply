@@ -38,7 +38,8 @@ App({
         })
         .then((res)=>{
             //获取代理商信息
-            let partnerId = options.query.no || 'EW_N2254856689';
+            //let partnerId = options.query.no || 'EW_N2254856689';
+            let partnerId = options.query.no;
             let partner = that.getPartner(partnerId);
             for (let i in partner) {
                 that.api[i] = partner[i];
@@ -60,7 +61,8 @@ App({
             //注册状态检测
             wx.request({
                 url:that.url.host,
-                data: base.getSign(_parmas, partner.key),
+                //data: base.getSign(_parmas, partner.key),
+                data:_parmas,
                 method:'POST',
                 header: {'content-type': 'application/x-www-form-urlencoded'},
                 success:function(checkStat){
@@ -111,10 +113,10 @@ App({
         }
     },
     url:{
-        host: 'http://192.168.19.47:8000/front/baseV3/gateway.in',
-        //host:'http://front.51ebill.com/front/baseV3/gateway.in',//前置线上
-        //upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in',//文件上传
-        upfile:'http://192.168.19.47:8000/front/agentAppV3/uploadFile.in',
+        //host: 'http://192.168.19.47:8000/front/baseV3/gateway.in',
+        host:'http://front.51ebill.com/front/baseV3/gateway.in',//前置线上
+        upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in',//文件上传
+        //upfile:'http://192.168.19.47:8000/front/agentAppV3/uploadFile.in',
         getOpenId:'http://open.liantuobank.cn/api/microappToOpenid.htm',
         getToken: 'http://wx.liantuo.com/app/token.do',
         sendMsg: 'http://wx.liantuo.com//app/template.do'

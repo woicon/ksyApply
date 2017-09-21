@@ -23,6 +23,7 @@ Page({
         wx.request({
             url: app.url.host,
             data: base.getSign(_parmas, app.key),
+            //data:_parmas,
             method: 'POST',
             header: { 'content-type': 'application/x-www-form-urlencoded' },
             success: function (checkStat) {
