@@ -11,7 +11,7 @@ App({
                 content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
             })
         }
-        let appInit = new Promise((rests) => {
+        let appInit = new Promise(function(openid){
             //微信登录
             wx.login({
                 success: (res) => {
@@ -24,10 +24,9 @@ App({
                                 secret: base.app.appSecret,
                                 code: res.code
                             },
-                            success: (_res) => {
-                                console.log(_res);
-                                that.api.openId = _res.data.wechatVo.openId;
-                                rests(res);
+                            success: (data) => {
+                                that.api.openId = data.data.wechatVo.openId;
+                                openid(res);
                             }
                         })
                     } else {
@@ -36,10 +35,10 @@ App({
                 }
             });
         })
-        .then((res)=>{
+        .then(function(res){
             //获取代理商信息
-            //let partnerId = options.query.no || 'EW_N2254856689';
-            let partnerId = options.query.no;
+            let partnerId = options.query.no || 'EW_N3632231636';
+            //let partnerId = options.query.no;
             let partner = that.getPartner(partnerId);
             for (let i in partner) {
                 that.api[i] = partner[i];
@@ -53,40 +52,38 @@ App({
             const parmas = that.api;
             delete parmas.key;
             that.checkParmas = parmas;
-            let _parmas = {};
-            for(let i in parmas){
-                _parmas[i] = parmas[i]
-            }
-            _parmas.operationDatetime = base.getNowDate();
-            //注册状态检测
-            wx.request({
-                url:that.url.host,
-                //data: base.getSign(_parmas, partner.key),
-                data:_parmas,
-                method:'POST',
-                header: {'content-type': 'application/x-www-form-urlencoded'},
-                success:function(checkStat){
-                    let checkData = base.XMLtoJSON(checkStat.data).ebill;
-                    if (checkData.mcDetails) {
-                        console.log(!options.query.edit);
-                        if(!options.query.edit){
-                            wx.redirectTo({
-                                url: '/pages/applydetail/applydetail'
-                            })
-                        }
-                    } else {
-                        wx.redirectTo({
-                            url: '/pages/index/index'
-                        })
-                    }
-                },
-                fail:(err) => {
-                    console.log(err);
-                }
-            });
-        })
-        .then(()=> {
-            //获取Token
+            // let _parmas = {};
+            // for(let i in parmas){
+            //     _parmas[i] = parmas[i]
+            // }
+            // _parmas.operationDatetime = base.getNowDate();
+            // //注册状态检测
+            // wx.request({
+            //     url:that.url.host,
+            //     //data: base.getSign(_parmas, partner.key),
+            //     data:_parmas,
+            //     method:'POST',
+            //     header: {'content-type': 'application/x-www-form-urlencoded'},
+            //     success:function(checkStat){
+            //         let checkData = base.XMLtoJSON(checkStat.data).ebill;
+            //         if (checkData.mcDetails) {
+            //             console.log(!options.query.edit);
+            //             if(!options.query.edit){
+            //                 wx.redirectTo({
+            //                     url: '/pages/applydetail/applydetail'
+            //                 })
+            //             }
+            //         } else {
+            //             wx.redirectTo({
+            //                 url: '/pages/index/index'
+            //             })
+            //         }
+            //     },
+            //     fail:(err) => {
+            //         console.log(err);
+            //     }
+            // });
+        }).then(function(r,rej) {
             wx.request({
                 url: that.url.getToken,
                 data:{
@@ -94,7 +91,6 @@ App({
                     appSecret:base.app.appSecret
                 },
                 success: function(token) {
-                    console.log(token);
                     that.globalData.token = token.data.result;
                     wx.setStorage({
                         key: 'token',
@@ -113,13 +109,11 @@ App({
         }
     },
     url:{
-        //host: 'http://192.168.19.47:8000/front/baseV3/gateway.in',
-        host:'http://front.51ebill.com/front/baseV3/gateway.in',//前置线上
-        upfile: 'http://intfront.51ebill.com/front/agentAppV3/uploadFile.in',//文件上传
-        //upfile:'http://192.168.19.47:8000/front/agentAppV3/uploadFile.in',
-        getOpenId:'http://open.liantuobank.cn/api/microappToOpenid.htm',
-        getToken: 'http://wx.liantuo.com/app/token.do',
-        sendMsg: 'http://wx.liantuo.com//app/template.do'
+        host:'https://front.liantuobank.com/front/baseV3/gateway.in',//前置线上
+        upfile: 'https://front.liantuobank.com/front/agentAppV3/uploadFile.in',//文件上传
+        getOpenId:'https://club.liantuobank.com/api/microappToOpenid.htm',
+        getToken: 'https://wx.liantuobank.com/app/token.do',
+        sendMsg: 'https://wx.liantuobank.com/app/template.do'
     },
     api:{
         input_charset: 'UTF-8',

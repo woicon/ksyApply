@@ -355,7 +355,6 @@ Page({
                                         name:that.data.postData.merchantFullName
                                     },
                                 });
-                                _res(data.ebill.mcDetails);
                             }else{
                                 //data.ebill.message
                                 wx.showModal({
@@ -391,7 +390,6 @@ Page({
                 },
                 method: 'POST',
                 success: function (res) {
-                    console.log(res);
                     wx.navigateTo({
                         url: '/pages/applycomplete/applycomplete',
                     });

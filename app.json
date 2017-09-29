@@ -3,13 +3,12 @@
     "pages/index/index",
     "pages/apply/apply",
     "pages/applydetail/applydetail",
-    "pages/applycomplete/applycomplete",
-    "pages/logs/logs"
+    "pages/applycomplete/applycomplete"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "快收银开户注册",
     "navigationBarTextStyle":"black"
   }
 }

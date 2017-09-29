@@ -11,37 +11,43 @@ Page({
     },
     onLoad: function () {
         var that = this;
-        //注册状态检测
-        let parmas = app.checkParmas;
-        console.log(parmas);
+        let parmas = app.api;
+        console.log(app.api);
         let _parmas = {};
         for (let i in parmas) {
             _parmas[i] = parmas[i]
         }
-        //let _parmas = app.checkParmas;
         _parmas.operationDatetime = base.getNowDate();
         wx.request({
             url: app.url.host,
             data: base.getSign(_parmas, app.key),
-            //data:_parmas,
             method: 'POST',
             header: { 'content-type': 'application/x-www-form-urlencoded' },
             success: function (checkStat) {
-                let checkData = base.XMLtoJSON(checkStat.data).ebill;
-                if (checkData.mcDetails) {
-                    wx.redirectTo({
-                        url: '/pages/applydetail/applydetail'
-                    })
-                }
+                console.log(checkStat)
+                wx.showLoading()
+                let checkData = base.XMLtoJSON(checkStat.data).ebill
+                setTimeout(function(){
+                    if (checkData.mcDetails) {
+                        wx.hideLoading()
+                        wx.redirectTo({
+                            url: '/pages/applydetail/applydetail'
+                        })
+                    }else{
+                        wx.showModal({
+                            title: '提示',
+                            content: '出了点小问题！',
+                        })
+                    }
+                },1500)
             },
-            fail: (err) => {
+            fail:function(err) {
                 console.log(err);
             }
         });
         wx.setNavigationBarTitle({
             title: '快收银开户注册',
         });
-        
     },
     onReady:function(){
         let that = this;

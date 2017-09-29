@@ -77,28 +77,13 @@
         <text>通道名称</text>
         <view class="value">{{mcDetails.passName}}</view>
       </view>
-      <!-- <view class="lines">
-        支付宝费率ID<view class="value">{{mcDetails.alipayRateId}}</view>
-      </view> -->
-       <view class="lines">
+       <!-- <view class="lines">
         <text>支付宝费率</text>
         <view class="value">{{mcDetails.alipayRateName}} - {{mcDetails.alipayRate}}‰</view>
       </view>
-       <!-- <view class="lines">
-        支付宝费率<view class="value"></view>
-      </view> -->
-       <!-- <view class="lines">
-        微信费率ID<view class="value">{{mcDetails.wechatRateId}}</view>
-      </view> -->
        <view class="lines">
         <text>微信费率</text>
         <view class="value">{{mcDetails.wechatRateName}} - {{mcDetails.wechatRate}}‰</view>
-      </view>
-       <!-- <view class="lines">
-        微信费率<view class="value">/view>
-      </view> -->
-       <!-- <view class="lines">
-        配置备注<view class="value">{{mcDetails.remark}}</view>
       </view> -->
 </view>
 <view class="coltitle">进件商户信息</view>
@@ -126,10 +111,10 @@
           <view class="value" wx:if="{{mcDetails.contactType==index}}">{{item}}</view>
         </block>
       </view>
-      <view class="lines">
+      <!-- <view class="lines">
         <text>联系人姓名</text>
         <view class="value">{{mcDetails.contactName}}</view>
-      </view>
+      </view> -->
       <view class="lines">
         <text>联系人身份证号码</text>
         <view class="value">{{mcDetails.certificateNo}}</view>
@@ -201,29 +186,3 @@
 <block wx:if="{{mcDetails.auditorStatus  == 4}}">
     <view class='block-button' bindtap='editForm'>重新注册</view>
 </block>
-
-<view style='margin:0 50rpx;'>
-    <view style='font-size:24rpx;line-height:1.5;margin-top:30rpx;margin-bottom:20rpx;'>测试重新注册，需要先一定清理缓存,输入openId</view>
-    <button bindtap='clearStore' style='margin-bottom:20rpx'>清理缓存</button>
-    <input bindinput='sets' style='border:1rpx solid #eee;padding:20rpx 10rpx;font-size:26rpx;margin-bottom:20rpx' value='' placeholder='输入openID,最大长度32位'></input>
-    <button bindtap='{{openId?"goindex":""}}' disabled='{{!openId?"true":""}}'>重新注册</button>
-</view>
-
-  <form name='pushMsgFm' id="formid" report-submit bindsubmit='orderSign'>  
- <view class='fgroup'>
-    enter product:<input type="text" name="product" value='' placeholder="enter your name" />  
-    </view>
-    <view class='fgroup'>
-    detail: <input type="text" name='detail' placeholder="enter desc" />  
-    </view>
-        <view class='fgroup'>
-    detail: <input type="text" name='phone' placeholder="enter desc" />  
-    </view>
-
-    <view class='fgroup'>
-    value:<input type="text" name='username' placeholder="enter desc"></input>
-    </view>
-    <button form-type="submit">submit</button> 
-</form>   
-
-
